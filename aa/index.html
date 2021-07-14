@@ -9,7 +9,7 @@
 <meta name="description" content="业精于勤，荒于嬉">
 <meta name="theme-color" content="#343a40">
 <title>JVM 内存与垃圾回收（二） | Violet</title>
-<link rel="shortcut icon" href="/favicon.ico?v=1626281925957">
+<link rel="shortcut icon" href="/favicon.ico?v=1626291807003">
 <link rel="stylesheet" href="/media/css/pisces.css">
 <link rel="stylesheet" href="/media/fonts/font-awesome.css">
 <link
@@ -235,8 +235,15 @@
 <ul>
 <li><a href="#51-%E6%A6%82%E8%BF%B0">5.1 概述</a></li>
 <li><a href="#52-%E6%A0%88%E7%9A%84%E5%AD%98%E5%82%A8%E5%8D%95%E4%BD%8D">5.2 栈的存储单位</a></li>
-<li><a href="#53-%E6%A0%88%E5%B8%A7%E7%9A%84%E5%86%85%E9%83%A8%E7%BB%93%E6%9E%84">5.3 栈帧的内部结构</a></li>
-<li><a href="#54-%E5%AD%97%E8%8A%82%E7%A0%81%E6%96%B9%E6%B3%95%E5%86%85%E9%83%A8%E7%BB%93%E6%9E%84%E5%89%96%E6%9E%90">5.4 字节码方法内部结构剖析</a></li>
+<li><a href="#53-%E6%A0%88%E5%B8%A7%E7%9A%84%E5%86%85%E9%83%A8%E7%BB%93%E6%9E%84">5.3 栈帧的内部结构</a>
+<ul>
+<li><a href="#531-%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F%E8%A1%A8-local-variable">5.3.1. 局部变量表 Local Variable</a></li>
+<li><a href="#532-%E6%93%8D%E4%BD%9C%E6%95%B0%E6%A0%88-operand-stack">5.3.2.  操作数栈 Operand Stack</a></li>
+<li><a href="#533-%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5-dynamic-linking-%E6%8C%87%E5%90%91%E8%BF%90%E8%A1%8C%E6%97%B6%E5%B8%B8%E9%87%8F%E6%B1%A0%E7%9A%84%E6%96%B9%E6%B3%95%E5%BC%95%E7%94%A8%E4%B8%8E%E5%A4%9A%E6%80%81%E6%9C%89%E5%85%B3%E5%90%97">5.3.3. 动态链接 Dynamic Linking 指向运行时常量池的方法引用（与多态有关吗？？）</a></li>
+<li><a href="#534-%E6%96%B9%E6%B3%95%E8%BF%94%E5%9B%9E%E5%9C%B0%E5%9D%80-return-address-%E6%96%B9%E6%B3%95%E6%AD%A3%E5%B8%B8%E9%80%80%E5%87%BA%E6%88%96%E5%BC%82%E5%B8%B8%E9%80%80%E5%87%BA%E7%9A%84%E5%AE%9A%E4%B9%89">5.3.4. 方法返回地址 Return Address 方法正常退出或异常退出的定义</a></li>
+<li><a href="#535-%E4%B8%80%E4%BA%9B%E9%99%84%E5%8A%A0%E4%BF%A1%E6%81%AF">5.3.5. 一些附加信息</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#6-%E6%9C%AC%E5%9C%B0%E6%96%B9%E6%B3%95%E6%8E%A5%E5%8F%A3">6. 本地方法接口</a></li>
@@ -529,12 +536,12 @@
     
     <span class="meta-item">
       <i class="fa fa-clock-o"></i>
-      <span>4<span class="language" data-lan="minute">分钟</span></span>
+      <span>6<span class="language" data-lan="minute">分钟</span></span>
     </span>
     <span class="meta-item">
       <span class="post-meta-divider">|</span>
       <i class="fa fa-file-word-o"></i>
-      <span>1023<span class="pc-show language" data-lan="words">字数</span></span>
+      <span>1597<span class="pc-show language" data-lan="words">字数</span></span>
     </span>
     
     
@@ -557,7 +564,7 @@
 <ul>
 <li>作用 存储指向下一条指令的地址，即即将执行的指令代码，由执行引擎读取下一条指令。</li>
 <li>一块很小的内存空间，运行速度最快的空间</li>
-<li>与线程的生命周期保持一致</li>
+<li><em><strong>与线程的生命周期保持一致</strong></em></li>
 <li>任何时间一个线程都会只有一个方法在执行=&gt;当前方法。程序计数器会存储当前线程正在执行的方法的JVM指令地址，如果当前线程的当前方法为native方法，则程序计数器为空（undefined）</li>
 <li>JVM 区域中唯一一个不会OOM的区域</li>
 </ul>
@@ -580,7 +587,7 @@
 <h2 id="5-虚拟机栈">5. 虚拟机栈</h2>
 <h4 id="51-概述">5.1 概述</h4>
 <ul>
-<li>栈的生命周期与线程一致</li>
+<li><em><strong>栈的生命周期与线程一致</strong></em></li>
 <li>作用：保存方法的局部变量（8种基本数据类型、对象的引用地址）、部分结果，并参与方法的调用与返回</li>
 <li>快速有效的分配方式，仅次于程序计数器</li>
 <li>不存在垃圾回收的问题，但是会存在OOM</li>
@@ -589,34 +596,68 @@
 </ul>
 <h4 id="52-栈的存储单位">5.2 栈的存储单位</h4>
 <ul>
-<li>每个线程由自己的栈内存，栈中的数据以栈帧为基本存储单位</li>
+<li>每个线程由自己的栈内存，<em><strong>栈中的数据以栈帧为基本存储单位</strong></em></li>
 <li>线程种执行的每一个方法都对应一个栈帧， 存储方法执行过程种的各种数据信息；</li>
 <li>java方法的执行与结束对应栈帧的入栈出栈</li>
-<li>JVM对栈的操作只有两种：压栈、出栈； 遵循FILO的规则；</li>
+<li>JVM对栈的操作只有两种： <em><strong>压栈、出栈； 遵循FILO的规则</strong></em></li>
 <li>当前栈帧 当前方法 当前类；执行引擎执行的操作指令都是对当前栈帧进行操作</li>
 <li>方法的技术方式：１、正常return结束；２、抛出异常。无论哪种方式结束，都会使当前栈帧出栈</li>
 </ul>
 <h4 id="53-栈帧的内部结构">5.3 栈帧的内部结构</h4>
+<h5 id="531-局部变量表-local-variable">5.3.1. 局部变量表 Local Variable</h5>
 <ul>
-<li>局部变量表 Local Variable</li>
-</ul>
-<ol>
 <li>定义为一个 <em><strong><font color="red">数字数组</font>,主要用于存储方法参数和定义在方法体内的局部变量</strong></em> ，数据类型包括基本数据类型、对象引用以及returnAddress类型。</li>
 <li><em><strong>容量大小在编译阶段就能确定</strong></em> 保存在方法的code属性的maximum_local_variables数据项，方法运行期间不会改变局部变量表的大小</li>
 <li>栈的大小--&gt;栈帧的个数---&gt;方法嵌套调用的次数</li>
 <li>局部变量表随栈帧的出栈而销毁</li>
+<li>字节码方法内部结构剖析<br>
+参数args在main方法内都生效-&gt;源码16~19 -&gt; 字节码 0 ~18 -&gt;生效位置0,长度19；其他参数类似<br>
+<img src="https://violet404.github.io//post-images/1626281631376.png" alt="" loading="lazy"></li>
+<li>关于slot的理解</li>
+</ul>
+<ol>
+<li><strong>局部变量表最基本存储单位slot</strong></li>
+<li><strong>32位以内的类型占用1个slot(包括returnAddress类型),64位类型占用两个slot(long，double)</strong> byte/short/char 在存储时转成int，boolean也被转成int，false？0：</li>
+<li>当一个方法被调用时，它的方法参数与方法体内定义的局部变量都会<font color="red"><strong>按照顺序被复制</strong></font>到局部变量表的每一个slot上</li>
+<li>JVM 为局部变量表的slot分配索引，通过索引可以当问对应的局部变量；如果需要访问变量表种64bit的变量值，只需要使用第一个slot索引</li>
+<li>如果当前栈帧时<strong>构造方法或者实例方法</strong>创建的，那么该<strong>对象应用this将会放在index为0的slot</strong>处，其余参数按照顺序依次排列<br>
+<img src="https://violet404.github.io//post-images/1626283738793.png" alt="" loading="lazy"></li>
+<li><strong>栈帧中的局部变量表的slot时可以重用的</strong>，如果一个局部变量过了其作用域，那么在其作用域之后声明局部变量有可能会复用过期的槽位，达到<strong>节省资源</strong>的目的<br>
+<img src="https://violet404.github.io//post-images/1626285416606.png" alt="" loading="lazy"></li>
 </ol>
 <ul>
-<li>操作数栈 Operand Stack</li>
-<li>动态链接 Dynamic Linking 指向运行时常量池的方法引用（与多态有关吗？？）</li>
-<li>方法返回地址 Return Address 方法正常退出或异常退出的定义</li>
-<li>一些附加信息</li>
+<li><font color="red"><em><strong>局部变量表中的变量时重要的垃圾回收根节点，只要被局部变量表中变量直接或间接引用的对象都不会回收</strong></em></font></li>
 </ul>
-<h4 id="54-字节码方法内部结构剖析">5.4 字节码方法内部结构剖析</h4>
-<figure data-type="image" tabindex="2"><img src="https://violet404.github.io//post-images/1626281631376.png" alt="" loading="lazy"></figure>
+<h5 id="532-操作数栈-operand-stack">5.3.2.  操作数栈 Operand Stack</h5>
 <ul>
-<li>参数args在main方法内都生效-&gt;源码16~19 -&gt; 字节码 0 ~18 -&gt;生效位置0,长度19；其他参数类似</li>
+<li><strong>数组（顺序存储）实现，同时满足FILO的规则</strong></li>
+<li><strong>操作数栈在方法执行过程中，根据字节码指令，往栈中写入数据或读取数据，即入栈与出栈</strong></li>
+<li>保存计算过程的中间结果，同时作为计算过程中变量的临时存储空间</li>
+<li>方法开始执行，相应的栈帧随之创建，这个操作数栈时空的（但是对应的数组是有长度的）</li>
+<li>有明确的栈深用于存储数值，其所需的栈深在编译阶段就已经确定了，方法的code的max_stack属性</li>
+<li>栈中任一个元素都可以时java的数据类型</li>
 </ul>
+<ol>
+<li>32bit的类型占1个栈深</li>
+<li>64bit的类型占2个栈深</li>
+</ol>
+<ul>
+<li>操作数栈只能通过入栈出栈完成数据访问，不能通过数组索引进行数据访问</li>
+</ul>
+<pre><code class="language-java">public class OperandStackTest {
+    public void method1() {
+        byte i = 15;
+        int j = 8;
+        int k = i + j;
+    }
+}
+
+// javap -v OperandStackTest.class
+</code></pre>
+<figure data-type="image" tabindex="2"><img src="https://violet404.github.io//post-images/1626291407651.png" alt="" loading="lazy"></figure>
+<h5 id="533-动态链接-dynamic-linking-指向运行时常量池的方法引用与多态有关吗">5.3.3. 动态链接 Dynamic Linking 指向运行时常量池的方法引用（与多态有关吗？？）</h5>
+<h5 id="534-方法返回地址-return-address-方法正常退出或异常退出的定义">5.3.4. 方法返回地址 Return Address 方法正常退出或异常退出的定义</h5>
+<h5 id="535-一些附加信息">5.3.5. 一些附加信息</h5>
 <h2 id="6-本地方法接口">6. 本地方法接口</h2>
 <h2 id="7-本地方法栈">7. 本地方法栈</h2>
 
@@ -1678,7 +1719,7 @@
 &lt;ul&gt;
 &lt;li&gt;作用 存储指向下一条指令的地址，即即将执行的指令代码，由执行引擎读取下一条指令。&lt;/li&gt;
 &lt;li&gt;一块很小的内存空间，运行速度最快的空间&lt;/li&gt;
-&lt;li&gt;与线程的生命周期保持一致&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;&lt;strong&gt;与线程的生命周期保持一致&lt;/strong&gt;&lt;/em&gt;&lt;/li&gt;
 &lt;li&gt;任何时间一个线程都会只有一个方法在执行=&amp;gt;当前方法。程序计数器会存储当前线程正在执行的方法的JVM指令地址，如果当前线程的当前方法为native方法，则程序计数器为空（undefined）&lt;/li&gt;
 &lt;li&gt;JVM 区域中唯一一个不会OOM的区域&lt;/li&gt;
 &lt;/ul&gt;
@@ -1701,7 +1742,7 @@
 &lt;h2 id=&#34;5-虚拟机栈&#34;&gt;5. 虚拟机栈&lt;/h2&gt;
 &lt;h4 id=&#34;51-概述&#34;&gt;5.1 概述&lt;/h4&gt;
 &lt;ul&gt;
-&lt;li&gt;栈的生命周期与线程一致&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;&lt;strong&gt;栈的生命周期与线程一致&lt;/strong&gt;&lt;/em&gt;&lt;/li&gt;
 &lt;li&gt;作用：保存方法的局部变量（8种基本数据类型、对象的引用地址）、部分结果，并参与方法的调用与返回&lt;/li&gt;
 &lt;li&gt;快速有效的分配方式，仅次于程序计数器&lt;/li&gt;
 &lt;li&gt;不存在垃圾回收的问题，但是会存在OOM&lt;/li&gt;
@@ -1710,34 +1751,68 @@
 &lt;/ul&gt;
 &lt;h4 id=&#34;52-栈的存储单位&#34;&gt;5.2 栈的存储单位&lt;/h4&gt;
 &lt;ul&gt;
-&lt;li&gt;每个线程由自己的栈内存，栈中的数据以栈帧为基本存储单位&lt;/li&gt;
+&lt;li&gt;每个线程由自己的栈内存，&lt;em&gt;&lt;strong&gt;栈中的数据以栈帧为基本存储单位&lt;/strong&gt;&lt;/em&gt;&lt;/li&gt;
 &lt;li&gt;线程种执行的每一个方法都对应一个栈帧， 存储方法执行过程种的各种数据信息；&lt;/li&gt;
 &lt;li&gt;java方法的执行与结束对应栈帧的入栈出栈&lt;/li&gt;
-&lt;li&gt;JVM对栈的操作只有两种：压栈、出栈； 遵循FILO的规则；&lt;/li&gt;
+&lt;li&gt;JVM对栈的操作只有两种： &lt;em&gt;&lt;strong&gt;压栈、出栈； 遵循FILO的规则&lt;/strong&gt;&lt;/em&gt;&lt;/li&gt;
 &lt;li&gt;当前栈帧 当前方法 当前类；执行引擎执行的操作指令都是对当前栈帧进行操作&lt;/li&gt;
 &lt;li&gt;方法的技术方式：１、正常return结束；２、抛出异常。无论哪种方式结束，都会使当前栈帧出栈&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h4 id=&#34;53-栈帧的内部结构&#34;&gt;5.3 栈帧的内部结构&lt;/h4&gt;
+&lt;h5 id=&#34;531-局部变量表-local-variable&#34;&gt;5.3.1. 局部变量表 Local Variable&lt;/h5&gt;
 &lt;ul&gt;
-&lt;li&gt;局部变量表 Local Variable&lt;/li&gt;
-&lt;/ul&gt;
-&lt;ol&gt;
 &lt;li&gt;定义为一个 &lt;em&gt;&lt;strong&gt;&lt;font color=&#34;red&#34;&gt;数字数组&lt;/font&gt;,主要用于存储方法参数和定义在方法体内的局部变量&lt;/strong&gt;&lt;/em&gt; ，数据类型包括基本数据类型、对象引用以及returnAddress类型。&lt;/li&gt;
 &lt;li&gt;&lt;em&gt;&lt;strong&gt;容量大小在编译阶段就能确定&lt;/strong&gt;&lt;/em&gt; 保存在方法的code属性的maximum_local_variables数据项，方法运行期间不会改变局部变量表的大小&lt;/li&gt;
 &lt;li&gt;栈的大小--&amp;gt;栈帧的个数---&amp;gt;方法嵌套调用的次数&lt;/li&gt;
 &lt;li&gt;局部变量表随栈帧的出栈而销毁&lt;/li&gt;
+&lt;li&gt;字节码方法内部结构剖析&lt;br&gt;
+参数args在main方法内都生效-&amp;gt;源码16~19 -&amp;gt; 字节码 0 ~18 -&amp;gt;生效位置0,长度19；其他参数类似&lt;br&gt;
+&lt;img src=&#34;https://violet404.github.io//post-images/1626281631376.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/li&gt;
+&lt;li&gt;关于slot的理解&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;局部变量表最基本存储单位slot&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;32位以内的类型占用1个slot(包括returnAddress类型),64位类型占用两个slot(long，double)&lt;/strong&gt; byte/short/char 在存储时转成int，boolean也被转成int，false？0：&lt;/li&gt;
+&lt;li&gt;当一个方法被调用时，它的方法参数与方法体内定义的局部变量都会&lt;font color=&#34;red&#34;&gt;&lt;strong&gt;按照顺序被复制&lt;/strong&gt;&lt;/font&gt;到局部变量表的每一个slot上&lt;/li&gt;
+&lt;li&gt;JVM 为局部变量表的slot分配索引，通过索引可以当问对应的局部变量；如果需要访问变量表种64bit的变量值，只需要使用第一个slot索引&lt;/li&gt;
+&lt;li&gt;如果当前栈帧时&lt;strong&gt;构造方法或者实例方法&lt;/strong&gt;创建的，那么该&lt;strong&gt;对象应用this将会放在index为0的slot&lt;/strong&gt;处，其余参数按照顺序依次排列&lt;br&gt;
+&lt;img src=&#34;https://violet404.github.io//post-images/1626283738793.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;栈帧中的局部变量表的slot时可以重用的&lt;/strong&gt;，如果一个局部变量过了其作用域，那么在其作用域之后声明局部变量有可能会复用过期的槽位，达到&lt;strong&gt;节省资源&lt;/strong&gt;的目的&lt;br&gt;
+&lt;img src=&#34;https://violet404.github.io//post-images/1626285416606.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;ul&gt;
-&lt;li&gt;操作数栈 Operand Stack&lt;/li&gt;
-&lt;li&gt;动态链接 Dynamic Linking 指向运行时常量池的方法引用（与多态有关吗？？）&lt;/li&gt;
-&lt;li&gt;方法返回地址 Return Address 方法正常退出或异常退出的定义&lt;/li&gt;
-&lt;li&gt;一些附加信息&lt;/li&gt;
+&lt;li&gt;&lt;font color=&#34;red&#34;&gt;&lt;em&gt;&lt;strong&gt;局部变量表中的变量时重要的垃圾回收根节点，只要被局部变量表中变量直接或间接引用的对象都不会回收&lt;/strong&gt;&lt;/em&gt;&lt;/font&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h4 id=&#34;54-字节码方法内部结构剖析&#34;&gt;5.4 字节码方法内部结构剖析&lt;/h4&gt;
-&lt;figure data-type=&#34;image&#34; tabindex=&#34;2&#34;&gt;&lt;img src=&#34;https://violet404.github.io//post-images/1626281631376.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;h5 id=&#34;532-操作数栈-operand-stack&#34;&gt;5.3.2.  操作数栈 Operand Stack&lt;/h5&gt;
 &lt;ul&gt;
-&lt;li&gt;参数args在main方法内都生效-&amp;gt;源码16~19 -&amp;gt; 字节码 0 ~18 -&amp;gt;生效位置0,长度19；其他参数类似&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;数组（顺序存储）实现，同时满足FILO的规则&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;操作数栈在方法执行过程中，根据字节码指令，往栈中写入数据或读取数据，即入栈与出栈&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;保存计算过程的中间结果，同时作为计算过程中变量的临时存储空间&lt;/li&gt;
+&lt;li&gt;方法开始执行，相应的栈帧随之创建，这个操作数栈时空的（但是对应的数组是有长度的）&lt;/li&gt;
+&lt;li&gt;有明确的栈深用于存储数值，其所需的栈深在编译阶段就已经确定了，方法的code的max_stack属性&lt;/li&gt;
+&lt;li&gt;栈中任一个元素都可以时java的数据类型&lt;/li&gt;
 &lt;/ul&gt;
+&lt;ol&gt;
+&lt;li&gt;32bit的类型占1个栈深&lt;/li&gt;
+&lt;li&gt;64bit的类型占2个栈深&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;操作数栈只能通过入栈出栈完成数据访问，不能通过数组索引进行数据访问&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class OperandStackTest {
+    public void method1() {
+        byte i = 15;
+        int j = 8;
+        int k = i + j;
+    }
+}
+
+// javap -v OperandStackTest.class
+&lt;/code&gt;&lt;/pre&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;2&#34;&gt;&lt;img src=&#34;https://violet404.github.io//post-images/1626291407651.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;h5 id=&#34;533-动态链接-dynamic-linking-指向运行时常量池的方法引用与多态有关吗&#34;&gt;5.3.3. 动态链接 Dynamic Linking 指向运行时常量池的方法引用（与多态有关吗？？）&lt;/h5&gt;
+&lt;h5 id=&#34;534-方法返回地址-return-address-方法正常退出或异常退出的定义&#34;&gt;5.3.4. 方法返回地址 Return Address 方法正常退出或异常退出的定义&lt;/h5&gt;
+&lt;h5 id=&#34;535-一些附加信息&#34;&gt;5.3.5. 一些附加信息&lt;/h5&gt;
 &lt;h2 id=&#34;6-本地方法接口&#34;&gt;6. 本地方法接口&lt;/h2&gt;
 &lt;h2 id=&#34;7-本地方法栈&#34;&gt;7. 本地方法栈&lt;/h2&gt;
 ">JVM 内存与垃圾回收（二）</a>
