@@ -8,7 +8,7 @@
 <meta name="keywords" content="全栈">
 <meta name="description" content="业精于勤，荒于嬉">
 <meta name="theme-color" content="#343a40">
-<title>jQuery 操作多选框checkbox失效 | Violet</title>
+<title>JVM 内存与垃圾回收（二） | Violet</title>
 <link rel="shortcut icon" href="/favicon.ico?v=1626292555500">
 <link rel="stylesheet" href="/media/css/pisces.css">
 <link rel="stylesheet" href="/media/fonts/font-awesome.css">
@@ -41,8 +41,8 @@
 
 
 
-  <meta name="description" content="jQuery 操作多选框checkbox失效" />
-  <meta name="keywords" content="前端,问题整理" />
+  <meta name="description" content="JVM 内存与垃圾回收（二）" />
+  <meta name="keywords" content="" />
 </head>
 
 <body>
@@ -175,7 +175,8 @@
       <div class="sidebar-body pisces" id="sidebar_body">
         
           
-            
+            <div class="post-side-meta" id="post_side_meta">
+              
 <div class="sidebar-wrapper box-shadow-wrapper bg-color">
   <div class="sidebar-item">
     <img class="site-author-image right-motion" src="/images/avatar.png"/>
@@ -219,6 +220,214 @@
 
 
 </div>
+            </div>
+            <div class="post-toc sidebar-body-active" id="post_toc" style="opacity: 1;">
+              <div class="toc-box right-motion">
+  <div class="toc-wrapper  auto"
+    id="toc_wrapper">
+    <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#3-%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA%E6%A6%82%E8%BF%B0%E5%8F%8A%E7%BA%BF%E7%A8%8B">3. 运行时数据区概述及线程</a></li>
+<li><a href="#4-%E7%A8%8B%E5%BA%8F%E8%AE%A1%E6%95%B0%E5%99%A8">4. 程序计数器</a></li>
+<li><a href="#5-%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88">5. 虚拟机栈</a><br>
+*
+<ul>
+<li><a href="#51-%E6%A6%82%E8%BF%B0">5.1 概述</a></li>
+<li><a href="#52-%E6%A0%88%E7%9A%84%E5%AD%98%E5%82%A8%E5%8D%95%E4%BD%8D">5.2 栈的存储单位</a></li>
+<li><a href="#53-%E6%A0%88%E5%B8%A7%E7%9A%84%E5%86%85%E9%83%A8%E7%BB%93%E6%9E%84">5.3 栈帧的内部结构</a>
+<ul>
+<li><a href="#531-%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F%E8%A1%A8-local-variable">5.3.1. 局部变量表 Local Variable</a></li>
+<li><a href="#532-%E6%93%8D%E4%BD%9C%E6%95%B0%E6%A0%88-operand-stack">5.3.2.  操作数栈 Operand Stack</a></li>
+<li><a href="#533-%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5-dynamic-linking-%E6%8C%87%E5%90%91%E8%BF%90%E8%A1%8C%E6%97%B6%E5%B8%B8%E9%87%8F%E6%B1%A0%E7%9A%84%E6%96%B9%E6%B3%95%E5%BC%95%E7%94%A8%E4%B8%8E%E5%A4%9A%E6%80%81%E6%9C%89%E5%85%B3%E5%90%97">5.3.3. 动态链接 Dynamic Linking 指向运行时常量池的方法引用（与多态有关吗？？）</a></li>
+<li><a href="#534-%E6%96%B9%E6%B3%95%E8%BF%94%E5%9B%9E%E5%9C%B0%E5%9D%80-return-address-%E6%96%B9%E6%B3%95%E6%AD%A3%E5%B8%B8%E9%80%80%E5%87%BA%E6%88%96%E5%BC%82%E5%B8%B8%E9%80%80%E5%87%BA%E7%9A%84%E5%AE%9A%E4%B9%89">5.3.4. 方法返回地址 Return Address 方法正常退出或异常退出的定义</a></li>
+<li><a href="#535-%E4%B8%80%E4%BA%9B%E9%99%84%E5%8A%A0%E4%BF%A1%E6%81%AF">5.3.5. 一些附加信息</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#6-%E6%9C%AC%E5%9C%B0%E6%96%B9%E6%B3%95%E6%8E%A5%E5%8F%A3">6. 本地方法接口</a></li>
+<li><a href="#7-%E6%9C%AC%E5%9C%B0%E6%96%B9%E6%B3%95%E6%A0%88">7. 本地方法栈</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+</div>
+
+<script>
+
+  let lastTop = 0, lList = [], hList = [], postBody, lastIndex = -1;
+  let active = 'active-show', activeClass = 'active-current';
+  let tocWrapper = document.querySelector('#toc_wrapper');
+  let tocContent = tocWrapper.children[0];
+  let autoNumber = tocWrapper && tocWrapper.classList.contains('auto-number');
+
+  function addTocNumber(elem, deep) {
+    if (!elem) {
+      return;
+    }
+    let prop = elem.__proto__;
+
+    if (prop === HTMLUListElement.prototype) {
+      for (let i = 0; i < elem.children.length; i++) {
+        addTocNumber(elem.children[i], deep + (i + 1) + '.');
+      }
+    } else if (prop === HTMLLIElement.prototype) {
+      // 保存li元素
+      if (elem.children[0] && elem.children[0].__proto__ === HTMLAnchorElement.prototype) {
+        lList.push(elem);
+      }
+      for (let i = 0; i < elem.children.length; i++) {
+        let cur = elem.children[i];
+        if (cur.__proto__ === HTMLAnchorElement.prototype) {
+          if (autoNumber) {
+            cur.text = deep + ' ' + cur.text;
+          }
+        } else if (cur.__proto__ === HTMLUListElement.prototype) {
+          addTocNumber(cur, deep);
+        }
+      }
+    }
+  }
+
+  function removeParentActiveClass() {
+    let parents = tocContent.querySelectorAll('.' + active)
+    parents.forEach(function (elem) {
+      elem.classList.remove(active);
+    });
+  }
+
+  function addActiveClass(index) {
+    if (index >= 0 && index < hList.length) {
+      lList[index].classList.add(activeClass);
+    }
+  }
+
+  function removeActiveClass(index) {
+    if (index >= 0 && index < hList.length) {
+      lList[index].classList.remove(activeClass);
+    }
+  }
+
+  function addActiveLiElemment(elem, parent) {
+    if (!elem || elem === parent) {
+      return;
+    } else {
+      if (elem.__proto__ === HTMLLIElement.prototype) {
+        elem.classList.add(active);
+      }
+      addActiveLiElemment(elem.parentElement, parent);
+    }
+  }
+
+  function showToc() {
+    if (tocWrapper) {
+      postBody = document.querySelector('#post_body');
+      for (let i = 0; i < postBody.children.length; i++) {
+        if (postBody.children[i].__proto__ === HTMLHeadingElement.prototype) {
+          hList.push(postBody.children[i]);
+        }
+      }
+      if (tocWrapper.classList.contains('compress')) {
+        tocContent.classList.add('closed');
+      } else if (tocWrapper.classList.contains('no_compress')) {
+        tocContent.classList.add('expanded');
+      } else {
+        if (hList.length > 10) {
+          active = 'active-hidden'
+          tocContent.classList.add('closed');
+        } else {
+          tocContent.classList.add('expanded');
+        }
+      }
+    }
+  }
+
+  (function () {
+    // 处理不是从#一级标题开始目录
+    if (tocContent.children.length === 1 && tocContent.children[0].__proto__ === HTMLLIElement.prototype) {
+      let con = tocContent.children[0].children[0];
+      tocContent.innerHTML = con.innerHTML;
+    }
+    let markdownItTOC = document.querySelector('.markdownIt-TOC');
+    let innerHeight = window.innerHeight;
+    markdownItTOC.style = `max-height: ${innerHeight - 80 > 0 ? innerHeight - 80 : innerHeight}px`
+    addTocNumber(tocContent, '');
+  })();
+
+  document.addEventListener('scroll', function (e) {
+    if (lList.length <= 0) {
+      return;
+    }
+    let scrollTop = document.scrollingElement.scrollTop + 10;
+    let dir;
+
+    if (lastTop - scrollTop > 0) {
+      dir = 'up';
+    } else {
+      dir = 'down';
+    }
+
+    lastTop = scrollTop;
+    if (scrollTop <= 0) {
+      if (lastIndex >= 0 && lastIndex < hList.length) {
+        lList[lastIndex].classList.remove(activeClass);
+      }
+      return;
+    }
+
+    let current = 0, hasFind = false;
+    for (let i = 0; i < hList.length; i++) {
+      if (hList[i].offsetTop > scrollTop) {
+        current = i;
+        hasFind = true;
+        break;
+      }
+    }
+    if (!hasFind && scrollTop > lList[lList.length - 1].offsetTop) {
+      current = hList.length - 1;
+    } else {
+      current--;
+    }
+    if (dir === 'down') {
+      if (current > lastIndex) {
+        addActiveClass(current);
+        removeActiveClass(lastIndex)
+        lastIndex = current;
+        removeParentActiveClass();
+        lList[current] && addActiveLiElemment(lList[current].parentElement, tocContent);
+      }
+    } else {
+      if (current < lastIndex) {
+        addActiveClass(current);
+        removeActiveClass(lastIndex);
+        lastIndex = current;
+        removeParentActiveClass();
+        lList[current] && addActiveLiElemment(lList[current].parentElement, tocContent);
+      }
+    }
+  });
+
+
+  window.addEventListener('load', function () {
+    showToc();
+    document.querySelector('#sidebar').style = 'display: block;';
+    tocWrapper.classList.add('toc-active');
+    setTimeout(function () {
+      if ("createEvent" in document) {
+        let evt = document.createEvent("HTMLEvents");
+        evt.initEvent("scroll", false, true);
+        document.dispatchEvent(evt);
+      }
+      else {
+        document.fireEvent("scroll");
+      }
+    }, 500)
+  })
+
+</script>
+            </div>
           
         
       </div>
@@ -306,51 +515,38 @@
           <div class="section bg-color post post-page">
             <section class="post-header">
   <h1 class="post-title">
-    <a class="post-title-link" href="https://violet404.github.io/jquery-cao-zuo-duo-xuan-kuang-checkbox-shi-xiao/">
-      jQuery 操作多选框checkbox失效
+    <a class="post-title-link" href="https://violet404.github.io/jvm-2/">
+      JVM 内存与垃圾回收（二）
     </a>
   </h1>
   <div class="post-meta">
     
+    <span class="meta-item">
+      <i class="fa fa-thumb-tack"></i>
+      <span class="language" data-lan="top">置顶</span>
+      <span class="post-meta-divider">|</span>
+    </span>
+    
     <span class="meta-item pc-show">
       <i class="fa fa-calendar-o"></i>
       <span class="language" data-lan="publish">发布于</span>
-      <span class="publish-time" data-t="2021-04-28 13:18:57">2021-04-28</span>
+      <span class="publish-time" data-t="2021-07-13 23:18:21">2021-07-13</span>
       <span class="post-meta-divider pc-show">|</span>
     </span>
     
     <span class="meta-item">
-      <i class="fa fa-folder-o"></i>
-      <span class="pc-show language" data-lan="category-in">分类于</span>
-      
-      
-      <a href="https://violet404.github.io/EppQaP0Lq/">
-        <span>前端</span>
-      </a>、
-      
-      
-      
-      <a href="https://violet404.github.io/Oq4KR_wv3/">
-        <span>问题整理</span>
-      </a>
-      
-      
-    </span>
-    <span class="post-meta-divider">|</span>
-    
-    <span class="meta-item">
       <i class="fa fa-clock-o"></i>
-      <span>1<span class="language" data-lan="minute">分钟</span></span>
+      <span>6<span class="language" data-lan="minute">分钟</span></span>
     </span>
     <span class="meta-item">
       <span class="post-meta-divider">|</span>
       <i class="fa fa-file-word-o"></i>
-      <span>11<span class="pc-show language" data-lan="words">字数</span></span>
+      <span>1597<span class="pc-show language" data-lan="words">字数</span></span>
     </span>
     
     
     
-    <span id="/jquery-cao-zuo-duo-xuan-kuang-checkbox-shi-xiao/" data-flag-title="jQuery 操作多选框checkbox失效" class="meta-item pc-show leancloud_visitors">
+    <span id="/jvm-2/" data-flag-title="JVM 内存与垃圾回收（二）" class="meta-item pc-show leancloud_visitors">
       <span class="post-meta-divider">|</span>
       <i class="fa fa-eye"></i>
       <span><span class="language" data-lan="view">浏览量</span>：<span class="leancloud-visitors-count"></span></span>
@@ -359,7 +555,111 @@
   </div>
 </section>
             <div class="post-body next-md-body" id="post_body">
-              <p>现象如题，改attr赋值为prop方式</p>
+              <h2 id="3-运行时数据区概述及线程">3. 运行时数据区概述及线程</h2>
+<p>JVM定义了若干程序运行期间使用的数据区，其中一些随虚拟机的创建而创建，随虚拟机推出而销毁；另外一些则随线程的开始结束而创建与销毁。</p>
+<!-- more -->
+<p><img src="https://violet404.github.io//post-images/1626172536218.png" alt="" loading="lazy"><br>
+<img src="https://violet404.github.io//post-images/1626160473166.png" alt="" loading="lazy"></p>
+<h2 id="4-程序计数器">4. 程序计数器</h2>
+<ul>
+<li>作用 存储指向下一条指令的地址，即即将执行的指令代码，由执行引擎读取下一条指令。</li>
+<li>一块很小的内存空间，运行速度最快的空间</li>
+<li><em><strong>与线程的生命周期保持一致</strong></em></li>
+<li>任何时间一个线程都会只有一个方法在执行=&gt;当前方法。程序计数器会存储当前线程正在执行的方法的JVM指令地址，如果当前线程的当前方法为native方法，则程序计数器为空（undefined）</li>
+<li>JVM 区域中唯一一个不会OOM的区域</li>
+</ul>
+<pre><code class="language-java">public class PcCounterRegisterTest {
+
+    public static void main(String[] args) {
+        int a = 10;
+        int b= 2;
+        int d = 1, e = 5;
+        int c = a + b - 5;
+        System.out.println(c);
+        System.out.println(&quot;Hello World!&quot;);
+    }
+}
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="https://violet404.github.io//post-images/1626162896094.png" alt="" loading="lazy"></figure>
+<ul>
+<li>JVM的多线程是通过线程轮流切换并分配处理器执行时间的方式实现的，在任一确定的时刻，一个处理器（对于多核处理器来说一个内核）都只会执行一条线程中的指令。因此，为了线程切换后能够恢复到正确的执行位置，每个线程都需要由一个独立的程序计数器，各个线程之间计数器互不影响，独立存储。</li>
+</ul>
+<h2 id="5-虚拟机栈">5. 虚拟机栈</h2>
+<h4 id="51-概述">5.1 概述</h4>
+<ul>
+<li><em><strong>栈的生命周期与线程一致</strong></em></li>
+<li>作用：保存方法的局部变量（8种基本数据类型、对象的引用地址）、部分结果，并参与方法的调用与返回</li>
+<li>快速有效的分配方式，仅次于程序计数器</li>
+<li>不存在垃圾回收的问题，但是会存在OOM</li>
+<li>JVM规范允许Java虚拟机栈动态的（OutOfMemoryError，尝试扩展时无法申请足够的内存或者创建新线程时没有足够的内存创建新线程对应的虚拟机栈）或者固定不变的（StackOverflowError，线程请求分配的栈容量达到Java虚拟机允许的最大容量）</li>
+<li>设置最大栈大小 -Xss 例如: -Xss256K -Xss256M</li>
+</ul>
+<h4 id="52-栈的存储单位">5.2 栈的存储单位</h4>
+<ul>
+<li>每个线程由自己的栈内存，<em><strong>栈中的数据以栈帧为基本存储单位</strong></em></li>
+<li>线程种执行的每一个方法都对应一个栈帧， 存储方法执行过程种的各种数据信息；</li>
+<li>java方法的执行与结束对应栈帧的入栈出栈</li>
+<li>JVM对栈的操作只有两种： <em><strong>压栈、出栈； 遵循FILO的规则</strong></em></li>
+<li>当前栈帧 当前方法 当前类；执行引擎执行的操作指令都是对当前栈帧进行操作</li>
+<li>方法的技术方式：１、正常return结束；２、抛出异常。无论哪种方式结束，都会使当前栈帧出栈</li>
+</ul>
+<h4 id="53-栈帧的内部结构">5.3 栈帧的内部结构</h4>
+<h5 id="531-局部变量表-local-variable">5.3.1. 局部变量表 Local Variable</h5>
+<ul>
+<li>定义为一个 <em><strong><font color="red">数字数组</font>,主要用于存储方法参数和定义在方法体内的局部变量</strong></em> ，数据类型包括基本数据类型、对象引用以及returnAddress类型。</li>
+<li><em><strong>容量大小在编译阶段就能确定</strong></em> 保存在方法的code属性的maximum_local_variables数据项，方法运行期间不会改变局部变量表的大小</li>
+<li>栈的大小--&gt;栈帧的个数---&gt;方法嵌套调用的次数</li>
+<li>局部变量表随栈帧的出栈而销毁</li>
+<li>字节码方法内部结构剖析<br>
+参数args在main方法内都生效-&gt;源码16~19 -&gt; 字节码 0 ~18 -&gt;生效位置0,长度19；其他参数类似<br>
+<img src="https://violet404.github.io//post-images/1626281631376.png" alt="" loading="lazy"></li>
+<li>关于slot的理解</li>
+</ul>
+<ol>
+<li><strong>局部变量表最基本存储单位slot</strong></li>
+<li><strong>32位以内的类型占用1个slot(包括returnAddress类型),64位类型占用两个slot(long，double)</strong> byte/short/char 在存储时转成int，boolean也被转成int，false？0：</li>
+<li>当一个方法被调用时，它的方法参数与方法体内定义的局部变量都会<font color="red"><strong>按照顺序被复制</strong></font>到局部变量表的每一个slot上</li>
+<li>JVM 为局部变量表的slot分配索引，通过索引可以当问对应的局部变量；如果需要访问变量表种64bit的变量值，只需要使用第一个slot索引</li>
+<li>如果当前栈帧时<strong>构造方法或者实例方法</strong>创建的，那么该<strong>对象应用this将会放在index为0的slot</strong>处，其余参数按照顺序依次排列<br>
+<img src="https://violet404.github.io//post-images/1626283738793.png" alt="" loading="lazy"></li>
+<li><strong>栈帧中的局部变量表的slot时可以重用的</strong>，如果一个局部变量过了其作用域，那么在其作用域之后声明局部变量有可能会复用过期的槽位，达到<strong>节省资源</strong>的目的<br>
+<img src="https://violet404.github.io//post-images/1626285416606.png" alt="" loading="lazy"></li>
+</ol>
+<ul>
+<li><font color="red"><em><strong>局部变量表中的变量时重要的垃圾回收根节点，只要被局部变量表中变量直接或间接引用的对象都不会回收</strong></em></font></li>
+</ul>
+<h5 id="532-操作数栈-operand-stack">5.3.2.  操作数栈 Operand Stack</h5>
+<ul>
+<li><strong>数组（顺序存储）实现，同时满足FILO的规则</strong></li>
+<li><strong>操作数栈在方法执行过程中，根据字节码指令，往栈中写入数据或读取数据，即入栈与出栈</strong></li>
+<li>保存计算过程的中间结果，同时作为计算过程中变量的临时存储空间</li>
+<li>方法开始执行，相应的栈帧随之创建，这个操作数栈时空的（但是对应的数组是有长度的）</li>
+<li>有明确的栈深用于存储数值，其所需的栈深在编译阶段就已经确定了，方法的code的max_stack属性</li>
+<li>栈中任一个元素都可以时java的数据类型</li>
+</ul>
+<ol>
+<li>32bit的类型占1个栈深</li>
+<li>64bit的类型占2个栈深</li>
+</ol>
+<ul>
+<li>操作数栈只能通过入栈出栈完成数据访问，不能通过数组索引进行数据访问</li>
+</ul>
+<pre><code class="language-java">public class OperandStackTest {
+    public void method1() {
+        byte i = 15;
+        int j = 8;
+        int k = i + j;
+    }
+}
+
+// javap -v OperandStackTest.class
+</code></pre>
+<figure data-type="image" tabindex="2"><img src="https://violet404.github.io//post-images/1626291407651.png" alt="" loading="lazy"></figure>
+<h5 id="533-动态链接-dynamic-linking-指向运行时常量池的方法引用与多态有关吗">5.3.3. 动态链接 Dynamic Linking 指向运行时常量池的方法引用（与多态有关吗？？）</h5>
+<h5 id="534-方法返回地址-return-address-方法正常退出或异常退出的定义">5.3.4. 方法返回地址 Return Address 方法正常退出或异常退出的定义</h5>
+<h5 id="535-一些附加信息">5.3.5. 一些附加信息</h5>
+<h2 id="6-本地方法接口">6. 本地方法接口</h2>
+<h2 id="7-本地方法栈">7. 本地方法栈</h2>
 
             </div>
             
@@ -372,7 +672,7 @@
     </li>
     <li class="post-copyright-link">
       <strong class="language" data-lan="link">本文链接：</strong>
-      <a href="https://violet404.github.io/jquery-cao-zuo-duo-xuan-kuang-checkbox-shi-xiao/" title="jQuery 操作多选框checkbox失效">https://violet404.github.io/jquery-cao-zuo-duo-xuan-kuang-checkbox-shi-xiao/</a>
+      <a href="https://violet404.github.io/jvm-2/" title="JVM 内存与垃圾回收（二）">https://violet404.github.io/jvm-2/</a>
     </li>
     <li class="post-copyright-license">
       <strong class="language" data-lan="copyright">版权声明： </strong>
@@ -381,23 +681,19 @@
   </ul>
   <div class="tags">
     
-      <a href="https://violet404.github.io/EppQaP0Lq/"># 前端</a>
-    
-      <a href="https://violet404.github.io/Oq4KR_wv3/"># 问题整理</a>
-    
   </div>
   <div class="nav">
     <div class="nav-prev">
       
         <i class="fa fa-chevron-left"></i>
-        <a class="nav-pc-next" title="Oracle ResultSet.getDate()/getObject()无法获取时间" href="https://violet404.github.io/oracle-resultsetgetdategetobjectwu-fa-huo-qu-shi-jian/">Oracle ResultSet.getDate()/getObject()无法获取时间</a class="nav-pc-next">
-        <a class="nav-mobile-prev" title="Oracle ResultSet.getDate()/getObject()无法获取时间" href="https://violet404.github.io/oracle-resultsetgetdategetobjectwu-fa-huo-qu-shi-jian/">上一篇</a>
+        <a class="nav-pc-next" title="JVM 内存与垃圾回收（三）" href="https://violet404.github.io/cWnQiM59p/">JVM 内存与垃圾回收（三）</a class="nav-pc-next">
+        <a class="nav-mobile-prev" title="JVM 内存与垃圾回收（三）" href="https://violet404.github.io/cWnQiM59p/">上一篇</a>
       
     </div>
     <div class="nav-next">
       
-        <a class="nav-pc-next" title="Oracle 行转列" href="https://violet404.github.io/oracle-xing-zhuan-lie/">Oracle 行转列</a>
-        <a class="nav-mobile-next" title="Oracle 行转列" href="https://violet404.github.io/oracle-xing-zhuan-lie/">下一篇</a>
+        <a class="nav-pc-next" title="JVM 内存与垃圾回收（一）" href="https://violet404.github.io/jvm-1/">JVM 内存与垃圾回收（一）</a>
+        <a class="nav-mobile-next" title="JVM 内存与垃圾回收（一）" href="https://violet404.github.io/jvm-1/">下一篇</a>
         <i class="fa fa-chevron-right"></i>
       
     </div>
