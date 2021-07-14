@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://violet404.github.io/</id>
     <title>Violet</title>
-    <updated>2021-07-14T05:59:01.483Z</updated>
+    <updated>2021-07-14T14:33:28.036Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://violet404.github.io/"/>
     <link rel="self" href="https://violet404.github.io/atom.xml"/>
@@ -12,71 +12,85 @@
     <rights>All rights reserved 2021, Violet</rights>
     <entry>
         <title type="html"><![CDATA[JVM 内存与垃圾回收（二）]]></title>
-        <id>https://violet404.github.io/post/aa/</id>
-        <link href="https://violet404.github.io/post/aa/">
+        <id>https://violet404.github.io/aa/</id>
+        <link href="https://violet404.github.io/aa/">
         </link>
         <updated>2021-07-13T15:18:21.000Z</updated>
+        <summary type="html"><![CDATA[<h2 id="3-运行时数据区概述及线程">3. 运行时数据区概述及线程</h2>
+<p>JVM定义了若干程序运行期间使用的数据区，其中一些随虚拟机的创建而创建，随虚拟机推出而销毁；另外一些则随线程的开始结束而创建与销毁。</p>
+]]></summary>
+        <content type="html"><![CDATA[<h2 id="3-运行时数据区概述及线程">3. 运行时数据区概述及线程</h2>
+<p>JVM定义了若干程序运行期间使用的数据区，其中一些随虚拟机的创建而创建，随虚拟机推出而销毁；另外一些则随线程的开始结束而创建与销毁。</p>
+]]></content>
     </entry>
     <entry>
         <title type="html"><![CDATA[JVM 内存与垃圾回收（一）]]></title>
-        <id>https://violet404.github.io/post/jvm-1/</id>
-        <link href="https://violet404.github.io/post/jvm-1/">
+        <id>https://violet404.github.io/jvm-1/</id>
+        <link href="https://violet404.github.io/jvm-1/">
         </link>
         <updated>2021-07-05T03:58:27.000Z</updated>
+        <summary type="html"><![CDATA[<h2 id="1-jvm与java体系结构"><strong>1. JVM与Java体系结构</strong></h2>
+<h3 id="11-跨平台性">1.1 跨平台性</h3>
+<p>Java 是一门跨平台的语言，JVM则跨语言的平台，JSR-292 JVM可以运行非Java语言编写的程序;Java平台的多语言混合编程将成主流方向，使用特定领域的语言解决特定领域的问题</p>
+]]></summary>
+        <content type="html"><![CDATA[<h2 id="1-jvm与java体系结构"><strong>1. JVM与Java体系结构</strong></h2>
+<h3 id="11-跨平台性">1.1 跨平台性</h3>
+<p>Java 是一门跨平台的语言，JVM则跨语言的平台，JSR-292 JVM可以运行非Java语言编写的程序;Java平台的多语言混合编程将成主流方向，使用特定领域的语言解决特定领域的问题</p>
+]]></content>
     </entry>
     <entry>
         <title type="html"><![CDATA[游标更新数据]]></title>
-        <id>https://violet404.github.io/post/you-biao-geng-xin-shu-ju/</id>
-        <link href="https://violet404.github.io/post/you-biao-geng-xin-shu-ju/">
+        <id>https://violet404.github.io/you-biao-geng-xin-shu-ju/</id>
+        <link href="https://violet404.github.io/you-biao-geng-xin-shu-ju/">
         </link>
         <updated>2021-04-28T09:56:14.000Z</updated>
     </entry>
     <entry>
         <title type="html"><![CDATA[@JsonFormatter 时间返回不对]]></title>
-        <id>https://violet404.github.io/post/jsonformatter-shi-jian-fan-hui-bu-dui/</id>
-        <link href="https://violet404.github.io/post/jsonformatter-shi-jian-fan-hui-bu-dui/">
+        <id>https://violet404.github.io/jsonformatter-shi-jian-fan-hui-bu-dui/</id>
+        <link href="https://violet404.github.io/jsonformatter-shi-jian-fan-hui-bu-dui/">
         </link>
         <updated>2021-04-28T06:28:35.000Z</updated>
     </entry>
     <entry>
         <title type="html"><![CDATA[illegal hex characters in escape(%) pattern]]></title>
-        <id>https://violet404.github.io/post/illegal-hex-characters-in-escape-pattern/</id>
-        <link href="https://violet404.github.io/post/illegal-hex-characters-in-escape-pattern/">
+        <id>https://violet404.github.io/illegal-hex-characters-in-escape-pattern/</id>
+        <link href="https://violet404.github.io/illegal-hex-characters-in-escape-pattern/">
         </link>
         <updated>2021-04-28T05:31:07.000Z</updated>
     </entry>
     <entry>
         <title type="html"><![CDATA[Oracle ResultSet.getDate()/getObject()无法获取时间]]></title>
-        <id>https://violet404.github.io/post/oracle-resultsetgetdategetobjectwu-fa-huo-qu-shi-jian/</id>
-        <link href="https://violet404.github.io/post/oracle-resultsetgetdategetobjectwu-fa-huo-qu-shi-jian/">
+        <id>https://violet404.github.io/oracle-resultsetgetdategetobjectwu-fa-huo-qu-shi-jian/</id>
+        <link href="https://violet404.github.io/oracle-resultsetgetdategetobjectwu-fa-huo-qu-shi-jian/">
         </link>
         <updated>2021-04-28T05:21:02.000Z</updated>
     </entry>
     <entry>
         <title type="html"><![CDATA[jQuery 操作多选框checkbox失效]]></title>
-        <id>https://violet404.github.io/post/jquery-cao-zuo-duo-xuan-kuang-checkbox-shi-xiao/</id>
-        <link href="https://violet404.github.io/post/jquery-cao-zuo-duo-xuan-kuang-checkbox-shi-xiao/">
+        <id>https://violet404.github.io/jquery-cao-zuo-duo-xuan-kuang-checkbox-shi-xiao/</id>
+        <link href="https://violet404.github.io/jquery-cao-zuo-duo-xuan-kuang-checkbox-shi-xiao/">
         </link>
         <updated>2021-04-28T05:18:57.000Z</updated>
     </entry>
     <entry>
         <title type="html"><![CDATA[Oracle 行转列]]></title>
-        <id>https://violet404.github.io/post/oracle-xing-zhuan-lie/</id>
-        <link href="https://violet404.github.io/post/oracle-xing-zhuan-lie/">
+        <id>https://violet404.github.io/oracle-xing-zhuan-lie/</id>
+        <link href="https://violet404.github.io/oracle-xing-zhuan-lie/">
         </link>
         <updated>2021-04-28T05:00:41.000Z</updated>
     </entry>
     <entry>
         <title type="html"><![CDATA[Uncaught RangeError：Maximum call stack size exceeded]]></title>
-        <id>https://violet404.github.io/post/uncaught-rangeerrormaximum-call-stack-size-exceeded/</id>
-        <link href="https://violet404.github.io/post/uncaught-rangeerrormaximum-call-stack-size-exceeded/">
+        <id>https://violet404.github.io/uncaught-rangeerrormaximum-call-stack-size-exceeded/</id>
+        <link href="https://violet404.github.io/uncaught-rangeerrormaximum-call-stack-size-exceeded/">
         </link>
         <updated>2021-04-28T04:50:27.000Z</updated>
     </entry>
     <entry>
         <title type="html"><![CDATA[EasyUI 窗口重复加载、窗口元素取值混乱]]></title>
-        <id>https://violet404.github.io/post/easyui-chuang-kou-chong-fu-jia-zai-chuang-kou-yuan-su-qu-zhi-hun-luan/</id>
-        <link href="https://violet404.github.io/post/easyui-chuang-kou-chong-fu-jia-zai-chuang-kou-yuan-su-qu-zhi-hun-luan/">
+        <id>https://violet404.github.io/easyui-chuang-kou-chong-fu-jia-zai-chuang-kou-yuan-su-qu-zhi-hun-luan/</id>
+        <link href="https://violet404.github.io/easyui-chuang-kou-chong-fu-jia-zai-chuang-kou-yuan-su-qu-zhi-hun-luan/">
         </link>
         <updated>2021-04-28T04:19:25.000Z</updated>
     </entry>
