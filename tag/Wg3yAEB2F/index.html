@@ -1,1272 +1,2832 @@
 <!DOCTYPE html>
-<meta charset="UTF-8">
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<meta http-equiv="X-UA-Compatible" content="ie=edge">
-<!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
-<link rel="stylesheet" href="https://violet404.github.io//media/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/850552586/ericamcdn@0.1/css/live2d.css">
-<link rel="stylesheet" href="https://violet404.github.io//styles/main.css">
-<link rel="stylesheet" href="https://violet404.github.io//media/css/font-awesome.css">
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
+<meta name="keywords" content="全栈">
+<meta name="description" content="业精于勤，荒于嬉">
+<meta name="theme-color" content="#000">
 <title>Violet</title>
+<link rel="shortcut icon" href="/favicon.ico?v=1626235438638">
+<link rel="stylesheet" href="/media/css/mist.css">
+<link rel="stylesheet" href="/media/fonts/font-awesome.css">
+<link
+  href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Rosario:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext"
+  rel="stylesheet" type="text/css">
+
+<link href="/media/hljs/styles/atom-one-light.css"
+  rel="stylesheet">
+
+<link rel="stylesheet" href="/styles/main.css">
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script src="/media/js/jquery.js"></script>
+<script src="/media/hljs/highlight.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.0/velocity.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.0/velocity.ui.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css"
+  integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
 
 
-<body>
-
-    <div id="content">
-        <div class="nav-large">
-            <div class="row">
-                <!--------------- pc端菜单栏👇 ---------------->
-                <div class="side"><head>
-    <link rel="stylesheet" href="https://violet404.github.io//media/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://violet404.github.io//styles/main.css">
-    
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.1/build/styles/default.min.css">
-    
-    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.1/build/highlight.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/850552586/ericamcdn@0.1/js/clipboard.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/850552586/ericamcdn@0.1/css/live2d.css">
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
-    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
-    <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.13.1/css/all.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <!-- fancybox -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
-    <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js"
+  integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js"
+  integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"
+  onload="renderMathInElement(document.body);"></script>
 
 
-    <!--------- 数学公式👇---- -->
-    
-    <!--------- 数学公式👆----------------- -->
-    <!--------- daovocie功能👇 ------------------->
-    
-    <!--------- daovocie功能👆 ------------------->
-    <!-- -----------------twikoo评论系统引入👇 --------->
-    <script src="https://cdn.jsdelivr.net/npm/twikoo@1.3.1/dist/twikoo.all.min.js"></script>
-    <!-- -----------------twikoo评论系统引入👆 --------->
-    <!---------------- leancloud api 功能依赖引入👇 -------->
-    <script src="https://cdn.jsdelivr.net/npm/leancloud-storage@3.13.0/dist/av-min.js"></script>
-    <!---------------- leancloud api 功能依赖引入👆 -------->
-    <!------------------ valine评论系统引入👇 ------------------>
-    <script src="https://violet404.github.io//media/js/valine.min.js"></script>
-    <!------------------ valine评论系统引入👆 ------------------>
-    <!---------------- 今日诗词api功能依赖👇 ----------------------->
-    <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
-    <!---------------- 今日诗词api功能依赖👆 ----------------------->
-    <!---------------- 今日诗词api功能依赖👇 ----------------------->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/ispeak-bber/ispeak-bber.min.js" charset="utf-8"></script>
-    <!---------------- 哔哔功能依赖👆 ----------------------->
+
+
 
 
 </head>
 
-<style>
-    body {
-        overflow-x: hidden;
-        height: 100vh;
-        overflow-y: scroll;
-        cursor: url("https://violet404.github.io//media/images/mouse_cursor.png"), auto
-    }
-</style>
-
 <body>
-    <!--=------ 页面加载动态画面👇 --------------->
-    <div class="pjaxloading" onclick="pjaxloadingClose()">
-        <div class="loadingbackground"></div>
-        <div id="loading-aname">
-            <div class="loading-aname">
-            </div>
-        </div>
-    </div>
-    <!--=------ 页面加载动态画面👆 --------------->
-
-    <!--------------- 左侧菜单栏👇 ------------------------>
+  <div class="head-top-line"></div>
+  <div class="header-box">
     
-    <div id=side>
-        <div class="r_m_div">
-            <a onclick="showAaplayer()"><i style="font-size: 20px;"><img
-                        src='https://violet404.github.io//media/images/music.png' alt="音乐播放器" class="musicbtn"></i></a>
+<div class="mist">
+  <header class="header bg-color ">
+    <div class="blog-header box-shadow-wrapper  " id="header">
+      <div class="nav-toggle" id="nav_toggle">
+        <div class="toggle-box">
+          <div class="line line-top"></div>
+          <div class="line line-center"></div>
+          <div class="line line-bottom"></div>
         </div>
-        <div class="avatar-border">
-            <img src="https://violet404.github.io//images/avatar.png?v=1626234611372" class="avatar">
+      </div>
+      <div class="site-meta">       
+        <div class="site-title">
+          
+            <a href="/" class="">
+              <span class="logo-line-before">
+                <i class=""></i>
+              </span>
+              <span class="main-title">Violet</span>
+              <span class="logo-line-after">
+                <i class=""></i>
+              </span>
+            </a>  
+          
         </div>
-        <div class="sitename">Violet</div>
-        <span class="description" data-text='["业精于勤，荒于嬉"]'>&nbsp;</span>
-        <div class="siteinfocontainer">
-            <span class="siteinfo">文章</span>
-            <span class="siteinfo">标签</span>
-        </div>
-        <div class="siteinfocontainer">
-            <span class="siteinfo" id="siteinfo-postsnum"></span>
-            <span class="siteinfo">8</span>
-        </div>
         
-    <div class="share-button">
-        <span></span>
-        
-        
-        
-        
-        
-        
-        
-        
+      </div>
+      <nav class="site-nav" id="site_nav">
+        <ul id="nav_ul">
+          
+            
+            
+            <li class="nav-item ">
+              
+              
+                <a href="/" target="_self">
+                  <i class="fa fa-home"></i> 首页
+                </a>
+              
+            </li>
+          
+            
+            
+            <li class="nav-item ">
+              
+              
+                <a href="/archives/" target="_self">
+                  <i class="fa fa-archive"></i> 归档
+                </a>
+              
+            </li>
+          
+            
+            
+            <li class="nav-item ">
+              
+              
+                <a href="/tags/" target="_self">
+                  <i class="fa fa-tags"></i> 标签
+                </a>
+              
+            </li>
+          
+            
+            
+            <li class="nav-item ">
+              
+              
+                <a href="/post/about/" target="_self">
+                  <i class="fa fa-user"></i> 关于
+                </a>
+              
+            </li>
+          
+          
+          
+            <li id="fa_search" class="nav-item">
+              <a href="javascript:void(0);">
+                <i class="fa fa-search"></i> <span class="language" data-lan="search">搜索</span>
+              </a>
+            </li>
+          
+        </ul>
+      </nav>
     </div>
-    <div id="qq" style="display:none"></div>
-    <!------------ 加载菜单按钮👇 ------------------------->
-    <div class="menucontainer">
-        
-        
-        <div class="mchocie description">
-            <a data-pjax href="/" class="menubutton" style="margin-right: 15px;">
-                <i><img class="icon menuicon" src="" alt="首页"></i>&nbsp;<span
-                    data-text="首页">首页</span>
-            </a>
-        </div>
-        
-        
-        
-        <div class="mchocie description">
-            <a data-pjax href="/archives" class="menubutton" style="margin-right: 15px;">
-                <i><img class="icon menuicon" src="" alt="归档"></i>&nbsp;<span
-                    data-text="归档">归档</span>
-            </a>
-        </div>
-        
-        
-        
-        <div class="mchocie description">
-            <a data-pjax href="/tags" class="menubutton" style="margin-right: 15px;">
-                <i><img class="icon menuicon" src="" alt="标签"></i>&nbsp;<span
-                    data-text="标签">标签</span>
-            </a>
-        </div>
-        
-        
-        
-        <div class="mchocie description">
-            <a data-pjax href="/post/about" class="menubutton" style="margin-right: 15px;">
-                <i><img class="icon menuicon" src="" alt="关于"></i>&nbsp;<span
-                    data-text="关于">关于</span>
-            </a>
-        </div>
-        
-        
+  </header>
+</div>
 
-        
-        
-        
-        <!--  -->
-    </div>
-    <!------------ 加载菜单按钮👆 ------------------------->
-    <hr>
-    <style>
-    .copyright {
-        font-size: 15px;
-        color: #d9d9d9;
+<script type="text/javascript"> 
+ 
+  let showNav = true;
+
+  let navToggle = document.querySelector('#nav_toggle'),
+  siteNav = document.querySelector('#site_nav');
+  
+  function navClick() {
+    let sideBar = document.querySelector('.sidebar');
+    let navUl = document.querySelector('#nav_ul');
+    navToggle.classList.toggle('nav-toggle-active');
+    siteNav.classList.toggle('nav-menu-active');
+    if (siteNav.classList.contains('nav-menu-active')) {
+      siteNav.style = "height: " + (navUl.children.length * 42) +"px !important";
+    } else {
+      siteNav.style = "";
     }
+  }
 
-
-    @media screen and (min-width: 1200px) {
-        .foot {
-            width: 100%;
-            height: 130px;
-        }
-    }
-
-    @media screen and (max-width: 1200px) {
-        .foot {
-            display: none;
-        }
-    }
-</style>
-
-<body>
-    <div class="foot">
-        <div id="footinfo">Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | Theme: <a
-                href="https://github.com/850552586/gridea-theme-fog">Fog</a>
-            <div>
-                
-                <div id="sitegotimeDate">载入天数...</div>
-                <div id="sitegotimes">载入时分秒...</div>
-                <div id="cussitetime" style="display:none">07/12/2021</div>
-                
-            </div>
-            <div>
-                
-            </div>
-            <div class="copyright" style="color:white;text-align: center;">Copyright © 2020  备案号: 
-            </div>
-        </div>
-
-
-
-    </div>
-</body>
-
-<script>
-    //----------------------站点运行时间
-    var now = new Date();
-
-    function createtime() {
-        var sitegotime = document.getElementById("cussitetime").innerHTML + " 00:00:00";
-        var grt = new Date(sitegotime); //此处修改你的建站时间或者网站上线时间 
-        now.setTime(now.getTime() + 250);
-        days = (now - grt) / 1000 / 60 / 60 / 24;
-        dnum = Math.floor(days);
-        hours = (now - grt) / 1000 / 60 / 60 - (24 * dnum);
-        hnum = Math.floor(hours);
-        if (String(hnum).length == 1) {
-            hnum = "0" + hnum;
-        }
-        minutes = (now - grt) / 1000 / 60 - (24 * 60 * dnum) - (60 * hnum);
-        mnum = Math.floor(minutes);
-        if (String(mnum).length == 1) {
-            mnum = "0" + mnum;
-        }
-        seconds = (now - grt) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
-        snum = Math.round(seconds);
-        if (String(snum).length == 1) {
-            snum = "0" + snum;
-        }
-        document.getElementById("sitegotimeDate").innerHTML = "本站已安全运行 " + dnum + " 天 ";
-        document.getElementById("sitegotimes").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
-    }
-
-    let intervalId = setInterval("createtime()", 250);
+  navToggle.addEventListener('click',navClick);  
 </script>
-
+  </div>
+  <div class="main-continer">
+    
+    <div
+      class="section-layout bg-color mist">
+      <div class="section-layout-wrapper">
+        <div id="sidebarMeta" class="sidebar">
+    
+<div class="sidebar-wrapper box-shadow-wrapper ">
+  <div class="sidebar-item">
+    <img class="site-author-image right-motion" src="/images/avatar.png"/>
+    <p class="site-author-name">Violet</p>
+    
+  </div>
+  <div class="sidebar-item side-item-stat right-motion">
+    <div class="sidebar-item-box">
+      <a href="/archives/">
+        
+        <span class="site-item-stat-count">17</span>
+        <span class="site-item-stat-name language" data-lan="article">文章</span>
+      </a>
     </div>
-
-
-    <script src="https://violet404.github.io//media/js/wordshow.js"></script>
-    
-    <!--------------- 左侧菜单栏👆 ------------------------>
-
-    <!----------------- 顶部菜单栏👇 ------------------------>
-    
-    <!----------------- 顶部菜单栏👆 ------------------------>
-
-<!--核心功能加载-->
-<script src="https://violet404.github.io//media/js/mainfunc.js"></script>
-
-<!------------- Fog1.0版本彩蛋👇 -------------->
-    <!-- <section id="terrestrial" class="popup">
-        <a href="#" class="back">&lt; back</a>
-    </section>
-
-    <div class="flycontainer">
-        <div class="flyword">御风飞行中...</div>
+    <div class="sidebar-item-box">
+      <a href="">
+        <span class="site-item-stat-count">8</span>
+        <span class="site-item-stat-name language" data-lan="category">分类</span>
+      </a>
     </div>
-
-    <script>
-        $("#fog_go").click(function(){fog_go()});
-        async function fog_go(){
-            $(".bars").hide()
-            $("#live2d").hide()
-            await sleep(3000);
-            $(".flycontainer").css("display","flex");
-            $(".popup").fadeOut(500)
-            await sleep(2000);
-            var sitename = "Violet";
-            getFogUser(sitename);
-        }
-
-        function fog_goregis(){
-            var sitename = "Violet";
-            var siteurl = "https://violet404.github.io/";
-            regisFogUser(sitename,siteurl);
-        }
-        fog_goregis();
-    </script> -->
-<!------------- Fog1.0版本彩蛋👆 -------------->
-
-
-<!------ 根据自定义配置声明变量👇 --------------------->
-    
-    <script>
-        let postnumChoice = false
-    </script>
-    
-    
-    <script>
-        let shareChoice = false
-    </script>
-    
-    
-    <script>
-        let donateChoice = false
-    </script>
-    
-    
-    <script>
-        let searchChoice = false
-    </script>
-    
-    <script>let postsnum = 0;</script>
-    <div id="side-posttitle" style="display: none;">
-    
-    
-    JVM 内存与垃圾回收（二）
-    <script>
-        postsnum += 1
-    </script>
-    
-    
-    
-    JVM 内存与垃圾回收（一）
-    <script>
-        postsnum += 1
-    </script>
-    
-    
-    
-    游标更新数据
-    <script>
-        postsnum += 1
-    </script>
-    
-    
-    
-    @JsonFormatter 时间返回不对
-    <script>
-        postsnum += 1
-    </script>
-    
-    
-    
-    illegal hex characters in escape(%) pattern
-    <script>
-        postsnum += 1
-    </script>
-    
-    
-    
-    Oracle ResultSet.getDate()/getObject()无法获取时间
-    <script>
-        postsnum += 1
-    </script>
-    
-    
-    
-    jQuery 操作多选框checkbox失效
-    <script>
-        postsnum += 1
-    </script>
-    
-    
-    
-    Oracle 行转列
-    <script>
-        postsnum += 1
-    </script>
-    
-    
-    
-    Uncaught RangeError：Maximum call stack size exceeded
-    <script>
-        postsnum += 1
-    </script>
-    
-    
-    
-    EasyUI 窗口重复加载、窗口元素取值混乱
-    <script>
-        postsnum += 1
-    </script>
-    
-    
-    
-    Mybatis 结果集数量与实际不符
-    <script>
-        postsnum += 1
-    </script>
-    
-    
-    
-    Ibatis 批量保存（基于Oracle）
-    <script>
-        postsnum += 1
-    </script>
-    
-    
-    
-    Oracle 替换字符串
-    <script>
-        postsnum += 1
-    </script>
-    
-    
-    
-    Git
-    <script>
-        postsnum += 1
-    </script>
-    
-    
-    
-    MQ消息队列(1)
-    <script>
-        postsnum += 1
-    </script>
-    
-    
-    
-    分布式锁
-    <script>
-        postsnum += 1
-    </script>
-    
-    
-    
-    Redis常用类型与应用场景
-    <script>
-        postsnum += 1
-    </script>
-    
-    
-    
-    
-    
-    
+    <div class="sidebar-item-box">
+      <a href="/tags/">
+        <span class="site-item-stat-count">8</span>
+        <span class="site-item-stat-name language" data-lan="tag">标签</span>
+      </a>
     </div>
-    
-        <script>
-            let menupos = 'left';
-            $("#siteinfo-postsnum").html(postsnum);
-        </script>
-    
-    <!------ 根据自定义配置声明变量👆 --------------------->
+  </div>
+  
+  
 
+  
 
-    <!----------根据自定义配置设置图标信息👇---------->
-    <script>
-        var icondict = new Array();
-    </script>
-    
-    <!----------根据自定义配置设置图标信息👆---------->
-</body>
-
-<script src="https://violet404.github.io//media/share/dist/Share.js"></script>
-<!-- 页面pjax测试 -->
-<script src="https://cdn.bootcdn.net/ajax/libs/jquery.pjax/2.0.1/jquery.pjax.js"></script>
-<!--确保jQuery已经在此之前加载-->
-<!-- <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script> -->
-<script src="https://violet404.github.io//media/js/all-pjax.js"></script>
-<script>
-    //-------------------------------说说功能👇--------------------------------------
-    let talksall = [];
-    let talks = [];
-    let talkindex = 0;
-    get();
-
-    function get() {
-        var t = JSON.parse('[]');
-        talkindex = t.length - 1;
-        for (var i = 0; i <= t.length - 1; i++) {
-            var d = {};
-            d["time"] = t[i].time;
-            d["author"] = t[i].author;
-            d["text"] = t[i].text;
-            d["img"] = t[i].img;
-            talksall.push(d);
-        }
-    }
-
-    function add() {
-        for (var i = talkindex; i >= 0 && i > talkindex - 3; i--) {
-            talks.push(talksall[i]);
-        }
-        talkindex = (talkindex - 3) >= 0 ? (talkindex - 3) : -1;
-        if (talkindex < 0) $("#getmorebt").hide();
-        show();
-    }
-
-    function show() {
-        var talkT = document.getElementById("talkContainer");
-        talkT.innerHTML = "";
-        for (var i = 0; i < talks.length; i++) {
-            if (talks[i].img != '') {
-                talkT.innerHTML += '\
-            <div class="talk" v-for="t in talks"> \
-                <span data-fancybox="images" href="' + talks[i].img + '"><img src="' + talks[i].img + '" class="talkimg"></span> \
-                <div class="ainfo">\
-                    <div class="ainfo-intro">\
-                        <div class="author">' + talks[i].author + '</div>·\
-                        <div class="time">' + talks[i].time + '</div>\
-                    </div>\
-                </div>\
-                <div class="talkcontent">' + talks[i].text + '\
-                </div\>\
-            ';
-            } else {
-                talkT.innerHTML += '\
-            <div class="talk" v-for="t in talks"> \
-                <div class="ainfo">\
-                    <div class="ainfo-intro">\
-                        <div class="author">' + talks[i].author + '</div>·\
-                        <div class="time">' + talks[i].time + '</div>\
-                    </div>\
-                </div>\
-                <div class="talkcontent">' + talks[i].text + '\
-                </div\>\
-            ';
-            }
-        }
-    }
-    //-------------------------------说说功能👆--------------------------------------
-</script>
-
-<!---->
-<script>
-    function replaceAvatar() {
-        twikoo_avatar = $(".tk-avatar-img");
-        for (var i = 0; i < twikoo_avatar.length; i++) {
-            var asrc = twikoo_avatar.eq(i).attr('src');
-            if (asrc.search('cn.gravatar.com') != -1) {
-                twikoo_avatar.eq(i).attr('src', 'https://violet404.github.io//media/images/comavatar.png');
-            }
-        }
-    }
-
-    function showWechat() {
-        var wechat = '';
-        alert("博主微信号：" + wechat);
-        return false;
-    }
-</script>
-
-<script>
-    /**
-     * https://github.com/tangkaichuan/gridea-search
-     */
-    // 检查缓存是否最新
-    function checkCache() {
-        var caches_postsnum = localStorage.getItem("postsnum");
-        var pt = document.getElementById("side-posttitle").innerHTML;
-        pt = pt.replace(/\s+/g, '').replace(/<script>.*?<\/script>/gi, "")
-        var ptlen = pt.length;
-        var ptlen_storage = localStorage.getItem("poststitlelen");
-        if (caches_postsnum != postsnum || ptlen != ptlen_storage) {
-            console.log("更新缓存");
-            return false
-        }
-        return true;
-    }
-
-    (function () {
-        var CACHES = checkCache()
-        if (!CACHES) {
-            var NOW = Date.now()
-            var API_CONTENT = '../api-content/index.html' + '?_=' + NOW
-            preload(API_CONTENT);
-            getContents(show_getContentresult);
-        }
-
-        function show_getContentresult(data) {
-            console.log("获取成功");
-            var postslen = data["posts"].length;
-            localStorage.setItem('postsnum', postslen);
-            var poststitlelen = 0;
-            var pt = document.getElementById("side-posttitle").innerHTML;
-            pt = pt.replace(/\s+/g, '').replace(/<script>.*?<\/script>/gi, "");
-            localStorage.setItem('poststitlelen', pt.length);
-        }
-
-
-
-        // preload
-        function preload(url) {
-            var preloadLink = document.createElement('link')
-            preloadLink.href = url
-            preloadLink.rel = 'preload'
-            preloadLink.as = 'fetch'
-            preloadLink.crossOrigin = 'anonymous'
-            document.head.appendChild(preloadLink)
-        }
-
-        // 异步 GET 请求
-        function get(obj) {
-            var xhr = new XMLHttpRequest()
-            xhr.open('get', obj.url, true)
-            xhr.send(null)
-            xhr.onreadystatechange = function () {
-                // 异步请求：响应状态为4，数据加载完毕
-                if (xhr.readyState === 4) {
-                    if (xhr.status === 200) {
-                        obj.success(xhr.responseText)
-                    } else {
-                        obj.error(xhr.status)
-                    }
-                }
-            }
-        }
-
-        // 获取博客全文 api
-        function getContents(callback) {
-            if (CACHES) {
-                callback(CACHES.contents)
-            } else {
-                get({
-                    url: API_CONTENT,
-                    success: function (data) {
-                        callback(JSON.parse(data));
-                        localStorage.setItem('ContentsCache', data);
-                        getStorageContent();
-                    }
-                })
-            }
-        }
-    })()
-    //------------------------核心功能--pjax全局渲染👇-------------------
-    let talkinit = false;
-    $(document).pjax('a[data-pjax]', '#main', {
-        fragment: '#main',
-        timeout: 8000
-    }).on('pjax:complete', function () {
-        //代码块高亮渲染
-        document.querySelectorAll('pre code').forEach((block) => {
-            hljs.highlightBlock(block);
-        });
-        //文章热度
-        if(postnumChoice){
-            getHotnum();
-        }
-        //文章索引
-        toginit();
-        //清空搜索栏
-        if (searchChoice) {
-            searchInit();
-            searchInput.value = "";
-        }
-        var pl = window.location.pathname;
-        //说说更新
-        if (pl.search("talk") != -1 && !talkinit) {
-            add();
-            talkinit = true;
-        } else if (pl.search("talk") != -1) {
-            show();
-        }
-        if (pl.search("post") != -1) {
-            if (shareChoice)
-                shareInit();
-            if (donateChoice)
-                donateInit();
-            lazyload();
-            codeinit();
-            if ("default" == "twikoo") {
-                //twikoo头像更换
-                setTimeout(replaceAvatar, 3000);
-                setTimeout(replaceAvatar, 8000); //部分博主站点速度加载过慢，再添加一个延迟
-            }
-        }
-        if (btstate == true)
-            dropdown();
-    }).on('pjax:start', function () {
-        $(".pjaxloading").fadeIn(50);
-    }).on('pjax:end', function () {
-        $(".pjaxloading").fadeOut(50);
-    });
-    //------------------------核心功能--pjax全局渲染👆-------------------
-
-    //-------------------------------------------------搜索
-    // 获取搜索框、搜索按钮、清空搜索、结果输出对应的元素
-    if (searchChoice) {
-        var searchInput = document.querySelector('.search-input');
-        var searchResults = document.querySelector('.search-results');
-    }
-    // 申明保存文章的标题、链接、内容的数组变量
-    var searchValue = '',
-        arrItems = [],
-        arrLinks = [],
-        arrTitles = [],
-        arrContents = [],
-        arrResults = [],
-        indexItem = [],
-        itemLength = 0;
-    var tmpDiv = document.createElement('div');
-    tmpDiv.className = 'result-item';
-
-
-    function getStorageContent() {
-        var data = localStorage.getItem('ContentsCache');
-        data = JSON.parse(data);
-        posts = data["posts"];
-        for (var i = 0; i < posts.length; i++) {
-            arrLinks[i] = posts[i].link;
-            arrTitles[i] = posts[i].title;
-            arrContents[i] = posts[i].content;
-            itemLength++;
-        }
-    }
-    if (checkCache())
-        getStorageContent();
-    // 输入框内容变化后就开始匹配，可以不用点按钮
-    // 经测试，onkeydown, onchange 等方法效果不太理想，
-    // 存在输入延迟等问题，最后发现触发 input 事件最理想，
-    // 并且可以处理中文输入法拼写的变化
-    searchInput.oninput = function () {
-        setTimeout(searchConfirm, 0);
-    }
-    searchInput.onfocus = function () {
-        searchResults.style.display = 'block';
-    }
-
-    function searchConfirm() {
-        if (searchInput.value == '') {
-            searchResults.style.display = 'none';
-        } else if (searchInput.value.search(/^\s+$/) >= 0) {
-            // 检测输入值全是空白的情况
-            searchInit();
-            var itemDiv = tmpDiv.cloneNode(true);
-            itemDiv.innerText = '请输入有效内容...';
-            searchResults.appendChild(itemDiv);
-        } else {
-            // 合法输入值的情况
-            searchInit();
-            searchValue = searchInput.value;
-            // 在标题、内容中查找
-            searchMatching(arrTitles, arrContents, searchValue);
-        }
-    }
-
-    // 每次搜索完成后的初始化
-    function searchInit() {
-        arrResults = [];
-        indexItem = [];
-        searchResults.innerHTML = '';
-        searchResults.style.display = 'block';
-    }
-
-    function searchMatching(arr1, arr2, input) {
-        // 忽略输入大小写
-        input = new RegExp(input, 'i');
-        var step = 10;
-        // 在所有文章标题、内容中匹配查询值
-        for (i = 0; i < itemLength; i++) {
-            var indexContent = arr2[i].search(input);
-            //标题匹配
-            if (arr1[i].search(input) != -1) {
-                indexItem.push(i); // 保存匹配值的索引
-                if (indexContent != -1) {
-                    startindex = (indexContent - step) >= 0 ? (indexContent - step) : 0;
-                    var searchcontent = arr2[i].slice(indexContent - step, indexContent + 5)
-                    arrResults.push("....." + searchcontent + ".....");
-                } else
-                    arrResults.push("");
-            }
-            //内容匹配
-            else if (indexContent != -1) {
-                indexItem.push(i); // 保存匹配值的索引
-
-                startindex = (indexContent - step) >= 0 ? (indexContent - step) : 0;
-                var searchcontent = arr2[i].slice(indexContent - step, indexContent + 5)
-                arrResults.push("....." + searchcontent + ".....");
-            }
-        }
-
-        // 输出总共匹配到的数目
-        var totalDiv = tmpDiv.cloneNode(true);
-        totalDiv.innerHTML = '<b>总匹配：' + indexItem.length + ' 项<hr></b>';
-        searchResults.appendChild(totalDiv);
-
-        // 未匹配到内容的情况
-        if (indexItem.length == 0) {
-            var itemDiv = tmpDiv.cloneNode(true);
-            itemDiv.innerText = '未匹配到内容...';
-            searchResults.appendChild(itemDiv);
-        }
-
-        // 将所有匹配内容进行组合
-        for (i = 0; i < arrResults.length; i++) {
-            var itemDiv = tmpDiv.cloneNode(true);
-            itemDiv.innerHTML = '<a data-pjax class="searchresults" href="' + arrLinks[indexItem[i]] + '"><b>[' +
-                arrTitles[indexItem[i]] +
-                ']</b><p>' + arrResults[i] + '</p></a><hr />';
-            searchResults.appendChild(itemDiv);
-        }
-    }
-</script>
-
-
-
-<!--------------------- 菜单栏图标加载功能👇 ----------------------->
-<script>
-var menulist = $(".menuicon");
-var menulength = menulist.length;
-for (var i = 0; i < menulength; i++) {
-    var altname = menulist.eq(i).attr("alt");
-    var iconurl = icondict[altname];
-    if (iconurl == undefined || iconurl == '')
-        continue;
-    if (iconurl == 'Home') {
-        menulist.eq(i).attr("src", "https://violet404.github.io//media/images/Home.png");
-menulist.eq(i).show();
-} else if (iconurl == 'Archive') {
-menulist.eq(i).attr("src", "https://violet404.github.io//media/images/Archive.png");
-menulist.eq(i).show();
-} else if (iconurl == 'Tag') {
-menulist.eq(i).attr("src", "https://violet404.github.io//media/images/Tag.png");
-menulist.eq(i).show();
-} else if (iconurl == 'About') {
-menulist.eq(i).attr("src", "https://violet404.github.io//media/images/About.png");
-menulist.eq(i).show();
-} else if (iconurl == 'Talk') {
-menulist.eq(i).attr("src", "https://violet404.github.io//media/images/Talk.png");
-menulist.eq(i).show();
-} else if (iconurl == 'Friends') {
-menulist.eq(i).attr("src", "https://violet404.github.io//media/images/Friends.png");
-menulist.eq(i).show();
-} else if (iconurl == 'Fly') {
-menulist.eq(i).attr("src", "https://violet404.github.io//media/images/wind.png");
-menulist.eq(i).show();
-} else {
-menulist.eq(i).attr("src", iconurl);
-menulist.eq(i).show();
-}
-}
-</script>
-<!--------------------- 菜单栏图标加载功能👆 ----------------------->
-
-<script>
-    //--------------------bber-onetalk加载👇--------------------------------
-    function bberonetalkLoad(){
-        bberjsonurl = '';
-        if ( $("#bber-talk").length > 0 ) {
-        jsonUrl = bberjsonurl
-        $.getJSON(jsonUrl+"?t="+Date.parse( new Date()),function(res){
-        var bberHtml = ''
-        $.each(res.data, function(i, item){
-            d = new Date(item.date)
-            date = d.getFullYear()+'/'+(d.getMonth()+1)+'/'+d.getDate() +' '+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds()
-            dataTime = '<span class="datatime">'+date+'</span>'
-            bberHtml += '<li class="item item-'+(i+1)+'">'+dataTime+'： <a data-pjax href="https://violet404.github.io//bber">'+item.content+'</a></li>'
-        });
-        $('#bber-talk').append('<span class="index-talk-icon"><svg viewBox="0 0 1024 1024" width="21" height="21"><path d="M184.32 891.667692c-12.603077 0-25.206154-2.363077-37.809231-7.876923-37.021538-14.966154-59.864615-49.624615-59.864615-89.009231v-275.692307c0-212.676923 173.292308-385.969231 385.969231-385.969231h78.76923c212.676923 0 385.969231 173.292308 385.969231 385.969231 0 169.353846-137.846154 307.2-307.2 307.2H289.083077l-37.021539 37.021538c-18.904615 18.116923-43.323077 28.356923-67.741538 28.356923zM472.615385 195.347692c-178.018462 0-322.953846 144.935385-322.953847 322.953846v275.692308c0 21.267692 15.753846 29.144615 20.48 31.507692 4.726154 2.363077 22.055385 7.876923 37.021539-7.08923l46.473846-46.473846c6.301538-6.301538 14.178462-9.452308 22.055385-9.452308h354.461538c134.695385 0 244.184615-109.489231 244.184616-244.184616 0-178.018462-144.935385-322.953846-322.953847-322.953846H472.615385z"></path><path d="M321.378462 512m-59.076924 0a59.076923 59.076923 0 1 0 118.153847 0 59.076923 59.076923 0 1 0-118.153847 0Z"></path><path d="M518.301538 512m-59.076923 0a59.076923 59.076923 0 1 0 118.153847 0 59.076923 59.076923 0 1 0-118.153847 0Z"></path><path d="M715.224615 512m-59.076923 0a59.076923 59.076923 0 1 0 118.153846 0 59.076923 59.076923 0 1 0-118.153846 0Z"></path></svg></span><ul class="talk-list">'+bberHtml+'</ul>')
-        //Lately({ 'target': '#bber-talk .datatime' });
-        });
-        function Roll (){
-        var list_li = $('.talk-list li'),cur_li = list_li.first(),last_li = list_li.last();
-        last_li.after(cur_li);
-        };
-        setInterval(Roll,3000);
-    }
-    }
-  //--------------------bber-onetalk加载👆--------------------------------
-</script>
 
 
 </div>
-                <!--------------- pc端菜单栏👆 ---------------->
-
-                <!----------- 移动端导航栏👇 ----------------->
-                <div class="tbar"> <head>
-  <!-- 引入Bootstrap核心样式文件 -->
-  <link rel="stylesheet" href="https://violet404.github.io//media/css/bootstrap.min.css">
-</head>
-<style>
-  .navmobile {
-    z-index: 15;
-    max-height: 40vh;
-    overflow-y: scroll;
-    overflow-x: hidden;
-  }
-
-  @media screen and (max-width: 1200px) {
-    .navbar {
-      max-width: 100vw;
-    }
-  }
-
-  @media screen and (max-width:1200px) and (min-width: 768px) {
-    @media (min-width: 768px) {
-      .navbar-nav {
-        float: right;
-        margin: 0;
+</div>
+<script>
+  let sidebarMeta = document.querySelector('#sidebarMeta');
+  let scheme = 'mist';
+  let sidebarWrapper = document.querySelector('.sidebar-wrapper');
+  if (sidebarMeta && (scheme === 'pisces' || scheme === 'gemini')) {
+    document.addEventListener('scroll', function(e) {
+      if (document.scrollingElement.scrollTop > parseInt(sidebarMeta.style.marginTop) + 10) {
+        sidebarWrapper.classList.add('home-sidebar-fixed')
+      } else {
+        sidebarWrapper.classList.remove('home-sidebar-fixed')
       }
-    }
+    });
   }
-
-  @media screen and (max-width:768px) {
-    .mbapspan {
-      padding: 0;
-    }
-  }
-</style>
-<div class="pjaxloading"  onclick="pjaxloadingClose()">
-  <div class="loadingbackground"></div>
-  <div id="loading">
-    <div class="loading">
+  </script>
+        <div class="section-box tag-line box-shadow-wrapper">
+          <section class="section tags-section posts-expand bg-color">
+            <div class="padding-wrapper">
+  <div class="tag-timeline-box">
+    <div class="tag-timeline-wrapper">
+      <div class="tag-timeline-title">
+        <h2>
+          Ibatis
+          <small class="language" data-lan="tag">标签</small>
+        </h2>
+      </div>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      <a href="https://violet404.github.io/post/mybatis-jie-guo-ji-shu-liang-yu-shi-ji-bu-fu/">
+        <div class="motion-warpper">
+          <div class="tag-post-node">
+            <h1>
+              04-28
+              <small>Mybatis 结果集数量与实际不符</small>
+            </h1>
+          </div>
+        </div>
+      </a>
+      
+      
+      
+      
+      
+      
+      
+      <a href="https://violet404.github.io/post/ibatis-pi-liang-bao-cun-ji-yu-oracle/">
+        <div class="motion-warpper">
+          <div class="tag-post-node">
+            <h1>
+              04-28
+              <small>Ibatis 批量保存（基于Oracle）</small>
+            </h1>
+          </div>
+        </div>
+      </a>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
     </div>
   </div>
 </div>
-<nav class="navbar navbar-inverse navbar-fixed-top navmobile">
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#barmenu"
-        aria-expanded="false" id="barbutton">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a data-pjax class="navbar-brand" href="https://violet404.github.io/">Violet&nbsp;&nbsp;|</a>
-      <span class="navbar-brand mbapspan"><i id="mbaplayer" class="fa fa-play-circle-o" aria-hidden="true"
-          style="font-size: 28px;top: 12px;position: absolute;" onclick="aplayerPlay();"></i></span>
-    </div>
-
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="barmenu">
-      <ul class="nav navbar-nav">
-        
-        
-        <li>
-          <a data-pjax href="/">
-            首页
-          </a>
-        </li>
-        
-        
-        
-        <li>
-          <a data-pjax href="/archives">
-            归档
-          </a>
-        </li>
-        
-        
-        
-        <li>
-          <a data-pjax href="/tags">
-            标签
-          </a>
-        </li>
-        
-        
-        
-        <li>
-          <a data-pjax href="/post/about">
-            关于
-          </a>
-        </li>
-        
-        
-        
-        
-          
-        </ul>
-      </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
-  </nav>
-
-
-  <!-- 引入jQuery核心js文件 -->
-  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
-  <script>
-    let btstate = false;
-    var bt = $("#barbutton");
-    var bm = $("#barmenu");
-    bt.click(function () {
-      dropdown();
-    })
-    function dropdown() {
-      console.log(btstate);
-      //下拉
-      if (btstate == false) {
-        bt.removeClass("collapsed");
-        bt.attr("aria-expanded", "true");
-        bm.attr("aria-expanded", "true")
-        bm.fadeIn(700);
-        btstate = true;
-      }
-      else {
-        bt.addClass("collapsed");
-        bt.attr("aria-expanded", "false");
-        bm.removeClass("in");
-        bm.hide();
-        bm.attr("aria-expanded", "false");
-        btstate = false;
-      }
-    }
-  </script> </div>
-                <!----------- 移动端导航栏👆 ----------------->
-
-                <!-- ----------------左侧菜单栏html 👇-------------------------------------->
-                
-                <div>
-                    <div id="tab1" class="tab">
-                        <div class="bars">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </div>
-                        <div class="close"></div>
-                    </div>
-                    <div class="col-lg-3"></div>
-                        <div id="main" class="col-xs-12 col-sm-12 col-md-12 col-lg-7">
-                            <link rel="stylesheet" href="https://violet404.github.io//media/css/font-awesome.css">
-
-    <div style="display: none;">
-        
-            
-                
-                    <span name="plfeature">\media\images\custom-postdefaultimage.jpg</span>
-                    
-                
-            <span name="pltitle">Mybatis 结果集数量与实际不符</span>
-            <span name="pllink">https://violet404.github.io/post/mybatis-jie-guo-ji-shu-liang-yu-shi-ji-bu-fu/</span>
-            <span name="pldate">2021-04-28</span>
-            <span name="plstats">1 min read</span>
-            
-                <span name="pltag" alt="Mybatis 结果集数量与实际不符">Ibatis</span>
-                <span name="pltaglink" alt="Mybatis 结果集数量与实际不符">https://violet404.github.io/tag/Wg3yAEB2F/</span>
-            
-                <span name="pltag" alt="Mybatis 结果集数量与实际不符">问题整理</span>
-                <span name="pltaglink" alt="Mybatis 结果集数量与实际不符">https://violet404.github.io/tag/Oq4KR_wv3/</span>
-            
-        
-            
-                
-                    <span name="plfeature">\media\images\custom-postdefaultimage.jpg</span>
-                    
-                
-            <span name="pltitle">Ibatis 批量保存（基于Oracle）</span>
-            <span name="pllink">https://violet404.github.io/post/ibatis-pi-liang-bao-cun-ji-yu-oracle/</span>
-            <span name="pldate">2021-04-28</span>
-            <span name="plstats">1 min read</span>
-            
-                <span name="pltag" alt="Ibatis 批量保存（基于Oracle）">Ibatis</span>
-                <span name="pltaglink" alt="Ibatis 批量保存（基于Oracle）">https://violet404.github.io/tag/Wg3yAEB2F/</span>
-            
-                <span name="pltag" alt="Ibatis 批量保存（基于Oracle）">问题整理</span>
-                <span name="pltaglink" alt="Ibatis 批量保存（基于Oracle）">https://violet404.github.io/tag/Oq4KR_wv3/</span>
-            
-        
-    </div>
-
-    
-    <div id="post-container" class="eleg-allpostscontainer">
-        <div v-for="post in postinfo" class="eleg-posts">
-            <div v-if="post.elegcontainer=='eleg-postcontainer-left'">
-                    <div :class="post.elegcontainer">
-                        <img :src="post.feature" alt="" :class="post.imgclass">
-                        
-                        <img class="eleg-swordsmen-left" src="https://violet404.github.io//media/images/swordsmenleft.webp" alt="">
-                        
-                        <div class="eleg-info">
-                            <span class="eleg-title">{{post.title}}</span>
-                            <div style="margin-top:15px;">
-                                <span class="postdate eleg-date"><i class="fa fa-calendar"></i>{{post.date}}</span>
-                                <span class="poststatus postdate eleg-stats"><i class="fa fa-clock-o"></i> {{post.stats}}</span>
-                            </div>
-                            <div style="margin-top:50px">
-                                <a :href="post.link" class="eleg-btn" data-pjax>阅读全文</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class='eleg-tags'>
-                        <div v-for="tag in post.tags">
-                            <div class="posttag">
-                                <a data-pjax href="" class="postlink eleg-postlink">
-                                    <i class="fa fa-tag"></i>{{tag}}
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-            </div>
-            <div v-else>
-                    <div :class="post.elegcontainer">
-                        <div class="eleg-info">
-                            <span class="eleg-title">{{post.title}}</span>
-                            <div style="margin-top:15px;">
-                                <span class="postdate eleg-date"><i class="fa fa-calendar"></i>{{post.date}}</span>
-                                <span class="poststatus postdate eleg-stats"><i class="fa fa-clock-o"></i> {{post.stats}}</span>
-                            </div>
-                            <div style="margin-top:50px">
-                                <a :href="post.link" class="eleg-btn" data-pjax>阅读全文</a>
-                            </div>
-                        </div>
-                        
-                        <img class="eleg-swordsmen" src="https://violet404.github.io//media/images/swordsmen.webp" alt="">
-                        
-                        <img :src="post.feature" alt="" :class="post.imgclass">
-                    </div>
-                    <div class='eleg-tags'>
-                        <div v-for="tag in post.tags">
-                            <div class="posttag">
-                                <a data-pjax href="" class="postlink eleg-postlink">
-                                    <i class="fa fa-tag"></i>{{tag}}
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-            </div>
+          </section>
         </div>
+      </div>
     </div>
-
+    <div class="footer-box">
+  <footer class="footer">
+    <span id="busuanzi_container_site_pv">浏览数 <span id="busuanzi_value_site_pv"></span> 次</span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_uv">访客数 <span id="busuanzi_value_site_uv"></span> 人</span>
+    <div class="copyright">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> ©2019 | Theme By <a
+        href="https://github.com/hsxyhao/gridea-theme-next" target="_blank">HsxyHao</a>
+    </div>
+    <div class="poweredby">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+    </div>
+  </footer>
+  
+  
+  <div class="drawer-box left" id="drawer_box">
+    <span class="muse-line muse-line-first"></span>
+    <span class="muse-line muse-line-middle"></span>
+    <span class="muse-line muse-line-last"></span>
+  </div>
+  
+  <div class="mist back-to-top" id="back_to_top">
+    <i class="fa fa-arrow-up"></i>
     
-    <script>
-    var app2 = new Vue({
-      el: '#post-container',
-      mounted:function(){
-        this.getpostInfo();
-      },
-      methods:{
-         getpostInfo:function(){
-             var plflist = $("span[name='plfeature']");
-             var pltlist = $("span[name='pltitle']");
-             var plllist = $("span[name='pllink']");
-             var pldlist = $("span[name='pldate']");
-             var plslist = $("span[name='plstats']");
-             var pltaglist = $("span[name='pltag']");
-             for(var i=0;i<this.pagesize&&i<plflist.length;i++){
-                 var d = {};
-                 var tags = []
-                 d["feature"] = plflist.eq(i).html();
-                 d["title"] = pltlist.eq(i).html();
-                 d["link"] = plllist.eq(i).html();
-                 d["date"] = pldlist.eq(i).html();
-                 d['stats'] = plslist.eq(i).html();
-                 for(var j=0;j<pltaglist.length;j++){
-                     if(pltaglist.eq(j).attr('alt')==d['title'])
-                        tags.push(pltaglist.eq(j).html())
-                 }
-                 d["tags"] = tags;
-                 if(i%2==0)
-                 {
-                     d['elegcontainer'] = 'eleg-postcontainer-left';
-                     d['imgclass'] = 'eleg-img-left'
-                 }
-                 else{
-                    d['elegcontainer'] = 'eleg-postcontainer-right';
-                    d['imgclass'] = 'eleg-img-right' 
-                 }
-                 this.postinfo.push(d);
-             }
-         }
-      },
-      data: {
-        pagesize: "8",
-        postinfo:[],
+  </div>
+  
+  
+  
+  <div class="bg-img">
+    <img src="\media\images\custom-bgImg.jpg" />
+  </div>
+  
+  
+  
+  
+<link rel="stylesheet" href="/media/live2d/css/live2d.css" />
+<div class="box-scale">
+  <div id="landlord" style="left: 80%px;bottom: px;"
+    data-key="">
+    <canvas id="live2d" width="500" height="560" class="live2d"></canvas>
+    
+
+      <div class="message" style="opacity:0"></div>
+      <div class="live_talk_input_body">
+        <div class="live_talk_input_name_body">
+          <input name="name" type="text" class="live_talk_name white_input" id="AIuserName" autocomplete="off"
+            placeholder="你的名字" />
+        </div>
+        <div class="live_talk_input_text_body">
+          <input name="talk" type="text" class="live_talk_talk white_input" id="AIuserText" autocomplete="off"
+            placeholder="要和我聊什么呀？" />
+          <button type="button" class="live_talk_send_btn" id="talk_send">发送</button>
+        </div>
+      </div>
+      <input name="live_talk" id="live_talk" value="1" type="hidden" />
+      <div class="live_ico_box">
+        <div class="live_ico_item type_info" id="showInfoBtn"></div>
+        <div class="live_ico_item type_talk" id="showTalkBtn"></div>
+        
+        <div class="live_ico_item type_youdu" id="youduButton"></div>
+        <div class="live_ico_item type_quit" id="hideButton"></div>
+        <input name="live_statu_val" id="live_statu_val" value="0" type="hidden" />
+        <audio src="" style="display:none;" id="live2d_bgm" data-bgm="0" preload="none"></audio>
+        <input id="duType" value="douqilai" type="hidden">
+        
+      </div>
+    
+  </div>
+</div>
+<div id="open_live2d">召唤看板娘</div>
+<script>
+  var message_Path = 'https://cdn.jsdelivr.net/gh/hsxyhao/live2d.github.io@master/';
+  let landlord = document.querySelector('#landlord');
+  var apiKey = landlord.dataset.key;
+</script>
+<script type="text/javascript" src="/media/live2d/js/live2d.js"></script>
+<script>
+	var home_Path = document.location.protocol + '//' + window.document.location.hostname + ":" + window.document.location.port + '/';
+	var userAgent = window.navigator.userAgent.toLowerCase();
+	var norunAI = ["android", "iphone", "ipod", "ipad", "windows phone", "mqqbrowser", "msie", "trident/7.0"];
+	var norunFlag = false;
+
+	for (var i = 0; i < norunAI.length; i++) {
+		if (userAgent.indexOf(norunAI[i]) > -1) {
+			norunFlag = true;
+			break;
+		}
+	}
+
+	if (!window.WebGLRenderingContext) {
+		norunFlag = true;
+	}
+
+	if (!norunFlag) {
+		var hitFlag = false;
+		var AIFadeFlag = false;
+		var liveTlakTimer = null;
+		var sleepTimer_ = null;
+		var AITalkFlag = false;
+		var talkNum = 0;
+		(function () {
+			function renderTip(template, context) {
+				var tokenReg = /(\\)?\{([^\{\}\\]+)(\\)?\}/g;
+				return template.replace(tokenReg, function (word, slash1, token, slash2) {
+					if (slash1 || slash2) {
+						return word.replace('\\', '');
+					}
+					var variables = token.replace(/\s/g, '').split('.');
+					var currentObject = context;
+					var i, length, variable;
+					for (i = 0, length = variables.length; i < length; ++i) {
+						variable = variables[i];
+						currentObject = currentObject[variable];
+						if (currentObject === undefined || currentObject === null) return '';
+					}
+					return currentObject;
+				});
+			}
+
+			String.prototype.renderTip = function (context) {
+				return renderTip(this, context);
+			};
+
+			var re = /x/;
+			re.toString = function () {
+				showMessage('哈哈，你打开了控制台，是想要看看我的秘密吗？', 5000);
+				return '';
+			};
+
+			$(document).on('copy', function () {
+				showMessage('你都复制了些什么呀，转载要记得加上出处哦~~', 5000);
+			});
+
+			function initTips() {
+				$.ajax({
+					cache: true,
+					url: message_Path + 'message.json',
+					dataType: "json",
+					success: function (result) {
+						$.each(result.mouseover, function (index, tips) {
+							$(tips.selector).mouseover(function () {
+								var text = tips.text;
+								if (Array.isArray(tips.text)) text = tips.text[Math.floor(Math.random() * tips.text.length + 1) - 1];
+								text = text.renderTip({ text: $(this).text() });
+								showMessage(text, 3000);
+								talkValTimer();
+								clearInterval(liveTlakTimer);
+								liveTlakTimer = null;
+							});
+							$(tips.selector).mouseout(function () {
+								showHitokoto();
+								if (liveTlakTimer == null) {
+									liveTlakTimer = window.setInterval(function () {
+										showHitokoto();
+									}, 15000);
+								};
+							});
+						});
+						$.each(result.click, function (index, tips) {
+							$(tips.selector).click(function () {
+								if (hitFlag) {
+									return false
+								}
+								hitFlag = true;
+								setTimeout(function () {
+									hitFlag = false;
+								}, 8000);
+								var text = tips.text;
+								if (Array.isArray(tips.text)) text = tips.text[Math.floor(Math.random() * tips.text.length + 1) - 1];
+								text = text.renderTip({ text: $(this).text() });
+								showMessage(text, 3000);
+							});
+							clearInterval(liveTlakTimer);
+							liveTlakTimer = null;
+							if (liveTlakTimer == null) {
+								liveTlakTimer = window.setInterval(function () {
+									showHitokoto();
+								}, 15000);
+							};
+						});
+					}
+				});
+			}
+			initTips();
+
+			var text;
+			if (document.referrer !== '') {
+				var referrer = document.createElement('a');
+				referrer.href = document.referrer;
+				text = '嗨！来自 <span style="color:#0099cc;">' + referrer.hostname + '</span> 的朋友！';
+				var domain = referrer.hostname.split('.')[1];
+				if (domain == 'baidu') {
+					text = '嗨！ 来自 百度搜索 的朋友！<br>欢迎访问<span style="color:#0099cc;">「 ' + document.title.split(' - ')[0] + ' 」</span>';
+				} else if (domain == 'so') {
+					text = '嗨！ 来自 360搜索 的朋友！<br>欢迎访问<span style="color:#0099cc;">「 ' + document.title.split(' - ')[0] + ' 」</span>';
+				} else if (domain == 'google') {
+					text = '嗨！ 来自 谷歌搜索 的朋友！<br>欢迎访问<span style="color:#0099cc;">「 ' + document.title.split(' - ')[0] + ' 」</span>';
+				}
+			} else {
+				if (window.location.href == home_Path) { //主页URL判断，需要斜杠结尾
+					var now = (new Date()).getHours();
+					if (now > 23 || now <= 5) {
+						text = '你是夜猫子呀？这么晚还不睡觉，明天起的来嘛？';
+					} else if (now > 5 && now <= 7) {
+						text = '早上好！一日之计在于晨，美好的一天就要开始了！';
+					} else if (now > 7 && now <= 11) {
+						text = '上午好！工作顺利嘛，不要久坐，多起来走动走动哦！';
+					} else if (now > 11 && now <= 14) {
+						text = '中午了，工作了一个上午，现在是午餐时间！';
+					} else if (now > 14 && now <= 17) {
+						text = '午后很容易犯困呢，今天的运动目标完成了吗？';
+					} else if (now > 17 && now <= 19) {
+						text = '傍晚了！窗外夕阳的景色很美丽呢，最美不过夕阳红~~';
+					} else if (now > 19 && now <= 21) {
+						text = '晚上好，今天过得怎么样？';
+					} else if (now > 21 && now <= 23) {
+						text = '已经这么晚了呀，早点休息吧，晚安~~';
+					} else {
+						text = '嗨~ 快来逗我玩吧！';
+					}
+				} else {
+					text = '欢迎阅读<span style="color:#0099cc;">「 ' + document.title.split(' - ')[0] + ' 」</span>';
+				}
+			}
+			showMessage(text, 12000);
+		})();
+
+		liveTlakTimer = setInterval(function () {
+			showHitokoto();
+		}, 15000);
+
+		function showHitokoto() {
+			if (sessionStorage.getItem("Sleepy") !== "1") {
+				if (!AITalkFlag) {
+					$.getJSON('https://v1.hitokoto.cn/', function (result) {
+						talkValTimer();
+						showMessage(result.hitokoto, 0);
+					});
+				}
+			} else {
+				hideMessage(0);
+				if (sleepTimer_ == null) {
+					sleepTimer_ = setInterval(function () {
+						checkSleep();
+					}, 200);
+				}
+			}
+		}
+
+		function checkSleep() {
+			var sleepStatu = sessionStorage.getItem("Sleepy");
+			if (sleepStatu !== '1') {
+				talkValTimer();
+				showMessage('你回来啦~', 0);
+				clearInterval(sleepTimer_);
+				sleepTimer_ = null;
+			}
+		}
+
+		function showMessage(text, timeout) {
+			if (Array.isArray(text)) text = text[Math.floor(Math.random() * text.length + 1) - 1];
+			$('.message').stop();
+			$('.message').html(text);
+			$('.message').fadeTo(200, 1);
+			//if (timeout === null) timeout = 5000;
+			//hideMessage(timeout);
+		}
+		function talkValTimer() {
+			$('#live_talk').val('1');
+		}
+
+		function hideMessage(timeout) {
+			//$('.message').stop().css('opacity',1);
+			if (timeout === null) timeout = 5000;
+			$('.message').delay(timeout).fadeTo(200, 0);
+		}
+
+		function initLive2d() {
+			$('#hideButton').on('click', function () {
+				if (AIFadeFlag) {
+					return false;
+				} else {
+					AIFadeFlag = true;
+					localStorage.setItem("live2dhidden", "0");
+					$('#landlord').fadeOut(200);
+					$('#open_live2d').delay(200).fadeIn(200);
+					setTimeout(function () {
+						AIFadeFlag = false;
+					}, 300);
+				}
+			});
+			$('#open_live2d').on('click', function () {
+				if (AIFadeFlag) {
+					return false;
+				} else {
+					AIFadeFlag = true;
+					localStorage.setItem("live2dhidden", "1");
+					$('#open_live2d').fadeOut(200);
+					$('#landlord').delay(200).fadeIn(200);
+					setTimeout(function () {
+						AIFadeFlag = false;
+					}, 300);
+				}
+			});
+			$('#youduButton').on('click', function () {
+				if ($('#youduButton').hasClass('doudong')) {
+					var typeIs = $('#youduButton').attr('data-type');
+					$('#youduButton').removeClass('doudong');
+					$('body').removeClass(typeIs);
+					$('#youduButton').attr('data-type', '');
+				} else {
+					var duType = $('#duType').val();
+					var duArr = duType.split(",");
+					var dataType = duArr[Math.floor(Math.random() * duArr.length)];
+
+					$('#youduButton').addClass('doudong');
+					$('#youduButton').attr('data-type', dataType);
+					$('body').addClass(dataType);
+				}
+			});
+			if (apiKey) {
+				$('#showInfoBtn').on('click', function () {
+					var live_statu = $('#live_statu_val').val();
+					if (live_statu == "0") {
+						return
+					} else {
+						$('#live_statu_val').val("0");
+						$('.live_talk_input_body').fadeOut(500);
+						AITalkFlag = false;
+						showHitokoto();
+						$('#showTalkBtn').show();
+						$('#showInfoBtn').hide();
+					}
+				});
+				$('#showTalkBtn').on('click', function () {
+					var live_statu = $('#live_statu_val').val();
+					if (live_statu == "1") {
+						return
+					} else {
+						$('#live_statu_val').val("1");
+						$('.live_talk_input_body').fadeIn(500);
+						AITalkFlag = true;
+						$('#showTalkBtn').hide();
+						$('#showInfoBtn').show();
+
+					}
+				});
+				$('#talk_send').on('click', function () {
+					var info_ = $('#AIuserText').val();
+					var userid_ = $('#AIuserName').val();
+					if (info_ == "") {
+						showMessage('写点什么吧！', 0);
+						return;
+					}
+					if (userid_ == "") {
+						showMessage('聊之前请告诉我你的名字吧！', 0);
+						return;
+					}
+					showMessage('思考中~', 0);
+					let protocol = window.location.protocol.indexOf("s") > 0 ? "https" : "http";
+					$.ajax({
+						type: "get",
+						url: `${protocol}://www.tuling123.com/openapi/api?key=${apiKey}&info=${info_}`,
+						dataType: "json",
+						success: function (res) {
+							talkValTimer();
+							showMessage(res.text, 0);
+							$('#AIuserText').val("");
+							sessionStorage.setItem("live2duser", userid_);
+						},
+						error: function (e) {
+							talkValTimer();
+							showMessage('似乎有什么错误，请和站长联系！', 0);
+						}
+					});
+				});
+			} else {
+				$('#showInfoBtn').hide();
+				$('#showTalkBtn').hide();
+			}
+			//获取音乐信息初始化
+			var bgmListInfo = $('input[name=live2dBGM]');
+			if (bgmListInfo.length == 0) {
+				$('#musicButton').hide();
+			} else {
+				var bgmPlayNow = parseInt($('#live2d_bgm').attr('data-bgm'));
+				var bgmPlayTime = 0;
+				var live2dBGM_Num = sessionStorage.getItem("live2dBGM_Num");
+				var live2dBGM_PlayTime = sessionStorage.getItem("live2dBGM_PlayTime");
+				if (live2dBGM_Num) {
+					if (live2dBGM_Num <= $('input[name=live2dBGM]').length - 1) {
+						bgmPlayNow = parseInt(live2dBGM_Num);
+					}
+				}
+				if (live2dBGM_PlayTime) {
+					bgmPlayTime = parseInt(live2dBGM_PlayTime);
+				}
+				var live2dBGMSrc = bgmListInfo.eq(bgmPlayNow).val();
+				$('#live2d_bgm').attr('data-bgm', bgmPlayNow);
+				$('#live2d_bgm').attr('src', live2dBGMSrc);
+				$('#live2d_bgm')[0].currentTime = bgmPlayTime;
+				$('#live2d_bgm')[0].volume = 0.5;
+				var live2dBGM_IsPlay = sessionStorage.getItem("live2dBGM_IsPlay");
+				var live2dBGM_WindowClose = sessionStorage.getItem("live2dBGM_WindowClose");
+				if (live2dBGM_IsPlay == '0' && live2dBGM_WindowClose == '0') {
+					$('#live2d_bgm')[0].play();
+					$('#musicButton').addClass('play');
+				}
+				sessionStorage.setItem("live2dBGM_WindowClose", '1');
+				$('#musicButton').on('click', function () {
+					if ($('#musicButton').hasClass('play')) {
+						$('#live2d_bgm')[0].pause();
+						$('#musicButton').removeClass('play');
+						sessionStorage.setItem("live2dBGM_IsPlay", '1');
+					} else {
+						$('#live2d_bgm')[0].play();
+						$('#musicButton').addClass('play');
+						sessionStorage.setItem("live2dBGM_IsPlay", '0');
+					}
+				});
+				window.onbeforeunload = function () {
+					sessionStorage.setItem("live2dBGM_WindowClose", '0');
+					if ($('#musicButton').hasClass('play')) {
+						sessionStorage.setItem("live2dBGM_IsPlay", '0');
+					}
+				}
+				document.getElementById('live2d_bgm').addEventListener("timeupdate", function () {
+					var live2dBgmPlayTimeNow = document.getElementById('live2d_bgm').currentTime;
+					sessionStorage.setItem("live2dBGM_PlayTime", live2dBgmPlayTimeNow);
+				});
+				document.getElementById('live2d_bgm').addEventListener("ended", function () {
+					var listNow = parseInt($('#live2d_bgm').attr('data-bgm'));
+					listNow++;
+					if (listNow > $('input[name=live2dBGM]').length - 1) {
+						listNow = 0;
+					}
+					var listNewSrc = $('input[name=live2dBGM]').eq(listNow).val();
+					sessionStorage.setItem("live2dBGM_Num", listNow);
+					$('#live2d_bgm').attr('src', listNewSrc);
+					$('#live2d_bgm')[0].play();
+					$('#live2d_bgm').attr('data-bgm', listNow);
+				});
+				document.getElementById('live2d_bgm').addEventListener("error", function () {
+					$('#live2d_bgm')[0].pause();
+					$('#musicButton').removeClass('play');
+					showMessage('音乐似乎加载不出来了呢！', 0);
+				});
+			}
+			//获取用户名
+			var live2dUser = sessionStorage.getItem("live2duser");
+			if (live2dUser !== null) {
+				$('#AIuserName').val(live2dUser);
+			}
+			//获取位置
+			var landL = sessionStorage.getItem("historywidth");
+			var landB = sessionStorage.getItem("historyheight");
+			if (landL == null || landB == null) {
+				landL = '5px'
+				landB = '0px'
+			}
+			$('#landlord').css('left', landL + 'px');
+			$('#landlord').css('bottom', landB + 'px');
+			//移动
+			function getEvent() {
+				return window.event || arguments.callee.caller.arguments[0];
+			}
+			var smcc = document.getElementById("landlord");
+			var moveX = 0;
+			var moveY = 0;
+			var moveBottom = 0;
+			var moveLeft = 0;
+			var moveable = false;
+			var docMouseMoveEvent = document.onmousemove;
+			var docMouseUpEvent = document.onmouseup;
+			smcc.onmousedown = function () {
+				var ent = getEvent();
+				moveable = true;
+				moveX = ent.clientX;
+				moveY = ent.clientY;
+				var obj = smcc;
+				moveBottom = parseInt(obj.style.bottom);
+				moveLeft = parseInt(obj.style.left);
+				if (isFirefox = navigator.userAgent.indexOf("Firefox") > 0) {
+					window.getSelection().removeAllRanges();
+				}
+				document.onmousemove = function () {
+					if (moveable) {
+						var ent = getEvent();
+						var x = moveLeft + ent.clientX - moveX;
+						var y = moveBottom + (moveY - ent.clientY);
+						obj.style.left = x + "px";
+						obj.style.bottom = y + "px";
+					}
+				};
+				document.onmouseup = function () {
+					if (moveable) {
+						var historywidth = obj.style.left;
+						var historyheight = obj.style.bottom;
+						historywidth = historywidth.replace('px', '');
+						historyheight = historyheight.replace('px', '');
+						sessionStorage.setItem("historywidth", historywidth);
+						sessionStorage.setItem("historyheight", historyheight);
+						document.onmousemove = docMouseMoveEvent;
+						document.onmouseup = docMouseUpEvent;
+						moveable = false;
+						moveX = 0;
+						moveY = 0;
+						moveBottom = 0;
+						moveLeft = 0;
+					}
+				};
+			};
+		}
+		$(document).ready(function () {
+			var AIimgSrc = [];
+			let chooseLive2d = 'aoba'
+			if (chooseLive2d === 'histoire') {
+				AIimgSrc.push(message_Path + "model/histoire/histoire.1024/texture_00.png");
+				AIimgSrc.push(message_Path + "model/histoire/histoire.1024/texture_01.png");
+				AIimgSrc.push(message_Path + "model/histoire/histoire.1024/texture_02.png");
+				AIimgSrc.push(message_Path + "model/histoire/histoire.1024/texture_03.png");
+			} else if (chooseLive2d === 'rem') {
+				AIimgSrc.push(message_Path + "model/rem/remu2048/texture_00.png");
+			} else if (chooseLive2d === 'aoba') {
+				AIimgSrc.push(message_Path + "model/aoba/textures/texture_00.png");
+			} else if (chooseLive2d === 'hijiki') {
+				AIimgSrc.push(message_Path + "model/hijiki/moc/hijiki.2048/texture_00.png");
+			} else if (chooseLive2d === 'tororo') {
+				AIimgSrc.push(message_Path + "model/tororo/moc/tororo.2048/texture_00.png");
+			}
+			var images = [];
+			var imgLength = AIimgSrc.length;
+			var loadingNum = 0;
+			for (var i = 0; i < imgLength; i++) {
+				images[i] = new Image();
+				images[i].src = AIimgSrc[i];
+				images[i].onload = function () {
+					loadingNum++;
+					if (loadingNum === imgLength) {
+						var live2dhidden = localStorage.getItem("live2dhidden");
+						if (live2dhidden === "0") {
+							setTimeout(function () {
+								$('#open_live2d').fadeIn(200);
+							}, 1300);
+						} else {
+							setTimeout(function () {
+								$('#landlord').fadeIn(200);
+							}, 1300);
+						}
+						let model = '';
+						if (chooseLive2d === 'histoire') {
+							model = message_Path + "model/histoire/model.json";
+						} else if (chooseLive2d === 'rem') {
+							model = message_Path + "model/rem/model.json";
+						} else if (chooseLive2d === 'aoba') {
+							model = message_Path + "model/aoba/model.json";
+						} else if (chooseLive2d === 'hijiki') {
+							model = message_Path + "model/hijiki/hijiki.model.json";
+						} else if (chooseLive2d === 'tororo') {
+							model = message_Path + "model/tororo/tororo.model.json";
+						}
+						setTimeout(function () {
+							loadlive2d("live2d", model);
+						}, 1000);
+						initLive2d();
+						images = null;
+					}
+				}
+			}
+		});
+	}
+</script>
+  
+  
+</div>
+<script>
+
+  let sideBarOpen = 'sidebar-open';
+  let body = document.body;
+  let back2Top = document.querySelector('#back_to_top'),
+    back2TopText = document.querySelector('#back_to_top_text'),
+    drawerBox = document.querySelector('#drawer_box'),
+    rightSideBar = document.querySelector('.sidebar'),
+    viewport = document.querySelector('body');
+
+  function scrollAnimation(currentY, targetY) {
+
+    let needScrollTop = targetY - currentY
+    let _currentY = currentY
+    setTimeout(() => {
+      const dist = Math.ceil(needScrollTop / 10)
+      _currentY += dist
+      window.scrollTo(_currentY, currentY)
+      if (needScrollTop > 10 || needScrollTop < -10) {
+        scrollAnimation(_currentY, targetY)
+      } else {
+        window.scrollTo(_currentY, targetY)
+      }
+    }, 1)
+  }
+
+  back2Top.addEventListener("click", function (e) {
+    scrollAnimation(document.scrollingElement.scrollTop, 0);
+    e.stopPropagation();
+    return false;
+  });
+
+  window.addEventListener('scroll', function (e) {
+    let percent = document.scrollingElement.scrollTop / (document.scrollingElement.scrollHeight - document.scrollingElement.clientHeight) * 100;
+    if (percent > 1 && !back2Top.classList.contains('back-top-active')) {
+      back2Top.classList.add('back-top-active');
+    }
+    if (percent == 0) {
+      back2Top.classList.remove('back-top-active');
+    }
+    if (back2TopText) {
+      back2TopText.textContent = Math.floor(percent);
+    }
+  });
+
+
+  let hasCacu = false;
+  window.addEventListener('resize', function (e) {
+    calcuHeight();
+  });
+
+  function calcuHeight() {
+    // 动态调整站点概览高度
+    if (!hasCacu && back2Top.classList.contains('pisces') || back2Top.classList.contains('gemini')) {
+      let sideBar = document.querySelector('.sidebar');
+      let navUl = document.querySelector('#site_nav');
+      sideBar.style = 'margin-top:' + (navUl.offsetHeight + navUl.offsetTop + 15) + 'px;';
+      hasCacu = true;
+    }
+  }
+  calcuHeight();
+
+  let open = false, MOTION_TIME = 300, RIGHT_MOVE_DIS = '320px';
+
+  if (drawerBox) {
+    let rightMotions = document.querySelectorAll('.right-motion');
+    let right = drawerBox.classList.contains('right');
+
+    let transitionDir = right ? "transition.slideRightIn" : "transition.slideLeftIn";
+
+    let openProp, closeProp;
+    if (right) {
+      openProp = {
+        paddingRight: RIGHT_MOVE_DIS
+      };
+      closeProp = {
+        paddingRight: '0px'
+      };
+    } else {
+      openProp = {
+        paddingLeft: RIGHT_MOVE_DIS
+      };
+      closeProp = {
+        paddingLeft: '0px'
+      };
+    }
+
+    drawerBox.onclick = function () {
+      open = !open;
+      jQuery.Velocity(rightSideBar, 'stop');
+      jQuery.Velocity(viewport, 'stop');
+      jQuery.Velocity(rightMotions, 'stop');
+      if (open) {
+        jQuery.Velocity(rightSideBar, {
+          width: RIGHT_MOVE_DIS
+        }, {
+          duration: MOTION_TIME,
+          begin: function () {
+            jQuery.Velocity(rightMotions, transitionDir, {});
+          }
+        })
+        jQuery.Velocity(viewport, openProp, {
+          duration: MOTION_TIME
+        });
+      } else {
+        jQuery.Velocity(rightSideBar, {
+          width: '0px'
+        }, {
+          duration: MOTION_TIME,
+          begin: function () {
+            jQuery.Velocity(rightMotions, {
+              opacity: 0
+            });
+          }
+        })
+        jQuery.Velocity(viewport, closeProp, {
+          duration: MOTION_TIME
+        });
+      }
+      for (let i = 0; i < drawerBox.children.length; i++) {
+        drawerBox.children[i].classList.toggle('muse-line');
+      }
+      drawerBox.classList.toggle(sideBarOpen);
+    }
+  }
+
+  // 链接跳转
+  let newWindow = 'false'
+  if (newWindow === 'true') {
+    let links = document.querySelectorAll('.post-body a')
+    links.forEach(item => {
+      if (!item.classList.contains('btn')) {
+        item.setAttribute("target", "_blank");
       }
     })
-    </script>
+  }
 
-                            <div>
-                                <div class="pcpagi">
-    <div class="pagi">
-        <ul>
-            
-            <li><a style="width:100px">&nbsp;</a></li>
-            
-                    <li><a id="page1">1</a></li>
-                    <li><a id="page2" class="active">2</a></li>
-                    <li><a id="page3">3</a></li>
-                    
-            <li><a style="width:100px">&nbsp;</a></li>
-            
-                </ul>
-    </div>
-</div>
+  let faSearch = document.querySelector('#fa_search');
+  faSearch && faSearch.addEventListener('click', function () {
+    document.querySelector('#search_mask').style = ''
+  })
 
-<div id="pagination-prev" style="display:none"> 
-</div>
-<div id="pagination-next" style="display:none"> </div>
+  // 代码高亮
+  hljs.initHighlightingOnLoad();
+  
+  // 离开当前页title变化
+  var leaveTitle = "";
+  var normal_title = document.title;
+  if (leaveTitle) {
+    document.addEventListener('visibilitychange', function () {
+      if (document.visibilityState == 'hidden') {
+        normal_title = document.title;
+        document.title = leaveTitle;
+      } else {
+        document.title = normal_title;
+      }
+    });
+  }
 
-<div class="pagination-container">
-      
-    
-</div>
+</script>
+
+<link rel="stylesheet" href="/media/css/jquery.fancybox.css" />
+<script src="/media/js/jquery.fancybox.js"></script>
 
 <script>
-    var prevstr = document.getElementById("pagination-prev").innerHTML;
-    var nextstr = document.getElementById("pagination-next").innerHTML;
-    var page1 = document.getElementById("page1");
-    var page2 = document.getElementById("page2");
-    var page3 = document.getElementById("page3");
-    page1.innerHTML = '-';
-    page2.innerHTML = '1';
-    page3.innerHTML = '-';
-    if (prevstr.length > 5) {
-        if (prevstr.indexOf("page/") != -1) {
-            var prevnum = parseInt(prevstr.split("page/")[1]);
-            page1.innerHTML = prevnum;
-            page2.innerHTML = prevnum + 1;
-        } else {
-            page1.innerHTML = 1;
-            page2.innerHTML = 2;
-        }
-    }
-    if (nextstr.indexOf("page/") != -1) {
-        var nextnum = parseInt(nextstr.split("page/")[1]);
-        page3.innerHTML = nextnum;
-        page2.innerHTML = nextnum - 1;
-    }
+  let images = document.querySelectorAll('.section img');
+  images.forEach(image => {
+    var parent = image.parentElement;
+    var next = image.nextElementSibling;
+    parent.removeChild(image);
+    var aelem = document.createElement('a');
+    aelem.href = image.src;
+    aelem.dataset['fancybox'] = 'images';
+    aelem.dataset['rel'] = 'fancybox-button';
+    aelem.classList.add('fancybox');
+    aelem.appendChild(image);
+    parent.insertBefore(aelem, next);
+  })
 </script>
-                                <div style="padding-bottom:10%"></div>
-                            </div>
-                        </div>
-                        <div class="col-lg-2"></div>
-                </div>
-                <!-- ----------------左侧菜单栏html 👆-------------------------------------->
-                
-                <!------------------ 顶部菜单栏html👇--------->
-                
-                <!------------------ 顶部菜单栏html👆--------->
-            </div>
-            
-        </div>
-        <div id="bg">
-        </div>
-        <!------- 背景图加载方式👇----- -->
-        <div id="bgchoice" style="display: none">default
-                    </div>
-                    
-                    <div id="bgurl" style="display:none">\media\images\custom-bgimage.jpg</div>
-                       
-        </div>
-        <!------- 背景图加载方式👆 --------------->
-</div>
-</div>
 
-        <div id="landlord">
-            <div class="message" style="opacity:0"></div>
-            <canvas id="live2d" width="240" height="250" class="live2d"></canvas>
-        </div>
-        <div id="domainname" style="display:none">https://violet404.github.io/
-                </div>
+  </div>
 </body>
-</html>
-<!-------------------- live2d功能👇 --------------------------->
 
-<script type="text/javascript">
-    var message_Path = '/live2d/'
-    var home_Path = document.getElementById("domainname").innerHTML + "/"; //此处修改为你的域名，必须带斜杠
-</script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/850552586/ericamcdn@0.1/js/live2d.js"></script>
-<script type="text/javascript" src="https://violet404.github.io//media/live2d/js/message.js"></script>
-<script type="text/javascript">
-    loadlive2d("live2d", "https://violet404.github.io//media/live2d/assets/tororo.model.json");
-</script>
+<div class="search-mask" id="search_mask" style="display: none;">
+  <div class="search-box">
+    <div class="search-title">
+      <i class="fa fa-search"></i>
+      <div class="input-box">
+        <input id="search" type="text" class="language" data-lan="search" placeholder="搜索">
+      </div>
+      <i id="close" class="fa fa-times-circle"></i>
+    </div>
+    <div class="stat-box">
+      <span id="stat_count">0</span><span class="language" data-lan="stat">条相关条目，使用了</span><span id="stat_times">0</span><span class="language" data-lan="stat-time">毫秒</span>
+      <hr>
+    </div>
+    <div class="result" id="result">
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="https://violet404.github.io/post/aa/"" data-c="
+          &lt;h2 id=&#34;3-运行时数据区概述及线程&#34;&gt;3. 运行时数据区概述及线程&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&#34;https://violet404.github.io//post-images/1626172536218.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;br&gt;
+JVM定义了若干程序运行期间使用的数据区，其中一些随虚拟机的创建而创建，随虚拟机推出而销毁；另外一些则随线程的开始结束而创建与销毁。&lt;br&gt;
+&lt;img src=&#34;https://violet404.github.io//post-images/1626160473166.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;4-程序计数器&#34;&gt;4. 程序计数器&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;作用 存储指向下一条指令的地址，即即将执行的指令代码，由执行引擎读取下一条指令。&lt;/li&gt;
+&lt;li&gt;一块很小的内存空间，运行速度最快的空间&lt;/li&gt;
+&lt;li&gt;与线程的生命周期保持一致&lt;/li&gt;
+&lt;li&gt;任何时间一个线程都会只有一个方法在执行=&amp;gt;当前方法。程序计数器会存储当前线程正在执行的方法的JVM指令地址，如果当前线程的当前方法为native方法，则程序计数器为空（undefined）&lt;/li&gt;
+&lt;li&gt;JVM 区域中唯一一个不会OOM的区域&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class PcCounterRegisterTest {
 
-<!-------------------- live2d功能👆--------------------------->
-
-<!------------ 加载全局背景图功能👇（开始时没有写好，这功能有点鸡肋/(ㄒoㄒ)/~~） -->
-<script>
-    var bgchoice = $('#bgchoice').html();
-    var bg = $('#bg');
-    var bgurl = document.getElementById("bgurl").innerHTML;
-    if (bgchoice == 'default')
-        for (var i = 0; i < 3; i++)
-            bgurl = bgurl.replace("\\", "/");
-    bg.css("background", "url('" + bgurl + "')");
-
-    window.onload = function () {
-        aplayerbtnInit();
+    public static void main(String[] args) {
+        int a = 10;
+        int b= 2;
+        int d = 1, e = 5;
+        int c = a + b - 5;
+        System.out.println(c);
+        System.out.println(&amp;quot;Hello World!&amp;quot;);
     }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;1&#34;&gt;&lt;img src=&#34;https://violet404.github.io//post-images/1626162896094.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;ul&gt;
+&lt;li&gt;JVM的多线程是通过线程轮流切换并分配处理器执行时间的方式实现的，在任一确定的时刻，一个处理器（对于多核处理器来说一个内核）都只会执行一条线程中的指令。因此，为了线程切换后能够恢复到正确的执行位置，每个线程都需要由一个独立的程序计数器，各个线程之间计数器互不影响，独立存储。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;5-虚拟机栈&#34;&gt;5. 虚拟机栈&lt;/h2&gt;
+&lt;h4 id=&#34;51-概述&#34;&gt;5.1 概述&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;栈是运行时单位，而堆是存储单位&lt;/li&gt;
+&lt;li&gt;生命周期与线程一致&lt;/li&gt;
+&lt;li&gt;一个栈帧对应一个java方法&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;6-本地方法接口&#34;&gt;6. 本地方法接口&lt;/h2&gt;
+&lt;h2 id=&#34;7-本地方法栈&#34;&gt;7. 本地方法栈&lt;/h2&gt;
+&lt;h2 id=&#34;8-堆&#34;&gt;8. 堆&lt;/h2&gt;
+&lt;h2 id=&#34;9-方法区&#34;&gt;9. 方法区&lt;/h2&gt;
+&lt;h2 id=&#34;10-对象的实例化内存布局与访问定位&#34;&gt;10. 对象的实例化内存布局与访问定位&lt;/h2&gt;
+&lt;h2 id=&#34;11-直接内存&#34;&gt;11. 直接内存&lt;/h2&gt;
+&lt;h2 id=&#34;12-执行引擎&#34;&gt;12. 执行引擎&lt;/h2&gt;
+&lt;h2 id=&#34;13-stringtable&#34;&gt;13. StringTable&lt;/h2&gt;
+&lt;h2 id=&#34;14-垃圾回收算法&#34;&gt;14. 垃圾回收算法&lt;/h2&gt;
+&lt;h2 id=&#34;15-垃圾回收器&#34;&gt;15. 垃圾回收器&lt;/h2&gt;
+">JVM 内存与垃圾回收（二）</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="https://violet404.github.io/post/jvm-1/"" data-c="
+          &lt;h2 id=&#34;1-jvm与java体系结构&#34;&gt;&lt;strong&gt;1. JVM与Java体系结构&lt;/strong&gt;&lt;/h2&gt;
+&lt;h3 id=&#34;11-跨平台性&#34;&gt;1.1 跨平台性&lt;/h3&gt;
+&lt;p&gt;Java 是一门跨平台的语言，JVM则跨语言的平台，JSR-292 JVM可以运行非Java语言编写的程序&lt;br&gt;
+&lt;img src=&#34;https://violet404.github.io//post-images/1625458925588.jpg&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;br&gt;
+Java平台的多语言混合编程将成主流方向，使用特定领域的语言解决特定领域的问题&lt;br&gt;
+&lt;img src=&#34;https://violet404.github.io//post-images/1625458974532.jpg&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/p&gt;
+&lt;h3 id=&#34;12-虚拟机&#34;&gt;1.2 虚拟机&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;系统虚拟机 对物理计算机的仿真 VMware&lt;/li&gt;
+&lt;li&gt;程序虚拟机 为执行单个计算机程序而设计 JVM&lt;/li&gt;
+&lt;li&gt;Java技术的核心就是JVM&lt;br&gt;
+&lt;img src=&#34;https://violet404.github.io//post-images/1625460127897.jpg&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;13-jvm-整体结构-hotspot&#34;&gt;1.3 JVM 整体结构 HotSpot&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&#34;https://violet404.github.io//post-images/1625458154777.jpg&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;br&gt;
+&lt;img src=&#34;https://violet404.github.io//post-images/1625458204972.jpg&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/p&gt;
+&lt;h3 id=&#34;14-jvm-架构模型&#34;&gt;1.4 JVM 架构模型&lt;/h3&gt;
+&lt;p&gt;Java 编译器输入的指令流是一种基于栈的指令集架构，除此之外还有一种基于寄存器的指令集架构&lt;br&gt;
+这两种指令集架构的区别&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;基于栈式机构的特点&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;设计 &lt;em&gt;&lt;strong&gt;实现简单&lt;/strong&gt;&lt;/em&gt;，适用于资源受限的系统&lt;/li&gt;
+&lt;li&gt;避开寄存器的分配难题，使用零地址指令（8位字节对齐）方式分配&lt;/li&gt;
+&lt;li&gt;指令流中大部分指令是零地址，执行过程依赖与操作数栈，&lt;em&gt;&lt;strong&gt;指令集更小（不代表指令少）&lt;/strong&gt;&lt;/em&gt;，编译器易实现&lt;/li&gt;
+&lt;li&gt;不需要硬件支持，移植性好，易实现 &lt;em&gt;&lt;strong&gt;跨平台&lt;/strong&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;基于寄存器架构的特点&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;典型的应用是X86二进制指令集&lt;/li&gt;
+&lt;li&gt;依赖硬件，移植性差&lt;/li&gt;
+&lt;li&gt;性能优秀，&lt;em&gt;&lt;strong&gt;执行高效&lt;/strong&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;花费更少的指令完成操作&lt;/li&gt;
+&lt;li&gt;大部分指令以一地址指令、二地址指令和三地址指令为主，16位双字节对齐&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;2-类加载子系统&#34;&gt;&lt;strong&gt;2. 类加载子系统&lt;/strong&gt;&lt;/h2&gt;
+&lt;h3 id=&#34;21-类加载子系统的作用&#34;&gt;2.1 类加载子系统的作用：&lt;/h3&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;1&#34;&gt;&lt;img src=&#34;https://violet404.github.io//post-images/1626151607809.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;ol&gt;
+&lt;li&gt;负责从文件系统或者网络中加载class文件，class开头有特定的文件标识&lt;/li&gt;
+&lt;li&gt;只负责加载class文件，至于能否运行又执行引擎决定&lt;/li&gt;
+&lt;li&gt;加载的类信息存放在方法区内存空间，除类的信息之外，还包括运行时的常量池的信息，&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;22-类的加载过程&#34;&gt;2.2 类的加载过程&lt;/h3&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;2&#34;&gt;&lt;img src=&#34;https://violet404.github.io//post-images/1626173300019.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;h4 id=&#34;221-加载&#34;&gt;2.2.1 &lt;strong&gt;加载&lt;/strong&gt;&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;通过一个类的全类名获取定义此类的二进制流&lt;/li&gt;
+&lt;li&gt;将这个字节流代表的静态存储结构转化位方法去运行时数据结构&lt;/li&gt;
+&lt;li&gt;在内存中生成一个代表此类的&lt;code&gt;java.lang.Class&lt;/code&gt;对象，作为方法区该类的各种数据的访问入口&lt;/li&gt;
+&lt;li&gt;类的加载器并不需要等到某个类被“首次主动使用”时再加载它&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;JVM规范允许类加载器在预料将要被使用时就预先加载它，如果在预先加载的过程中遇到.class文件缺失或存在错误，类加载器必须在程序首次主动使用该类时才报告错误(LinkError错误)&lt;/li&gt;
+&lt;li&gt;如果这个类一直没有被程序主动使用，那么类加载器就不会报告错误。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol start=&#34;5&#34;&gt;
+&lt;li&gt;加载.class文件的方式&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;从本地系统中直接加载&lt;/li&gt;
+&lt;li&gt;通过网络下载.class文件&lt;/li&gt;
+&lt;li&gt;从zip，jar等归档文件中加载.class文件&lt;/li&gt;
+&lt;li&gt;从专有数据库中提取 .class文件&lt;/li&gt;
+&lt;li&gt;将Java源文件动态编译为.class文件&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;222-验证&#34;&gt;2.2.2 &lt;strong&gt;验证&lt;/strong&gt;&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;em&gt;&lt;strong&gt;确保class文件符合虚拟机规范&lt;/strong&gt;&lt;/em&gt;，不会危害虚拟机自身安全&lt;/li&gt;
+&lt;li&gt;文件格式验证、元数据验证、字节码验证、符号引用验证&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;223-准备&#34;&gt;2.2.3. &lt;strong&gt;准备&lt;/strong&gt;&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;em&gt;&lt;strong&gt;为&lt;font color=&#34;red&#34;&gt;类变量(静态变量)&lt;/font&gt;分配内存并设置&lt;font color=&#34;red&#34;&gt;初始值&lt;/font&gt;&lt;/strong&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;不包括常量、实例变量，其中实例变量在类实例化时随对象分配在堆中，类变量在编译阶段就会分配，而在准备阶段时就会显式的初始化（那种不确定的常量的情形待验证！）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;224-解析&#34;&gt;2.2.4 &lt;strong&gt;解析&lt;/strong&gt;&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;em&gt;&lt;strong&gt;&lt;font color=&#34;red&#34;&gt;将常量池的符号引用转换位直接引用&lt;/font&gt;&lt;/strong&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;符号引用：一组符号来描述引用的目标，符号引用的字面量形式在java虚拟机规范的Class文件格式&lt;/li&gt;
+&lt;li&gt;直接引用：直接指向目标的指针、相对偏移量或者一个间接定位到目标的句柄&lt;/li&gt;
+&lt;li&gt;解析操作主要针对类、接口、字段、类方法、接口方法等，对应常量池中的CONSTANT_class_info、CONSTANT_Fieldref_info、CONSTANT_Methodref_info等&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;225-初始化&#34;&gt;2.2.5 &lt;strong&gt;初始化&lt;/strong&gt;&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;初始化就是执行类构造器方法&lt;code&gt;&amp;lt;clinit&amp;gt;()&lt;/code&gt;的过程&lt;/li&gt;
+&lt;li&gt;不需要定义，由javac自动收集类中 &lt;em&gt;&lt;strong&gt;所有类变量的赋值动作和静态代码块语句合并而来&lt;/strong&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;&amp;lt;clinit&amp;gt;()&lt;/code&gt;对于类或者接口不是必须的，如果一个类没有静态代码块，也没有对变量的赋值操作，编译器将不会为该类生成&lt;code&gt;&amp;lt;clinit&amp;gt;()&lt;/code&gt;方法&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;&lt;strong&gt;构造器方法的指令按照语句在源文件出现的顺序执行&lt;/strong&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;静态代码块只能访问定义在代码块之前的类变量；定义在后台的类变量，前面的代码块可以赋值，但是不能访问；&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;&amp;lt;clinit&amp;gt;()&lt;/code&gt;不等同与类的构造器&lt;code&gt;&amp;lt;init&amp;gt;()&lt;/code&gt;，任何一个类生命以后，至少会存在一个构造器函数（虚拟机视角为&lt;code&gt;&amp;lt;init&amp;gt;()&lt;/code&gt;）&lt;/li&gt;
+&lt;li&gt;JVM会在执行子类&lt;code&gt;&amp;lt;clinit&amp;gt;()&lt;/code&gt;方法之前执行父类的&lt;code&gt;&amp;lt;clinit&amp;gt;()&lt;/code&gt;方法&lt;/li&gt;
+&lt;li&gt;JVM保证&lt;code&gt;&amp;lt;clinit&amp;gt;()&lt;/code&gt;在多线程场景下的同步执行&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;226-类的使用&#34;&gt;2.2.6 &lt;strong&gt;类的使用&lt;/strong&gt;&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;所有的Java虚拟机实现必须在每个类或者接口被Java程序 &lt;em&gt;&lt;strong&gt;&lt;font color=&#34;red&#34;&gt;“首次主动使用”&lt;/font&gt;&lt;/strong&gt;&lt;/em&gt; 时才初始化他们。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;创建类的实例&lt;/li&gt;
+&lt;li&gt;访问某个类、接口的静态变量，或对静态变量赋值&lt;/li&gt;
+&lt;li&gt;调用类的静态方法&lt;/li&gt;
+&lt;li&gt;反射&lt;/li&gt;
+&lt;li&gt;初始化一个类的子类&lt;/li&gt;
+&lt;li&gt;JVM启动时标记为启动类的类&lt;/li&gt;
+&lt;li&gt;jdk7 开始提供的动态语言支持 &lt;code&gt;java.lang.invoke.MethodHandle&lt;/code&gt;实例的解析结果&lt;code&gt;REF_getStatic&lt;/code&gt;、&lt;code&gt;REF_putStatic&lt;/code&gt;、&lt;code&gt;REF_invokeStatic&lt;/code&gt;句柄对应的类如果没有初始化，则初始化&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;除上述7中情况外，其他使用Java类的方式均为 &lt;em&gt;&lt;strong&gt;&lt;font color=&#34;red&#34;&gt;被动使用，不会导致类的初始化&lt;/font&gt;&lt;/strong&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;类被动使用示例&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;/*
+-XX:+TraceClassLoading 用于追踪类的加载信息并打印出来
+-XX:+&amp;lt;option&amp;gt; 表示开启option选项
+-XX:-&amp;lt;option&amp;gt; 表示关闭option选项
+-XX:&amp;lt;option&amp;gt;=&amp;lt;value&amp;gt;,表示将option的选项的值设置为value
+*/
+class SuperClass {
+
+    static {
+        System.out.println(&amp;quot;SuperClass initialization&amp;quot;);
+    }
+
+    public static String value = &amp;quot;Super&amp;quot;;
+}
+
+class SubClass extends SuperClass {
+
+    static {
+        System.out.println(&amp;quot;SubClass initialization&amp;quot;);
+    }
+}
+
+class ConstantClass {
+
+    static {
+        System.out.println(&amp;quot;ConstantClass initialization&amp;quot;);
+    }
+    public static final String HELLO_WORLD = &amp;quot;Hello Constant&amp;quot;;
+}
+
+class ConstantClass1 {
+
+    static {
+        System.out.println(&amp;quot;ConstantClass1 initialization&amp;quot;);
+    }
+    public static final String UUID_STR = UUID.randomUUID().toString();
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;3.1 &lt;em&gt;&lt;strong&gt;对于静态字段，只有直接定义该变量的类才会初始化&lt;/strong&gt;&lt;/em&gt;；通过子类引用父类定义的静态变量，指挥触发父类的初始化，而不会导致子类初始化（仅指初始化阶段）&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class NotInitializationTest {
+
+    public static void main(String[] args) {
+        // SuperClass initialization 
+        // Hello Super
+        System.out.println(&amp;quot;Hello &amp;quot; + SubClass.value); 
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;3.2 &lt;em&gt;&lt;strong&gt;通过数组定义来引用类，不会触发此类的初始化&lt;/strong&gt;&lt;/em&gt; 对于数组实例来说，其类型是由JVM在运行期间动态生成的，表示为&lt;code&gt;[LSuperClass&lt;/code&gt;形式。动态生成的类型（类似于动态代理），其父类型就是Object。&lt;br&gt;
+对于数组来说，JavaDoc经常讲构成数组的元素称为Component，实际上就是将数组降低一个维度后的类型。&lt;br&gt;
+助记词：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;anewarray&lt;/strong&gt; : 表示创建一个引用类型的(如类、接口、数组)数组，并将其引用值压入栈顶&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;newarray&lt;/strong&gt; : 表示创建一个指定的原始类型（如int、float、char等）的数组，并将其压入栈顶&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class NotInitializationTest {
+
+    public static void main(String[] args) {
+        SuperClass[] sca = new SuperClass[10];
+        System.out.println(sca.getClass()); // class [LSuperClass;
+        System.out.println(sca.getClass().getSuperclass());  // class java.lang.Object
+        SuperClass [][] sca1 =  new SuperClass[1][1];
+        System.out.println(sca1.getClass()); // class [[LSuperClass;
+        System.out.println(sca1.getClass().getSuperclass()); // class java.lang.Object
+
+        System.out.println(&amp;quot;==============&amp;quot;);
+        int [] ints = new int[1];
+        System.out.println(ints.getClass()); // class [I
+        System.out.println(ints.getClass().getSuperclass()); 
+
+        byte [] bytes = new byte[1];
+        System.out.println(bytes.getClass()); // class [B
+        System.out.println(bytes.getClass().getSuperclass());
+
+        short [] shorts = new short[1];
+        System.out.println(shorts.getClass()); // class [S
+        System.out.println(shorts.getClass().getSuperclass());
+
+        boolean [] booleans =new boolean[1];
+        System.out.println(booleans.getClass()); // class [Z
+        System.out.println(booleans.getClass().getSuperclass()); 
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;3.3 &lt;em&gt;&lt;strong&gt;针对在编译阶段就能确定常量值的常量&lt;/strong&gt;&lt;/em&gt;  ,在编译阶段就会存入调用类的常量池，本质上没有直接引用定义常量的类，所以 &lt;em&gt;&lt;strong&gt;不会触发定义常量类的初始化&lt;/strong&gt;&lt;/em&gt; ；  &lt;em&gt;&lt;strong&gt;当一个常量的值并非编译期可以确定的&lt;/strong&gt;&lt;/em&gt;，那么其值就不会被放到调用类的常量池中，这时的程序运行时，会导致 &lt;em&gt;&lt;strong&gt;主动使用这个常量所在的类&lt;/strong&gt;&lt;/em&gt; ，显然 &lt;em&gt;&lt;strong&gt;会导致这个类被初始化&lt;/strong&gt;&lt;/em&gt; 。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;/**
+ConstantClass.HELLO_WORLD所表示的常量存入NotInitializationTest常量池中, 
+之后ConstantClass与NotInitializationTest将再无关系，甚至，可以将ConstantClass删除
+
+但是UUID是多少只有在运行期间才会被确定，所以会触发ConstantClass1的初始化
+*/
+public class NotInitializationTest {
+
+    public static void main(String[] args) {
+        System.out.println(ConstantClass.HELLO_WORLD); 
+        System.out.println(ConstantClass1.UUID_STR); 
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;3.4 &lt;em&gt;&lt;strong&gt;一个接口初始化时并不要求父接口全部完成初始化，只有真正使用父接口时才会触发初始化&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;interface SuperInterface {
+
+    Thread iSuperThread = new Thread() {
+        {
+            System.out.println(&amp;quot;SuperInterface init&amp;quot;);
+        }
+    };
+
+    int SUPER_CONSTANT = 111111;
+
+    int SUPER_DYNAMIC = new Random().nextInt(5);
+}
+
+interface SubInterface extends SuperInterface {
+
+    Thread iSubThread = new Thread() {
+        {
+            System.out.println(&amp;quot;SubInterface init&amp;quot;);
+        }
+    };
+    int SUB_CONSTANT = 222222;
+
+    int SUB_DYNAMIC = new Random().nextInt(4);
+}
+
+class ImplementClass implements SubInterface {
+
+    public static String IMPLEMENT_CONSTANT = &amp;quot;ImplementClass&amp;quot;;
+    
+    public static String IMPLEMENT_DYNAMIC = UUID.randomUUID().toString();
+    
+    static {
+
+        System.out.println(&amp;quot;ImplementClass init&amp;quot;);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;3.4.1. 接口的在编译阶段即可确定常量值的常量使用与类常量情况一致&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;// 接口与实现类的编译文件删掉后正常=&amp;gt;相关常量已经写入InterfaceNotInitializationTest常量池中
+public class InterfaceNotInitializationTest {
+
+    public static void main(String[] args) {
+
+        System.out.println(SubInterface.SUPER_CONSTANT);
+        System.out.println(ImplementClass.SUPER_CONSTANT);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;3.4.2. 通过子接口调用接口父接口编译阶段不能确定值的常量, 父接口会触发初始化，子接口&lt;strong&gt;应该&lt;/strong&gt;不会；即使通过实现类调用，也只会触发定义这个常量所在接口的初始化&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class InterfaceInitializationTest {
+
+    public static void method1() {
+        // SuperInterface init
+        // 没有打印出子接口初始化的信息，但是删除子接口后会报错
+        System.out.println(SubInterface.SUPER_DYNAMIC);
+    }
+
+    public static void method2() {
+        // SuperInterface init
+        // 没有打印出子接口初始化的信息，删除子接口后正常
+        System.out.println(ImplementClass.SUPER_DYNAMIC);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;3.4.3. 调用实现类的两种常量=&amp;gt;实现类初始化并不会导致所实现的接口完成初始化&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class InterfaceInitializationTest {
+
+    public static void method1() {
+        System.out.println(ImplementClass.IMPLEMENT_CONSTANT);
+    }
+
+    public static void method2() {
+        System.out.println(ImplementClass.IMPLEMENT_DYNAMIC);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;23-类加载器&#34;&gt;2.3 类加载器&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&#34;https://violet404.github.io//post-images/1626152456313.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;br&gt;
+这四者为包含关系，&lt;strong&gt;不是继承关系&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class ClassLoaderTest {
+
+    public static void main(String[] args) {
+        // 获取系统类加载器
+        ClassLoader systemClassLoader = ClassLoader.getSystemClassLoader();
+        System.out.println(systemClassLoader);
+
+        // 获取扩展类加载器，系统类加载的上层
+        ClassLoader extensionClassLoader = systemClassLoader.getParent();
+        System.out.println(extensionClassLoader);
+
+        // 扩展类加载器的上层并不是BootStrap ClassLoader，而是Null
+        ClassLoader bootStrapClassLoader = extensionClassLoader.getParent();
+        System.out.println(bootStrapClassLoader);
+
+        // 对于用户自定义的类（Test），默认使用系统类加载器
+        ClassLoader classLoader = Test.class.getClassLoader();
+        System.out.println(classLoader);
+
+        // Java 核心类库都是由引导类加载器进行加载
+        ClassLoader classLoader1 = String.class.getClassLoader();
+        System.out.println(classLoader1); // null
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ol&gt;
+&lt;li&gt;按照虚拟机规范，分为两类: 引导类加载器、自定义类加载器&lt;/li&gt;
+&lt;li&gt;引导类加载器:&lt;code&gt;BootStrap ClassLoader&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;C/C++ 语言实现&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;加载Java核心类库&lt;/strong&gt;，提供JVM自身需要的类
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;JAVA_HOME/jre/lib/rt.jar&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;JAVA_HOME/jre/lib/resources.jar&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;sun.boot.class.path&lt;/code&gt;路径下的内容&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;不是继承于ClassLoader&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;加载 扩展类加载器与系统类加载器&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;处于安全考虑，只加载包名java、javax、sun等开头的类&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;自定义加载器：Java语言实现 派生于&lt;code&gt;ClassLoader&lt;/code&gt;的类加载器&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;扩展类加载器
+&lt;ol&gt;
+&lt;li&gt;父 类加载器为启动类加载器&lt;/li&gt;
+&lt;li&gt;从&lt;code&gt;java.ext.dirs&lt;/code&gt;系统属性所指定的目录加载类库、或JDK安装路径下&lt;code&gt;jre/lib/ext&lt;/code&gt;目录下加载类库，如果用户创建的jar放在该目录下，也将由扩展类加载器进行加载&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;应用/程序/系统类加载器
+&lt;ol&gt;
+&lt;li&gt;父 类加载器为扩展类加载器&lt;/li&gt;
+&lt;li&gt;负责加载&lt;code&gt;classpath&lt;/code&gt;或者系统属性&lt;code&gt;java.class.path&lt;/code&gt;指定路径下的类库&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;程序中默认的类加载器&lt;/strong&gt;，&lt;/li&gt;
+&lt;li&gt;通过&lt;code&gt;ClassLoader#getSystemClassLoader()&lt;/code&gt;方法获取该类加载器&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;用户自定义类加载器
+&lt;ul&gt;
+&lt;li&gt;场景
+&lt;ol&gt;
+&lt;li&gt;隔离加载类&lt;/li&gt;
+&lt;li&gt;修改类的加载方式&lt;/li&gt;
+&lt;li&gt;扩展加载源&lt;/li&gt;
+&lt;li&gt;防止代码泄露&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;实现步骤
+&lt;ol&gt;
+&lt;li&gt;继承抽象类&lt;code&gt;ClassLoader&lt;/code&gt;，1.2之前重写&lt;code&gt;loadClass()&lt;/code&gt;方法，1.2之后建议建议将加载逻辑写在&lt;code&gt;findClass()&lt;/code&gt;方法&lt;/li&gt;
+&lt;li&gt;如果没有过于复杂的需求建议直接实现&lt;code&gt;URLClassLoader&lt;/code&gt;类，避免自己编写&lt;code&gt;findClass()&lt;/code&gt;方法及获取字节码流，使自定义类加载器更加简洁&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;24-classloader&#34;&gt;2.4 ClassLoader&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;若有一个类加载器能够成功加载某个类，那么这个类加载器成为该类的定义类加载器&lt;/li&gt;
+&lt;li&gt;任何一个类都有一个定义这个类的&lt;code&gt;ClassLoader&lt;/code&gt;的引用&lt;/li&gt;
+&lt;li&gt;所有能成功返回某个Class对象引用的类加载器（包括定义类加载器）都被称为该类的初始类加载器&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;对于数组的类加载器来说，通过&lt;code&gt;Class.getClassLoader()&lt;/code&gt; 返回的和数组元素的类型类加载器是一样的，如果数组的元素是原生类型的，那么这个数组是没有类加载器的。&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;获取当前类的类加载器&lt;code&gt;claszz.getClassLoader()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;获取当前线程上下文的类加载器&lt;code&gt;Thread.currentThread().getContextClassLoader()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;获取系统类加载器&lt;code&gt;ClassLoader.getSystemClassLoader()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;获取调用者的类加载器&lt;code&gt;DriverManager.getCallerClassLoader()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;自定义类加载器，&lt;br&gt;
+下面的代码执行发现自定义的类加载器并未生效，因为&lt;code&gt;CustomizationClassLoader&lt;/code&gt;使用系统类加载器作为该类加载器的父 类加载器，而&lt;code&gt;ClassLoaderTest&lt;/code&gt;属于classpath下，系统类加载器可以加载classpath下的类，所以&lt;code&gt;CustomizationClassLoader&lt;/code&gt;未生效；将&lt;code&gt;ClassLoaderTest.class&lt;/code&gt;移动至&lt;code&gt;D:/&lt;/code&gt;同时将项目中生成的&lt;code&gt;ClassLoaderTest&lt;/code&gt;删除，并把&lt;code&gt;CustomizationClassLoader.filePathPrefix&lt;/code&gt; 更新为&lt;code&gt;D:/&lt;/code&gt;，重新实行代码，发现先&lt;code&gt;CustomizationClassLoader&lt;/code&gt;生效&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class CustomizationClassLoader extends ClassLoader {
+
+    private String classLoaderName;
+
+    private final String fileExtension = &amp;quot;.class&amp;quot;;
+
+    @setter
+    private String filePathPrefix = &amp;quot;out/production/CodeWar/&amp;quot;;
+
+    public CustomizationClassLoader(String classLoaderName) {
+        this.classLoaderName = classLoaderName;
+    }
+
+    public CustomizationClassLoader(ClassLoader classLoader, String classLoaderName) {
+        super(classLoader);
+        this.classLoaderName = classLoaderName;
+    }
+
+    @Override
+    protected Class&amp;lt;?&amp;gt; findClass(String name) throws ClassNotFoundException {
+        byte[] data = loadClassData(name);
+        return defineClass(name, data, 0, data.length);
+    }
+
+    private byte[] loadClassData(String name) {
+        byte[] data = null;
+
+        try (InputStream inputStream = new FileInputStream(filePathPrefix
+                + name.replace(&amp;quot;.&amp;quot;, &amp;quot;/&amp;quot;) + fileExtension);
+             ByteArrayOutputStream baos = new ByteArrayOutputStream();) {
+            int ch = 0;
+            while (-1 != (ch = inputStream.read())) {
+                baos.write(ch);
+            }
+            data = baos.toByteArray();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return data;
+    }
+
+    public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+
+        CustomizationClassLoader classLoader =
+                new CustomizationClassLoader(CustomizationClassLoader.class.getClassLoader(), &amp;quot;CustomizationClassLoader&amp;quot;);
+
+        Class&amp;lt;?&amp;gt; test = classLoader.loadClass(&amp;quot;ClassLoaderTest&amp;quot;);
+
+        System.out.println(test.newInstance());
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ol start=&#34;10&#34;&gt;
+&lt;li&gt;命名空间&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class CustomizationClassLoaderTest {
+    
+    public static void main(String[] args) {
+
+        CustomizationClassLoader classLoader = 
+                new CustomizationClassLoader(&amp;quot;CustomizationClassLoader&amp;quot;);
+        classLoader.setFilePathPrefix(&amp;quot;D:/&amp;quot;);
+        Class&amp;lt;?&amp;gt; test = classLoader.loadClass(&amp;quot;ClassLoaderTest&amp;quot;);
+        System.out.println(&amp;quot;class: &amp;quot;test.hashCode());
+        System.out.println(&amp;quot;classLoader: &amp;quot;test.getClassLoader());
+
+        CustomizationClassLoader classLoader1 = 
+                new CustomizationClassLoader(&amp;quot;CustomizationClassLoader1&amp;quot;);
+        classLoader1.setFilePathPrefix(&amp;quot;D:/&amp;quot;);
+        Class&amp;lt;?&amp;gt; test1 = classLoader1.loadClass(&amp;quot;ClassLoaderTest&amp;quot;);
+        System.out.println(&amp;quot;class: &amp;quot;test1.hashCode());
+        System.out.println(&amp;quot;classLoader: &amp;quot;test1.getClassLoader());
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;ClassLoaderTest被加载了两次，因为Class对象的hashCode不同，&lt;/li&gt;
+&lt;li&gt;JVM中表示两个类为同一个类的必要条件
+&lt;ol&gt;
+&lt;li&gt;类的全限定名相同&lt;/li&gt;
+&lt;li&gt;加载该类的类加载器（ClassLoader的实例对象）相同&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;每一个类加载器都有自己的命名空间，命名空间由该类加载器及所有父类加载器所加载类组成&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;&lt;strong&gt;在同一个命名空间下，不会出现全限定名完全相同的两个类&lt;/strong&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;&lt;strong&gt;不同的命名空间中，可能会出现全限定名完全相同的两个类&lt;/strong&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class CustomizationClassLoaderTest {
+    
+    public static void main(String[] args) {
+
+        CustomizationClassLoader classLoader = 
+                new CustomizationClassLoader(&amp;quot;CustomizationClassLoader&amp;quot;);
+        classLoader.setFilePathPrefix(&amp;quot;D:/&amp;quot;);
+        Class&amp;lt;?&amp;gt; test = classLoader.loadClass(&amp;quot;ClassLoaderTest&amp;quot;);
+        System.out.println(&amp;quot;class: &amp;quot;test.hashCode());
+        System.out.println(&amp;quot;classLoader: &amp;quot;test.getClassLoader());
+
+        CustomizationClassLoader classLoader1 = 
+                new CustomizationClassLoader(classLoader,&amp;quot;CustomizationClassLoader1&amp;quot;);
+        classLoader1.setFilePathPrefix(&amp;quot;D:/&amp;quot;);
+        Class&amp;lt;?&amp;gt; test1 = classLoader1.loadClass(&amp;quot;ClassLoaderTest&amp;quot;);
+        System.out.println(&amp;quot;class: &amp;quot;test1.hashCode());
+        System.out.println(&amp;quot;classLoader: &amp;quot;test1.getClassLoader());
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;&lt;strong&gt;一个类何时结束生命周期，取决于代表它的Class对象合适结束生命周期&lt;/strong&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;Java虚拟机自带的加载器加载的类不会在整个jvm的生命周期中被卸载，而自定义加载器加载的类可以被卸载 &lt;em&gt;&lt;strong&gt;-XX:+TraceClassUnloading&lt;/strong&gt;&lt;/em&gt; 需要代码中显示的将ClassLoader及ClassLoader加载的类置空&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;&lt;strong&gt;子加载器所加载的类能够访问到父加载器所加载的类&lt;/strong&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;&lt;strong&gt;父加载器所加载的类无法访问到子类加载器所加载的类&lt;/strong&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;class Test1 {
+
+    public Test1() {
+        System.out.println(&amp;quot;Test1 loaded by &amp;quot; + Test1.class.getClassLoader());
+    }
+}
+
+class Test2 {
+
+    public Test2() {
+        System.out.println(&amp;quot;Test2 loaded by &amp;quot; + Test2.class.getClassLoader());
+        new Test1();
+    }
+}
+
+public class CustomizationClassLoaderTest {
+    
+    public static void method1() {
+
+        CustomizationClassLoader classLoader = 
+                new CustomizationClassLoader(&amp;quot;CustomizationClassLoader&amp;quot;);
+        classLoader.setFilePathPrefix(&amp;quot;D:/&amp;quot;);
+        Class&amp;lt;?&amp;gt; test = classLoader.loadClass(&amp;quot;Test2&amp;quot;);
+        System.out.println(&amp;quot;class: &amp;quot;test.hashCode());
+        test.newInstance();
+    }
+
+    // 将工程下Test2、Test1移动到D:/，删除工程目录下同名文件
+    public static void method2() {
+
+        CustomizationClassLoader classLoader = 
+                new CustomizationClassLoader(&amp;quot;CustomizationClassLoader&amp;quot;);
+        classLoader.setFilePathPrefix(&amp;quot;D:/&amp;quot;);
+        Class&amp;lt;?&amp;gt; test = classLoader.loadClass(&amp;quot;Test2&amp;quot;);
+        System.out.println(&amp;quot;class: &amp;quot;test.hashCode());
+        test.newInstance();
+    }
+
+    // 工程 Test2 ，D Test2 Test1 =&amp;gt;报错 
+    // Test2 由系统类加载器加载，实例化时主动使用Test1，由Test2加载器尝试加载Test1，报错 
+    public static void method3() {
+
+        CustomizationClassLoader classLoader = 
+                new CustomizationClassLoader(&amp;quot;CustomizationClassLoader&amp;quot;);
+        classLoader.setFilePathPrefix(&amp;quot;D:/&amp;quot;);
+        Class&amp;lt;?&amp;gt; test = classLoader.loadClass(&amp;quot;Test2&amp;quot;);
+        System.out.println(&amp;quot;class: &amp;quot;test.hashCode());
+        test.newInstance();
+    }
+
+    // 工程 Test1 ，D Test2 Test1 =&amp;gt;正常
+    // Test2 由CustomizationClassLoader加载，
+    // Test2 实例化时CustomizationClassLoader尝试加载Test1，双亲委托由系统类加载器加载
+    public static void method3() {
+
+        CustomizationClassLoader classLoader = 
+                new CustomizationClassLoader(&amp;quot;CustomizationClassLoader&amp;quot;);
+        classLoader.setFilePathPrefix(&amp;quot;D:/&amp;quot;);
+        Class&amp;lt;?&amp;gt; test = classLoader.loadClass(&amp;quot;Test2&amp;quot;);
+        System.out.println(&amp;quot;class: &amp;quot;test.hashCode());
+        test.newInstance();
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;class Test1 {
+
+    public Test1() {
+        System.out.println(&amp;quot;Test1 loaded by &amp;quot; + Test1.class.getClassLoader());
+        System.out.println(&amp;quot;from Test1 : &amp;quot; + Test2.class);
+    }
+}
+
+public class CustomizationClassLoaderTest {
+
+    // D Test1 Test2 工程 Test1 
+    // Test2 CustomizationClassLoader Test1 AppClassLoader
+    // 父 类加载器看不到子 类加载器加载的类=&amp;gt;Test1实例化时获取不到Test2的Class对象，报错
+    public static void method3() {
+
+        CustomizationClassLoader classLoader = 
+                new CustomizationClassLoader(&amp;quot;CustomizationClassLoader&amp;quot;);
+        classLoader.setFilePathPrefix(&amp;quot;D:/&amp;quot;);
+        Class&amp;lt;?&amp;gt; test = classLoader.loadClass(&amp;quot;Test2&amp;quot;);
+        System.out.println(&amp;quot;class: &amp;quot;test.hashCode());
+        test.newInstance();
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;
+class Test1 {
+
+    public Test1() {
+        System.out.println(&amp;quot;Test1 loaded by &amp;quot; + Test1.class.getClassLoader());
+    }
+}
+
+class Test2 {
+
+    public Test2() {
+        System.out.println(&amp;quot;Test2 loaded by &amp;quot; + Test2.class.getClassLoader());
+        new Test1();
+        System.out.println(&amp;quot;from Test2 : &amp;quot; + Test1.class);
+    }
+}
+
+public class CustomizationClassLoaderTest {
+
+    // D Test1 Test2 工程 Test1 
+    // Test2 CustomizationClassLoader Test1 AppClassLoader
+    // 子 类加载器可以看到父 类加载器加载的类=&amp;gt;Test2实例化时可以获取到Test1的Class对象
+    public static void method3() {
+
+        CustomizationClassLoader classLoader = 
+                new CustomizationClassLoader(&amp;quot;CustomizationClassLoader&amp;quot;);
+        classLoader.setFilePathPrefix(&amp;quot;D:/&amp;quot;);
+        Class&amp;lt;?&amp;gt; test = classLoader.loadClass(&amp;quot;Test2&amp;quot;);
+        System.out.println(&amp;quot;class: &amp;quot;test.hashCode());
+        test.newInstance();
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;25-双亲委派机制&#34;&gt;2.5 双亲委派机制&lt;/h3&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;3&#34;&gt;&lt;img src=&#34;https://violet404.github.io//post-images/1626156053649.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;ul&gt;
+&lt;li&gt;原理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol&gt;
+&lt;li&gt;如果一个类加载器收到类加载请求，并不会自己先去加载，而是将这个请求委托给父 类加载器执行&lt;/li&gt;
+&lt;li&gt;如果父 类加载器还存在其父 类加载器，则进一步向上委托，依次请求最终到达顶层启动类加载器&lt;/li&gt;
+&lt;li&gt;如果父 类加载器可以完成类加载请求，则成功返回，否则将由其子 类加载器尝试加载&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;优势、为什么&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol&gt;
+&lt;li&gt;避免重复加载&lt;/li&gt;
+&lt;li&gt;保护程序安全，防止核心类库被随意篡改 沙箱安全机制&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;对类加载器的引用&lt;/li&gt;
+&lt;li&gt;双亲委派机制的破坏&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol&gt;
+&lt;li&gt;1.2 之前实现自定义类加载器继承ClassLoader重写&lt;code&gt;loadClass&lt;/code&gt;方法，JVM进行类加载的时候会调用私有的&lt;code&gt;loadClassInternal&lt;/code&gt;()方法，这个方法唯一逻辑就是调用自己的&lt;code&gt;loadClass&lt;/code&gt;方法，所以需要在&lt;code&gt;loadClass&lt;/code&gt;方法中显示的执行双亲委派逻辑=&amp;gt;1.2之后建议重写&lt;code&gt;findClass&lt;/code&gt;方法&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;JDK&lt;/code&gt; &lt;code&gt;JNDI&lt;/code&gt;加载厂商代码&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;OSGi&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;26-jvm自带加载加载路径&#34;&gt;2.6 JVM自带加载加载路径&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class Test {
+    
+    public static void main(String[] args) {
+        //系统类加载器加载路径
+        System.out.println(System.getProperty(&amp;quot;sun.boot.class.path&amp;quot;));
+        //扩展类加载器加载路径
+        System.out.println(System.getProperty(&amp;quot;java.ext.dirs&amp;quot;));
+        //应用类加载器加载过程
+        System.out.println(System.getProperty(&amp;quot;java.class.path&amp;quot;));
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+">JVM 内存与垃圾回收（一）</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="https://violet404.github.io/post/you-biao-geng-xin-shu-ju/"" data-c="
+          &lt;pre&gt;&lt;code class=&#34;language-sql&#34;&gt;declare
+    cursor cur_tb1 is select * from tb1 for update;
+    v_rec tb1%rowtype;
+begin
+    open cur_tb1;
+    loop
+        fetch cur_tb1 into v_rec;
+        update tb1 set col1 = v_rec.col1 where current of cur_tb1;
+        exit when cur_tb1%notfound;
+    end loop;
+    commit;
+    close cur_tb1;
+end;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sql&#34;&gt;declare
+    cursor cur_tb1 is select * from tb1;
+    type typ_tb1 is table of tb1%rowtype;
+    v_rec typ_tb1;
+begin
+    open cur_tb1;
+    loop
+        if mod(cur_tb1%rowcount, 5000) = 0 then
+            dbms_output.putline(cur_tb1%rowcount);
+        end if; 
+        fetch cur_tb1 bullk collect into v_rec limit 2000;
+        for I in 1 ... v_rec.count loop
+            dosth(v_rec(I));
+        end loop;
+        commit;
+        exit when cur_tb1%notfound;
+    end loop;
+    close cur_tb1;
+end;
+&lt;/code&gt;&lt;/pre&gt;
+">游标更新数据</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="https://violet404.github.io/post/jsonformatter-shi-jian-fan-hui-bu-dui/"" data-c="
+          &lt;p&gt;默认返回的时间时区为格林威治时间，Greenwich Time，可以指定时区为东八区，timeZone=&amp;quot;GMT+8&amp;quot;&lt;/p&gt;
+">@JsonFormatter 时间返回不对</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="https://violet404.github.io/post/illegal-hex-characters-in-escape-pattern/"" data-c="
+          &lt;p&gt;#####原因&lt;br&gt;
+在进行URLDecode时，进行decode的字符串含有%（非通过encode产生的）&lt;/p&gt;
+&lt;h5 id=&#34;解决方案&#34;&gt;解决方案&lt;/h5&gt;
+&lt;p&gt;更新数据，将半角%转化为全角的％&lt;br&gt;
+&lt;code&gt;update tb set col1 = regexp_replace(col1, chr(37), chr(15711365)) where instr(col1, chr(37)) != 0&lt;/code&gt;&lt;/p&gt;
+">illegal hex characters in escape(%) pattern</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="https://violet404.github.io/post/oracle-resultsetgetdategetobjectwu-fa-huo-qu-shi-jian/"" data-c="
+          &lt;ol&gt;
+&lt;li&gt;检查驱动Oracle的JDBC的驱动版本，10g版本的驱动会出现上面的情况&lt;/li&gt;
+&lt;li&gt;解决方式1：可以将驱动版本升级或降级，11或9版本的oracle对应的驱动可以正常获取时间&lt;/li&gt;
+&lt;li&gt;解决方式2：使用getString()的方式获取，即可获取完整的日志数据&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;升级驱动版本可能会出现如下异常信息&lt;br&gt;
+&lt;code&gt;NoSuchMethodError：oracle.i18n.text.convert.CharacterConvertOGS.getInstance(I)Loracle/i18n/text/convert/CharacterConverter&lt;/code&gt;&lt;br&gt;
+检查项目中是否同时含有nls_charset与orai18n的jar包，高版本的Oracle驱动与nls_charset冲突（高版本的驱动+orai18n,低版本的驱动+nls_charset）&lt;/p&gt;
+">Oracle ResultSet.getDate()/getObject()无法获取时间</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="https://violet404.github.io/post/jquery-cao-zuo-duo-xuan-kuang-checkbox-shi-xiao/"" data-c="
+          &lt;p&gt;现象如题，改attr赋值为prop方式&lt;/p&gt;
+">jQuery 操作多选框checkbox失效</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="https://violet404.github.io/post/oracle-xing-zhuan-lie/"" data-c="
+          &lt;ol&gt;
+&lt;li&gt;&lt;code&gt;wm-concat&lt;/code&gt; oracle12c已废弃该函数,使用方式&lt;code&gt;wm-concat(&amp;lt;合并列&amp;gt;)&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;listagg&lt;/code&gt; 11.2 新特性，返回varchar2类型，所以上限4000，如果拼接字符过长，则报错ORA-01489&lt;br&gt;
+参数：要合并的列，拼接字符&lt;br&gt;
+使用方法：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sql&#34;&gt;    listagg(&amp;lt;合并列&amp;gt;, &amp;lt;拼接字符&amp;gt;) within group(order by &amp;lt;排序列&amp;gt;) over(partition by 分组列)
+    listagg(&amp;lt;合并列&amp;gt;, &amp;lt;拼接字符&amp;gt;) within group(order by &amp;lt;排序列&amp;gt;) + group by
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;&lt;code&gt;xmlagg&lt;/code&gt; 在使用&lt;code&gt;listagg&lt;/code&gt;报错ORA-01489字符串超长时，可改为&lt;code&gt;xmlagg&lt;/code&gt;方式，返回Clob&lt;br&gt;
+使用方法：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sql&#34;&gt;    xmlagg(xmlparse(content &amp;lt;合并&amp;gt; wellformed) order by &amp;lt;排序列&amp;gt;).getclobval() #待验证
+    xmlagg(xmlelement(e, &amp;lt;合并字段&amp;gt;，&amp;lt;合并连接符&amp;gt;).extract(&#39;\\text()&#39;)).getclobval()
+&lt;/code&gt;&lt;/pre&gt;
+">Oracle 行转列</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="https://violet404.github.io/post/uncaught-rangeerrormaximum-call-stack-size-exceeded/"" data-c="
+          &lt;ol&gt;
+&lt;li&gt;Js函数递归调用次数过多&lt;/li&gt;
+&lt;li&gt;引入了冲突的Js库，两个库对JS原始对象的相同方法进行了不同的重写&lt;/li&gt;
+&lt;li&gt;Ajax请求参数错误，检查参数是否存在未定义的变量，且该变量与页面中的某个元素的id值相同&lt;/li&gt;
+&lt;/ol&gt;
+">Uncaught RangeError：Maximum call stack size exceeded</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="https://violet404.github.io/post/easyui-chuang-kou-chong-fu-jia-zai-chuang-kou-yuan-su-qu-zhi-hun-luan/"" data-c="
+          &lt;ol&gt;
+&lt;li&gt;EasyUI框架window类窗口使用方式&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# 第一种方式
+&amp;lt;div id=&amp;quot;win&amp;quot;&amp;gt;&amp;lt;/div&amp;gt; 
+$(&#39;#win&#39;).window({})
+#第二中方式
+&amp;lt;div id=&amp;quot;win&amp;quot; class=&amp;quot;easyui-window&amp;quot; data-options=&amp;quot;closed:true&amp;quot;&amp;gt;&amp;lt;/div&amp;gt; 
+$(&#39;#win&#39;).window({}).window(&#39;open&#39;)
+
+# 如果混用两种方式，则会导致重复加载的问题
+&amp;lt;div id=&amp;quot;win&amp;quot;&amp;gt;&amp;lt;/div&amp;gt;
+$(&#39;#win&#39;).window({}).window(&#39;open&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;在父页面A弹出子页面B时，子页面B又弹出子页面C的情况，如果C页面对应的div定义在B页面，则C页面取值可能会混乱。EasyUI窗口类组件在调用close方式时，页面上的dom元素并不是直接销毁，而是隐藏。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;#页面A弹出子页面B
+&amp;lt;div id=&amp;quot;winB&amp;quot;&amp;gt;&amp;lt;/div&amp;gt;
+$(&#39;#winB&#39;).window({})
+
+#页面B弹窗子页面C 错误方式
+&amp;lt;div id=&amp;quot;winC&amp;quot;&amp;gt;&amp;lt;/div&amp;gt;
+$(&#39;#winC&#39;).window({})
+
+#页面B弹窗子页面C 正确方式
+$(&#39;&amp;lt;div id=&amp;quot;winC&amp;quot;&amp;gt;&amp;lt;/div&amp;gt;&#39;).window({
+  onBeforeClose: function() {
+    $(&#39;#winC&#39;).window(&#39;destroy&#39;);
+  }
+})
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;为避免窗口元素取值错误，定位时建议加上限定范围&lt;/li&gt;
+&lt;/ol&gt;
+">EasyUI 窗口重复加载、窗口元素取值混乱</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="https://violet404.github.io/post/mybatis-jie-guo-ji-shu-liang-yu-shi-ji-bu-fu/"" data-c="
+          &lt;h5 id=&#34;问题描述&#34;&gt;问题描述&lt;/h5&gt;
+&lt;p&gt;sql在数据库中执行显示有18条记录，Mapper返回List类型结果集，同时debug显示list.size()为18，但是只能取到8条，遍历导致NPE&lt;/p&gt;
+&lt;h5 id=&#34;排查方向&#34;&gt;排查方向&lt;/h5&gt;
+&lt;ol&gt;
+&lt;li&gt;resultType或者resultMap中的属性影射是否匹配&lt;/li&gt;
+&lt;li&gt;是否配置有callSetterOnNulls=true&lt;br&gt;
+默认情况下，在用map接受返回结果的情况下，mybatis会忽略结果为null的字段，如果对应的所有属性全部为null，则该条记录就会缺失。&lt;br&gt;
+可以通过配置callSettersOnNulls=true，达到即使结果为null依然可以获取到.&lt;br&gt;
+但是下面两种特殊情况需要注意：&lt;br&gt;
+2.1. 查询结果0条记录，会接收到一个所有key对应值为null的map，而不是一个值为null的map。&lt;br&gt;
+2.2. 如果查询一个字段，结果为null，此时会返回一个值为null的map，而不是包含key对应值为null的map。&lt;/li&gt;
+&lt;/ol&gt;
+">Mybatis 结果集数量与实际不符</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="https://violet404.github.io/post/ibatis-pi-liang-bao-cun-ji-yu-oracle/"" data-c="
+          &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# 第一种方式
+insert all 
+&amp;lt;iterate conjunction=&amp;quot; &amp;quot;&amp;gt;
+into tb1(col1, col2) values(#list[].col1#, #list[].col2#)
+&amp;lt;/iterate&amp;gt;
+select 1 from dual
+
+#第二种方式
+insert into tb1(col1, col2)
+&amp;lt;iterate conjunction=&amp;quot; union &amp;quot;&amp;gt;
+select #list[].col1#, #list[].col2# from dual
+&amp;lt;/iterate&amp;gt;
+
+#第三种方式 ExecutorType.BATCH
+
+&lt;/code&gt;&lt;/pre&gt;
+">Ibatis 批量保存（基于Oracle）</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="https://violet404.github.io/post/oracle-ti-huan-zi-fu-chuan/"" data-c="
+          &lt;h5 id=&#34;函数说明&#34;&gt;函数说明&lt;/h5&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;regexp_replace(source_char, pattern, replace_string,position,occurrencr,match_parameter)
+
+# source_char 搜索的值
+
+# pattern 正则表达式
+
+# replace_string 替换字符串,反向引用子表达式\n
+
+# position 开始检索的字符的位置，默认为1
+
+# occurrence 替换的位置，0 替换所有的匹配项，如果为n(正整数)，替换第n个匹配项
+
+# match_parameter 匹配的行为 
+# i 指定不区分大小写的匹配
+# c 区分大小写的匹配
+# n 允许句点&#39;.&#39;与换行符，默认将源字符串视为单行
+# x 忽略空格字符，默认情况，空白字符与自身匹配
+# 如果指定多个矛盾值，将按照最后一个值，如ic，区分大小写
+
+#match_parameter 不指定，将默认为下面的操作：
+# 1. 区分大小写 2. 句点与换行符不匹配 3. 单行
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h5 id=&#34;示例&#34;&gt;示例&lt;/h5&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;select regexp_replace(&#39;0123456789&#39;, &#39;01234&#39;, &#39;oabc&#39;) from dual; # 0abc56789
+
+select regexp_replace(&#39;0123456789&#39;, &#39;[0-9]&#39;, &#39;*#&#39;) from dual; # *#*#*#*#*#*#*#*#*#*#
+
+select regexp_replace(&#39;01234567abcfsg89&#39;, &#39;[a-z]&#39;) from dual; # 0123456789
+
+select regexp_replace(&#39;+86 15153090946&#39;,&#39;(\+[0-9]{2})( )([0-9]{3})([0-9]{4})([0-9]{4})&#39;, &#39;(\1)\3-\4-\5&#39;) from dual; # (+86)151-5309-0946
+
+select regexp_replace(&#39;012as56&#39;,&#39;(.)&#39;,&#39;\1 &#39;) from dual; #0 1 2 a s 5 6
+
+select regexp_replace(&#39;0asca98&#39;, &#39;[0-9a-zA-Z]&#39;, &#39;*&#39;, 4) from dual; # 0as****
+
+select regexp_replace(&#39;0asc98&#39;, &#39;[0-9a-zA-Z]&#39;, &#39;*&#39;, 4, 3) from dual; # 0asc9*
+
+select regexp_replace(&#39;0asC98&#39;,&#39;[A-Z]&#39;, &#39;*&#39;, 1, 0, &#39;i&#39;) from dual; #0***98
+
+select regexp_replace(&#39;a
+b
+c
+d
+e
+f&#39;, &#39;([a-z])(.)&#39;,&#39;\1&#39;, 1, 0, &#39;n&#39;) from dual; # abcdef
+
+select regexp_replace(&#39;aa a a bb b b&#39;,&#39;a a&#39;, &#39;0&#39;) from dual;  # a0 a bb b b
+
+select regexp_replace(&#39;aa a a bb b b&#39;, &#39;a a&#39;, &#39;0&#39;, 1, 0, &#39;x&#39;) from dual; # 0 a a BB b b
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h5 id=&#34;正则表达式&#34;&gt;正则表达式&lt;/h5&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;符号&lt;/th&gt;
+&lt;th&gt;释义&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;\&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;*&lt;/td&gt;
+&lt;td&gt;匹配0个或多个&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;+&lt;/td&gt;
+&lt;td&gt;匹配1个或多个&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;?&lt;/td&gt;
+&lt;td&gt;匹配0个或1个&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;|&lt;/td&gt;
+&lt;td&gt;或运算，所有均可视为单独的子表达式&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;^&lt;/td&gt;
+&lt;td&gt;默认情况下匹配字符串的结尾，多行模式匹配字符串每一行的行尾&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;$&lt;/td&gt;
+&lt;td&gt;默认情况下匹配字符串的开头，多行模式匹配每一行的行头&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;.&lt;/td&gt;
+&lt;td&gt;字符集支持的任意字符，NULL除外&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;[]&lt;/td&gt;
+&lt;td&gt;指定匹配列表&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;()&lt;/td&gt;
+&lt;td&gt;对表达式分组，视为单个子表达式&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;{m}&lt;/td&gt;
+&lt;td&gt;匹配m次&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;{m,}&lt;/td&gt;
+&lt;td&gt;匹配至少m次&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;{m,n}&lt;/td&gt;
+&lt;td&gt;匹配至少m次，但不超过n次&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;\n&lt;/td&gt;
+&lt;td&gt;反向引用表达式&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;[::]&lt;/td&gt;
+&lt;td&gt;指定字符类&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h5 id=&#34;字符类&#34;&gt;字符类&lt;/h5&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;[:XXXX:]&lt;/th&gt;
+&lt;th&gt;含义&lt;/th&gt;
+&lt;th&gt;范围&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;[:space:]&lt;/td&gt;
+&lt;td&gt;包括换行、空格、tab在内的空白字符&lt;/td&gt;
+&lt;td&gt;tab 空格&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;[:blank:]&lt;/td&gt;
+&lt;td&gt;空格与tab&lt;/td&gt;
+&lt;td&gt;tab 空格&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;[:alpha:]&lt;/td&gt;
+&lt;td&gt;字母&lt;/td&gt;
+&lt;td&gt;a-z A-Z&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;[:alnum:]&lt;/td&gt;
+&lt;td&gt;字母与数字&lt;/td&gt;
+&lt;td&gt;a-z A-Z 0-9&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;[:digit:]&lt;/td&gt;
+&lt;td&gt;十进制数字&lt;/td&gt;
+&lt;td&gt;0-9&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;[:xdigit:]&lt;/td&gt;
+&lt;td&gt;十六进制数&lt;/td&gt;
+&lt;td&gt;0-9 a-f A-F&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;[:lower:]&lt;/td&gt;
+&lt;td&gt;小写字母&lt;/td&gt;
+&lt;td&gt;a-z&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;[:upper:]&lt;/td&gt;
+&lt;td&gt;大写字母&lt;/td&gt;
+&lt;td&gt;A-Z&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;[:cntrl:]&lt;/td&gt;
+&lt;td&gt;控制字符&lt;/td&gt;
+&lt;td&gt;ctrl、backspace等&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;[:punct:]&lt;/td&gt;
+&lt;td&gt;标点符号&lt;/td&gt;
+&lt;td&gt;,.?&#39; 不确定中英文、半角全角&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+">Oracle 替换字符串</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="https://violet404.github.io/post/git/"" data-c="
+          &lt;h5 id=&#34;修改上一次提交信息&#34;&gt;修改上一次提交信息&lt;/h5&gt;
+&lt;p&gt;&lt;code&gt;git commit --amend -m &amp;lt;new_message&amp;gt;&lt;/code&gt;&lt;/p&gt;
+&lt;h5 id=&#34;修改历史提交信息&#34;&gt;修改历史提交信息&lt;/h5&gt;
+&lt;p&gt;&lt;code&gt;git rebase -i &amp;lt;commitId&amp;gt;&lt;/code&gt; （commitId，HEAD] 范围，将需要修改的提交 pick 改为 reward，保存即可&lt;/p&gt;
+&lt;h5 id=&#34;crlf-报错&#34;&gt;CRLF 报错&lt;/h5&gt;
+&lt;p&gt;&lt;code&gt;git config --global core.autocrlf false&lt;/code&gt;&lt;/p&gt;
+&lt;h5 id=&#34;远程分支删除后本地依然能够看到该分支&#34;&gt;远程分支删除后，本地依然能够看到该分支&lt;/h5&gt;
+&lt;p&gt;&lt;code&gt;git remote prune origin&lt;/code&gt; origin 为远程仓库名称&lt;/p&gt;
+&lt;h5 id=&#34;比较分支差异&#34;&gt;比较分支差异&lt;/h5&gt;
+&lt;ol&gt;
+&lt;li&gt;查看dev分支存在而master分支不存在的提交&lt;code&gt;git log dev ^master&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;查看master比dev多提交了哪些&lt;code&gt;git log dev..master&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;比较dev与master分支的差异&lt;code&gt;git log dev...master&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;显示所有差异文件的详细&lt;code&gt;git diff dev master&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;比较两个分支具体文件的差异&lt;code&gt;git diff dev master &amp;lt;具体文件路径&amp;gt;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;显示两分支差异部分&lt;code&gt;git diff dev master --stat&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;上述情况，显示每个提交所在的分支,例如&lt;code&gt;git log -left-right dev...master&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h5 id=&#34;重命名本地分支与远程分支&#34;&gt;重命名本地分支与远程分支&lt;/h5&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# 重命名本地分支
+git branch -m oldBranch newBranch (or git branch --move oldBranch newBranch)
+# 删除远程旧分支
+git push origin :oldBranch
+# 推送本地新分支
+git push origin newBranch
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h5 id=&#34;同一命名空间下无法派生同名项目以旧项目某一分支派生新项目&#34;&gt;同一命名空间下无法派生同名项目（以旧项目某一分支派生新项目）&lt;/h5&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# 从旧项目克隆项目到本地
+git clone &amp;lt;旧项目地址&amp;gt; -b &amp;lt;目标分支Branch1&amp;gt;
+# 检查远程项目关联
+git remote -v 
+# 移除远程项目关联
+git remote remove &amp;lt;origin 远程仓库名称，根据上一步填写&amp;gt;
+# 重命名分支名称
+git branch -m &amp;lt;Branch1&amp;gt; master
+# 远程仓库创建新项目，记录地址URL2
+# 关联当前项目与新创建的远程仓库
+git remote add origin &amp;lt;URL2&amp;gt;
+# 建立本地分支与远程分支的关联
+git push --set-upstream origin master
+# 推送本地项目至远程仓库
+git push
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h5 id=&#34;忽略某个文件的提交&#34;&gt;忽略某个文件的提交&lt;/h5&gt;
+&lt;ol&gt;
+&lt;li&gt;保留在版本库当中&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# 忽略指定文件变更
+git update-index --assume-unchanged &amp;lt;文件全路径&amp;gt;
+# 取消上述命令
+git update-index --no-assume-unchanged &amp;lt;文件全路径&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;从版本库中删除&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;git rm -r --cached 
+#or
+git rm --cached &amp;lt;文件全路径&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h5 id=&#34;回退版本&#34;&gt;回退版本&lt;/h5&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;#本地回退
+git reset --hard &amp;lt;commitId&amp;gt;
+#推送到远程仓库 origin 远程仓库名 master 远程仓库分支
+git push -u origin master -f
+&lt;/code&gt;&lt;/pre&gt;
+">Git</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="https://violet404.github.io/post/mq-xiao-xi-dui-lie-1/"" data-c="
+          &lt;h5 id=&#34;为什么用使用场景&#34;&gt;为什么用？=&amp;gt;使用场景&lt;/h5&gt;
+&lt;ol&gt;
+&lt;li&gt;场景-&amp;gt;技术挑战-&amp;gt;不用与使用的对比&lt;/li&gt;
+&lt;li&gt;解耦  pub/sub模型，机构、汇率等统一更新处理&lt;/li&gt;
+&lt;li&gt;异步  提高高延时操作的处理效率&lt;/li&gt;
+&lt;li&gt;削峰&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h5 id=&#34;为什么使用当前的mq框架选型kafka&#34;&gt;为什么使用当前的MQ框架？=&amp;gt;选型，&lt;strong&gt;Kafka&lt;/strong&gt;&lt;/h5&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;特性&lt;/th&gt;
+&lt;th&gt;ActiveMQ&lt;/th&gt;
+&lt;th&gt;RabbitMQ&lt;/th&gt;
+&lt;th&gt;RocketMQ&lt;/th&gt;
+&lt;th&gt;Kafka&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;单机吞吐量&lt;/td&gt;
+&lt;td&gt;万级，吞吐量比RocketMQ和Kafka要低了一个数量级&lt;/td&gt;
+&lt;td&gt;万级，吞吐量比RocketMQ和Kafka要低了一个数量级&lt;/td&gt;
+&lt;td&gt;10万级，RocketMQ也是可以支撑高吞吐的一种MQ&lt;/td&gt;
+&lt;td&gt;10万级别，这是kafka最大的优点，就是吞吐量高。一般配合大数据类的系统来进行实时数据计算、日志采集等场景&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;topic数量对吞吐量的影响&lt;/td&gt;
+&lt;td&gt;-&lt;/td&gt;
+&lt;td&gt;-&lt;/td&gt;
+&lt;td&gt;topic可以达到几百，几千个的级别，吞吐量会有较小幅度的下降。这是RocketMQ的一大优势，在同等机器下，可以支撑大量的topic。&lt;/td&gt;
+&lt;td&gt;topic从几十个到几百个的时候，吞吐量会大幅度下降。所以在同等机器下，kafka尽量保证topic数量不要过多。如果要支撑大规模topic，需要增加更多的机器资源&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;时效性&lt;/td&gt;
+&lt;td&gt;ms级&lt;/td&gt;
+&lt;td&gt;微秒级，这是rabbitmq的一大特点，延迟是最低的&lt;/td&gt;
+&lt;td&gt;ms级&lt;/td&gt;
+&lt;td&gt;延迟在ms级以内&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;可用性&lt;/td&gt;
+&lt;td&gt;高，基于主从架构实现高可用性&lt;/td&gt;
+&lt;td&gt;高，基于主从架构实现高可用性&lt;/td&gt;
+&lt;td&gt;非常高，分布式架构&lt;/td&gt;
+&lt;td&gt;非常高，kafka是分布式的，一个数据多个副本，少数机器宕机，不会丢失数据，不会导致不可用&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;消息可靠性&lt;/td&gt;
+&lt;td&gt;有较低的概率丢失数据&lt;/td&gt;
+&lt;td&gt;-&lt;/td&gt;
+&lt;td&gt;经过参数优化配置，可以做到0丢失&lt;/td&gt;
+&lt;td&gt;经过参数优化配置，可以做到0丢失&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;功能支持&lt;/td&gt;
+&lt;td&gt;MQ领域的功能极其完备&lt;/td&gt;
+&lt;td&gt;基于erlang开发，所以并发能力很强，性能极其好，延时很低&lt;/td&gt;
+&lt;td&gt;MQ功能较为完善，还是分布式的，扩展性好&lt;/td&gt;
+&lt;td&gt;功能较为简单，主要支持简单的MQ功能，在大数据领域的实时计算以及日志采集被大规模使用，是事实上的标准&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;优劣势总结&lt;/td&gt;
+&lt;td&gt;非常成熟，功能强大，在业内大量的公司以及项目中都有应用。偶尔会有较低概率丢失消息。而且现在社区以及国内应用都越来越少，官方社区现在对ActiveMQ 5.x维护越来越少，几个月才发布一个版本。而且确实主要是基于解耦和异步来用的，较少在大规模吞吐的场景中使用&lt;/td&gt;
+&lt;td&gt;erlang语言开发，性能极其好，延时很低；吞吐量到万级，MQ功能比较完备。而且开源提供的管理界面非常棒，用起来很好用。社区相对比较活跃，几乎每个月都发布几个版本分。在国内一些互联网公司近几年用rabbitmq也比较多一些。但是问题也是显而易见的，RabbitMQ确实吞吐量会低一些，这是因为他做的实现机制比较重。而且erlang开发，国内有几个公司有实力做erlang源码级别的研究和定制？如果说你没这个实力的话，确实偶尔会有一些问题，你很难去看懂源码，你公司对这个东西的掌控很弱，基本职能依赖于开源社区的快速维护和修复bug。而且rabbitmq集群动态扩展会很麻烦，不过这个我觉得还好。其实主要是erlang语言本身带来的问题。很难读源码，很难定制和掌控。&lt;/td&gt;
+&lt;td&gt;接口简单易用，而且毕竟在阿里大规模应用过，有阿里品牌保障。日处理消息上百亿之多，可以做到大规模吞吐，性能也非常好，分布式扩展也很方便，社区维护还可以，可靠性和可用性都是ok的，还可以支撑大规模的topic数量，支持复杂MQ业务场景。而且一个很大的优势在于，阿里出品都是java系的，我们可以自己阅读源码，定制自己公司的MQ，可以掌控。社区活跃度相对较为一般，不过也还可以，文档相对来说简单一些，然后接口这块不是按照标准JMS规范走的有些系统要迁移需要修改大量代码。还有就是阿里出台的技术，你得做好这个技术万一被抛弃，社区黄掉的风险，那如果你们公司有技术实力我觉得用RocketMQ挺好的。&lt;/td&gt;
+&lt;td&gt;kafka的特点其实很明显，就是仅仅提供较少的核心功能，但是提供超高的吞吐量，ms级的延迟，极高的可用性以及可靠性，而且分布式可以任意扩展.同时kafka最好是支撑较少的topic数量即可，保证其超高吞吐量.而且kafka唯一的一点劣势是有可能消息重复消费，那么对数据准确性会造成极其轻微的影响，在大数据领域中以及日志采集中，这点轻微影响可以忽略.这个特性天然适合大数据实时计算以及日志收集&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h5 id=&#34;引入mq的优缺点&#34;&gt;引入MQ的优缺点&lt;/h5&gt;
+&lt;ol&gt;
+&lt;li&gt;系统可用性降低（高可用）&lt;/li&gt;
+&lt;li&gt;系统复杂性提高（重复数据、数据丢失、重复消费等）&lt;/li&gt;
+&lt;li&gt;存在一致性问题（分布式锁）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h5 id=&#34;怎么保证高可用kafka&#34;&gt;怎么保证高可用？&lt;strong&gt;Kafka&lt;/strong&gt;&lt;/h5&gt;
+">MQ消息队列(1)</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="https://violet404.github.io/post/fen-bu-shi-suo/"" data-c="
+          &lt;p&gt;锁&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;jvm层面的枷锁，单机版&lt;/li&gt;
+&lt;li&gt;分布式微服务拆分后，为避免冲突与数据故障而加入的一种锁  分布式锁&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;实现方案&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;mysql&lt;/li&gt;
+&lt;li&gt;zookeeper&lt;/li&gt;
+&lt;li&gt;redis&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;一般常用redis&lt;br&gt;
+redis --&amp;gt; redlock ===&amp;gt;redisson lock unlock&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;                                   service1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;请求 --》nginx                                         写入排队 redis&lt;br&gt;
+service2&lt;/p&gt;
+">分布式锁</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="https://violet404.github.io/post/redis/"" data-c="
+          &lt;p&gt;查看redis版本&lt;br&gt;
+1.&lt;code&gt;redis-server -v&lt;/code&gt;（linux）&lt;br&gt;
+2.&lt;code&gt;info&lt;/code&gt; （进入redis后）&lt;/p&gt;
+&lt;p&gt;redis命令不区分大小写，key区分大小写&lt;br&gt;
+redis 帮助命令 help @&amp;lt;类型名词&amp;gt;&lt;/p&gt;
+&lt;p&gt;5大数据类型&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;string
+&lt;ol&gt;
+&lt;li&gt;常用
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;set key value&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;get key&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;同时设置、获取多个键值
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;mset key value [key value ...]&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;mget key [key ...]&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;数值增减
+&lt;ol&gt;
+&lt;li&gt;递增 &lt;code&gt;incr key&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;增加指定的整数 &lt;code&gt;incrby key increment&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;递减 &lt;code&gt;decr key&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;递减指定 &lt;code&gt;decrby key decrement&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;获取字符串长度 &lt;code&gt;strlen key&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;分布式锁
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;setnx key value&lt;/code&gt; 如果不存在则创建&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;set key value [EX seconds] [PX milliseconds] [NX | XX]&lt;/code&gt;
+&lt;ol&gt;
+&lt;li&gt;EX 指定秒过期&lt;/li&gt;
+&lt;li&gt;PX 指定毫秒过期&lt;/li&gt;
+&lt;li&gt;NX 当key不存在时创建key，效果等价于setnx&lt;/li&gt;
+&lt;li&gt;XX 当key存在时覆盖key&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;应用场景 商品、文章的点踩incr、decr&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;list
+&lt;ol&gt;
+&lt;li&gt;有序有重复，双向链表&lt;/li&gt;
+&lt;li&gt;左侧添加元素 &lt;code&gt;lpush key value [value ...]&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;rpush key value [value...]&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;查看列表 &lt;code&gt;lrange key start stop&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;获取列表元素个数 &lt;code&gt;llen key&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;应用场景 文章订阅公众号&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;hash
+&lt;ol&gt;
+&lt;li&gt;对应java中的&lt;code&gt;Map&amp;lt;string, Map&amp;lt;Object, Object&amp;gt;&amp;gt;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;一次设置一个字段 &lt;code&gt;hset key field value&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;一次获取一个字段 &lt;code&gt;hset key field&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;一次设置多个字段 &lt;code&gt;hmset key field value [field value ...]&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;一次获取获取多个字段值 &lt;code&gt;hmset key field [field ...]&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;获取所有字段值 &lt;code&gt;hgetall key&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;获取某个key内的全部数量 &lt;code&gt;hlen&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;删除一个 &lt;code&gt;key hdel&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;属性自增 &lt;code&gt;hincrby&lt;/code&gt; 同string&lt;/li&gt;
+&lt;li&gt;应用场景 购物车（中小厂）、订餐等汇集场景&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;set 无序无重复
+&lt;ol&gt;
+&lt;li&gt;添加 &lt;code&gt;sadd key member [member]&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;删除 &lt;code&gt;srem key member [member]&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;获取所有元素 &lt;code&gt;smembers key&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;判断元素是否在集合中 &lt;code&gt;sismember key member&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;获取元素个数 &lt;code&gt;scard key&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;从集合中随机弹出一个元素，不删除 &lt;code&gt;srandmember key [数字]&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;从集合随机弹出，并删除 &lt;code&gt;spop key [数字]&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;集合运算
+&lt;ol&gt;
+&lt;li&gt;差集A-B 属于A但不属于B &lt;code&gt;sdiff key [key ...]&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;交集 &lt;code&gt;sinter key [key ...]&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;并集 &lt;code&gt;sunion key [key ...]&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;应用场景
+&lt;ol&gt;
+&lt;li&gt;抽奖小程序&lt;/li&gt;
+&lt;li&gt;点赞&lt;/li&gt;
+&lt;li&gt;共同关注的人、共同的爱好&lt;/li&gt;
+&lt;li&gt;可能认识的人&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;zset（sorted set）
+&lt;ol&gt;
+&lt;li&gt;向有序集合中添加一个元素与其分数 &lt;code&gt;zadd key score member [score member ...]&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;按照分数从小到大返回索引区分的元素 &lt;code&gt;zrange key start stop [withscores]&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;获取元素的分数 &lt;code&gt;zscore key member&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;删除元素 &lt;code&gt;zrem key member [member ...]&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;获取指定分数范围的元素 &lt;code&gt;zrangebyscore key min max [withscore][limit offset count]&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;增加某个元素的分数 &lt;code&gt;zincrby key increment member&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;获取元素的数量 &lt;code&gt;zcard key&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;获取指定分数范围内元素的数量 &lt;code&gt;zcount key min max&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;按照排序删除元素&lt;code&gt;zremrangebyrank key start stop&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;获取元素排名 &lt;code&gt;zrank key member /zrevrank key member&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;场景 排行榜&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;bitmap 位图&lt;/li&gt;
+&lt;li&gt;HyperLogLogs&lt;/li&gt;
+&lt;li&gt;GEO 地理信息&lt;/li&gt;
+&lt;li&gt;Stream&lt;/li&gt;
+&lt;/ol&gt;
+">Redis常用类型与应用场景</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="https://violet404.github.io/post/about/"" data-c="
+          &lt;blockquote&gt;&lt;/blockquote&gt;
+">关于</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="https://violet404.github.io/post/hello-gridea/"" data-c="
+          &lt;p&gt;👏  欢迎使用 &lt;strong&gt;Gridea&lt;/strong&gt; ！&lt;br&gt;
+✍️  &lt;strong&gt;Gridea&lt;/strong&gt; 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...&lt;/p&gt;
+&lt;!-- more --&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/getgridea/gridea&#34;&gt;Github&lt;/a&gt;&lt;br&gt;
+&lt;a href=&#34;https://gridea.dev/&#34;&gt;Gridea 主页&lt;/a&gt;&lt;br&gt;
+&lt;a href=&#34;http://fehey.com/&#34;&gt;示例网站&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;特性&#34;&gt;特性👇&lt;/h2&gt;
+&lt;p&gt;📝  你可以使用最酷的 &lt;strong&gt;Markdown&lt;/strong&gt; 语法，进行快速创作&lt;/p&gt;
+&lt;p&gt;🌉  你可以给文章配上精美的封面图和在文章任意位置插入图片&lt;/p&gt;
+&lt;p&gt;🏷️  你可以对文章进行标签分组&lt;/p&gt;
+&lt;p&gt;📋  你可以自定义菜单，甚至可以创建外部链接菜单&lt;/p&gt;
+&lt;p&gt;💻  你可以在 &lt;strong&gt;Windows&lt;/strong&gt;，&lt;strong&gt;MacOS&lt;/strong&gt; 或 &lt;strong&gt;Linux&lt;/strong&gt; 设备上使用此客户端&lt;/p&gt;
+&lt;p&gt;🌎  你可以使用 &lt;strong&gt;𝖦𝗂𝗍𝗁𝗎𝖻 𝖯𝖺𝗀𝖾𝗌&lt;/strong&gt; 或 &lt;strong&gt;Coding Pages&lt;/strong&gt; 向世界展示，未来将支持更多平台&lt;/p&gt;
+&lt;p&gt;💬  你可以进行简单的配置，接入 &lt;a href=&#34;https://github.com/gitalk/gitalk&#34;&gt;Gitalk&lt;/a&gt; 或 &lt;a href=&#34;https://github.com/SukkaW/DisqusJS&#34;&gt;DisqusJS&lt;/a&gt; 评论系统&lt;/p&gt;
+&lt;p&gt;🇬🇧  你可以使用&lt;strong&gt;中文简体&lt;/strong&gt;或&lt;strong&gt;英语&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;🌁  你可以任意使用应用内默认主题或任意第三方主题，强大的主题自定义能力&lt;/p&gt;
+&lt;p&gt;🖥  你可以自定义源文件夹，利用 OneDrive、百度网盘、iCloud、Dropbox 等进行多设备同步&lt;/p&gt;
+&lt;p&gt;🌱 当然 &lt;strong&gt;Gridea&lt;/strong&gt; 还很年轻，有很多不足，但请相信，它会不停向前 🏃&lt;/p&gt;
+&lt;p&gt;未来，它一定会成为你离不开的伙伴&lt;/p&gt;
+&lt;p&gt;尽情发挥你的才华吧！&lt;/p&gt;
+&lt;p&gt;😘 Enjoy~&lt;/p&gt;
+">Hello Gridea</a>
+      </div>
+      
+    </div>
+    <div class="page">
+      <div id="page_ul"></div>
+    </div>
+  </div>
+</div>
+<script>
+  !function () {
+    let searchMask = document.querySelector('#search_mask');
+    let result = document.querySelector('#result');
+    let items = document.querySelectorAll('.item');
+    let searchBox = document.querySelector('#search');
+    let statCount = document.querySelector('#stat_count');
+    let statTimes = document.querySelector('#stat_times');
+    let pageUl = document.querySelector('#page_ul');
+    let close = document.querySelector('#close');
+    
+    close.addEventListener('click', function() {
+      searchMask.style = 'display: none;'
+    })
+
+    let finds = [];
+    let contents = [];
+    let pageSize = 10;
+    items.forEach(item => {
+      let a = item.querySelector('a');
+      contents.push({
+        title: a.innerText,
+        details: a.dataset.c,
+        link: a.href
+      })
+      item.remove();
+    })
+
+    function insertStr(soure, start, count) {
+      let newStr = soure.substr(start, count);
+      return soure.slice(0, start) + '<em>' + newStr + '</em>' + soure.slice(start + count);
+    }
+
+    pageUl.addEventListener('click', function(event) {
+      let target = event.target;
+      if (target.__proto__ === HTMLSpanElement.prototype) {
+        appendResults(parseInt(target.dataset.i));
+      }
+    })
+
+    function appendResults(index) {
+      let htmlResult = '';
+      let start = index || 0;
+      let end = Math.min(start + pageSize, finds.length);
+      for (let i = start; i < end; i++) {
+        const current = finds[i];
+        let html = current.title;
+        let sum = 0;
+        let positions = current.positions;
+        positions.forEach(position => {
+          html = insertStr(html, position.start + sum, position.count);
+          sum += 9;
+        })
+        htmlResult += `<div class="item"><a class="result-title" href="${current.link}">${html}</a></div>`;
+      }
+      result.innerHTML = htmlResult;
+      pageUl.innerHTML = '';
+      let count = finds.length / pageSize;
+      let lis = '';
+      if (start !== 0) {
+        lis += `<span class="fa fa-angle-left" data-i='${start - 1}'></span>`;
+      }
+      for (let i = 0; i < count; i++) {
+        lis += `<span class='${i === start?'current':''}' data-i='${i}'>${i+1}</span>`;     
+      }
+      if (start+1 < count) {
+        lis += `<span class="fa fa-angle-right" data-i='${start+1}'></span>`;  
+      }
+      pageUl.innerHTML = lis;
+    }
+
+    function search(delay) {
+      let timer = null
+      return function () {
+        clearTimeout(timer)
+        timer = setTimeout(() => {
+          let start = Date.now();
+          let segments = searchBox.value.split(' ').filter(c => c != '');
+          if (segments.length <= 0) {
+            return;
+          }
+          finds = [];
+          let htmlResult = '';
+          contents.forEach(content => {
+            let title = content.title;
+            let positions = [];
+            let find = false;
+            segments.forEach((segment) => {
+              if (content.title.includes(segment)) {
+                find = true;
+                positions.push({
+                  start: content.title.indexOf(segment),
+                  count: segment.length
+                })
+              } else if (content.details.includes(segment)) {
+                find = true;
+              }
+            });
+            if (find) {
+              finds.push({
+                title: content.title,
+                link: content.link,
+                positions
+              });
+            }
+          })
+          appendResults(0);
+          statCount.textContent = finds.length;
+          statTimes.textContent = Date.now() - start;
+        }, delay)
+      }
+    }
+    searchBox.addEventListener('input', search(200));
+  }()
 </script>
-<!------------ 加载全局背景图功能👆（开始时没有写好，这功能有点鸡肋/(ㄒoㄒ)/~~） -->
+
+<input hidden id="copy" />
+<script>
+  !function () {
+    let times = document.querySelectorAll('.publish-time');
+    for (let i = 0; i < times.length; i++) {
+      let date = times[i].dataset.t;
+      let time = Math.floor((new Date().getTime() - new Date(date).getTime()) / 1000);
+      if (time < 60) {
+        str = time + '秒之前';
+      } else if (time < 3600) {
+        str = Math.floor(time / 60) + '分钟之前';
+      } else if (time >= 3600 && time < 86400) {
+        str = Math.floor(time / 3600) + '小时之前';
+      } else if (time >= 86400 && time < 259200) {
+        str = Math.floor(time / 86400) + '天之前';
+      } else {
+        str = times[i].textContent;
+      }
+      times[i].textContent = str;
+    }
+  }();
+</script>
+
+<script>
+  let language = '';
+  if (language !== '') {
+    let map = new Map();
+    if (language === 'en') {
+      map.set('search', 'Search');
+      map.set('category', 'Categories');
+      map.set('article', 'Articles');
+      map.set('tag', 'Tags');
+      map.set('top', 'Top');
+      map.set('publish', 'published');
+      map.set('minute', ' minutes');
+      map.set('read-more', 'Read More');
+      map.set('view', 'View');
+      map.set('words', ' words');
+      map.set('category-in', 'category in');
+      map.set('preview', 'Meta');
+      map.set('index', 'Toc');
+      map.set('no-archives', "You haven't created yet");
+      map.set('archives', " articles in total");
+      map.set('cloud-tags', " tags in total");
+      map.set('copyright', "Copyright: ");
+      map.set('author', "Author: ");
+      map.set('link', "Link: ");
+      map.set('leave-message', "Leave a message");
+      map.set('format', "Links Format");
+      map.set('site-name', "Name: ");
+      map.set('site-link', "Link: ");
+      map.set('site-desc', "Desc: ");
+      map.set('stat', " related results, taking ");
+      map.set('stat-time', " ms");
+      map.set('site-img', "Image: ");
+    }
+
+    if (map.size > 0) {
+      let lanElems = document.querySelectorAll('.language');
+      lanElems.forEach(elem => {
+        let lan = elem.dataset.lan, text = map.get(lan);
+        if (elem.__proto__ === HTMLInputElement.prototype) {
+          elem.placeholder = text
+        } else {
+          if (elem.dataset.count) {
+            text = elem.dataset.count + text;
+          }
+          elem.textContent = text;
+        }
+      })
+    }
+  }
+  //拿来主义(真香)^_^，Clipboard 实现摘自掘金 https://juejin.im/post/5aefeb6e6fb9a07aa43c20af
+  window.Clipboard = (function (window, document, navigator) {
+    var textArea,
+      copy;
+
+    // 判断是不是ios端
+    function isOS() {
+      return navigator.userAgent.match(/ipad|iphone/i);
+    }
+    //创建文本元素
+    function createTextArea(text) {
+      textArea = document.createElement('textArea');
+      textArea.value = text;
+      textArea.style.width = 0;
+      textArea.style.height = 0;
+      textArea.clientHeight = 0;
+      textArea.clientWidth = 0;
+      document.body.appendChild(textArea);
+    }
+    //选择内容
+    function selectText() {
+      var range,
+        selection;
+
+      if (isOS()) {
+        range = document.createRange();
+        range.selectNodeContents(textArea);
+        selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+        textArea.setSelectionRange(0, 999999);
+      } else {
+        textArea.select();
+      }
+    }
+
+    //复制到剪贴板
+    function copyToClipboard() {
+      try {
+        document.execCommand("Copy")
+      } catch (err) {
+        alert("复制错误！请手动复制！")
+      }
+      document.body.removeChild(textArea);
+    }
+
+    copy = function (text) {
+      createTextArea(text);
+      selectText();
+      copyToClipboard();
+    };
+
+    return {
+      copy: copy
+    };
+  })(window, document, navigator);
+
+  function copyCode(e) {
+    if (e.srcElement.tagName === 'SPAN' && e.srcElement.classList.contains('copy-code')) {
+      let code = e.currentTarget.querySelector('code');
+      var text = code.innerText;
+      if (e.srcElement.textContent === '复制成功') {
+        return;
+      }
+      e.srcElement.textContent = '复制成功';
+      (function (elem) {
+        setTimeout(() => {
+          if (elem.textContent === '复制成功') {
+            elem.textContent = '复制代码'
+          }
+        }, 1000);
+      })(e.srcElement)
+      Clipboard.copy(text);
+    }
+  }
+
+  let pres = document.querySelectorAll('pre');
+  pres.forEach(pre => {
+    let code = pre.querySelector('code');
+    let copyElem = document.createElement('span');
+    copyElem.classList.add('copy-code');
+    copyElem.textContent = '复制代码';
+    pre.appendChild(copyElem);
+    pre.onclick = copyCode
+  })
+
+</script>
+<script src="/media/js/motion.js"></script>
 
 
-<script src="https://violet404.github.io//media/js/index.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/cferdinandi/smooth-scroll/dist/smooth-scroll.polyfills.min.js"></script>
+<script>
+  var scroll = new SmoothScroll('a[href*="#"]', {
+    speed: 200
+  });
+</script>
+
+
+<script src="/media/js/mouse/peace.js"></script>
+
+
+<script src="/media/js/cool.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/gh/lete114/CDN/Sum/sakura.js"></script>
+
+
+</html>
