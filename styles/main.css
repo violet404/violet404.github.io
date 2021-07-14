@@ -2051,8 +2051,10 @@ p > code {
     margin-bottom: 10px;
   }
 }
-body {
-      background-color: #eee;
+.bg-color .bg-color {
+      background: transparent !important;
+    }body {
+      background-color: #f9f9f9cc !important;
     }.header {
         width: 960px;
         margin: 0 auto;
@@ -2072,7 +2074,7 @@ body {
       border-bottom-color: #212529;
     }
     .archive-timeline-box::after, .tag-timeline-wrapper::after {
-      background: #22b8cffe;
+      background: #212529cc;
     }h1, h2, h3, h4, h5, h6 {
       color: #212529;
     }
@@ -2088,42 +2090,41 @@ body {
     .node-title::before {
       background-color: #212529;
     }a {
-      color: #212529;
+      color: #868e96;
     }
     
     .next-md-body a, .friends-box a  {
-      color: #212529;
-      border-bottom: 1px solid #212529;
+      color: #868e96;
+      border-bottom: 1px solid #868e96;
     }a:hover {
-      color: #ced4da;
+      color: #212529;
     }
     
     .archive-timeline-box .tag-node:hover::before {
-      background-color: #ced4da;
+      background-color: #212529;
     }
     
     .markdownIt-TOC a:hover {
-      color: #ced4da;
-      border-bottom-color: #ced4da;
+      color: #212529;
+      border-bottom-color: #212529;
     }
 
     .next-md-body a:hover, .friends-box a:hover {
-      color: #ced4da;
-      border-bottom-color: #ced4da;
-    }
-    .nav-toggle .line {
-      background-color:  !important;
+      color: #212529;
+      border-bottom-color: #212529;
+    }.nav-toggle .line {
+      background-color: #495057 !important;
     }
       .nav-item a {
         color:  #495057;
       }.nav-item a:hover {
-        color: #ff6b6b;
+        color: #74c0fc;
       }.nav-item-active {
-      background: #f9f9f9fe;
+      background: #e9ecefcc;
     }
 
     .nav-item:hover {
-      background: #f9f9f9fe;
+      background: #e9ecefcc;
       color: rgba(0, 0, 0, 0.98);
     }.site-author-image {
       border-radius: 50%;
@@ -2135,46 +2136,52 @@ body {
       transition-duration: 59s;
       transition-timing-function: cubic-bezier(.34,0,.84,1);
     }.markdownIt-TOC a {
-      color: #f1f3f5;
-      border-bottom-color: #f1f3f5;
+      color: #adb5bd;
+      border-bottom-color: #adb5bd;
     }.markdownIt-TOC a:hover {
-      color: #868e96;
-      border-bottom-color: #868e96;
+      color: #343a40;
+      border-bottom-color: #343a40;
     }.active-current > a {
-      color: #dee2e6 !important;
-      border-bottom-color: #dee2e6 !important;
+      color: #ffa8a8 !important;
+      border-bottom-color: #ffa8a8 !important;
     }
     .sidebar-title-active {
-      color: #dee2e6;
-      border-bottom-color: #dee2e6;
+      color: #ffa8a8;
+      border-bottom-color: #ffa8a8;
     }
     .sidebar-title-item:hover {
-      color: #dee2e6 !important;
+      color: #ffa8a8 !important;
     }
     .active-show > a {
-      color: #dee2e6;
-      border-bottom-color: #dee2e6;
+      color: #ffa8a8;
+      border-bottom-color: #ffa8a8;
     }
     .active-hidden > a {
-      color: #dee2e6;
-      border-bottom-color: #dee2e6;
+      color: #ffa8a8;
+      border-bottom-color: #ffa8a8;
     }.bg-color {
-      background-color: #fffffffe;
+      background-color: #ced4dacc;
+    }
+    .gemini .blog-header, .gemini .sidebar-wrapper, .gemini .article-wrapper, .gemini .post, .gemini .page, .gemini .section, .gemini .section-box, .gemini .sidebar-box, .gemini .friends-section {
+      border-radius: 5px;
+    }
+    .pisces .blog-header, .pisces .sidebar-wrapper, .pisces .article-wrapper, .pisces .section, .pisces .sidebar-box, .pisces .friends-section {
+      border-radius: 5px;
     }
     .site-meta {
-      background: #000 !important;
+      background: #343a40 !important;
     }
     .head-top-line {
-      background: #000;
+      background: #343a40;
     }
     .brand {
-      background: #dee2e6fe;
+      background: #495057cc;
     }
     .main-title, .brand {
-      color: #e9ecef !important;
+      color: #dee2e6 !important;
     }
     .mist .site-title i {
-      background: #e9eceffe;
+      background: #dee2e6cc;
     }.box-shadow-wrapper {
       box-shadow: none !important;
     }body {
