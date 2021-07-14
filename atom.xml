@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>https://violet404.github.io/</id>
+    <id>http://localhost:4000</id>
     <title>Violet</title>
-    <updated>2021-07-14T19:43:30.840Z</updated>
+    <updated>2021-07-14T19:47:11.531Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
-    <link rel="alternate" href="https://violet404.github.io/"/>
-    <link rel="self" href="https://violet404.github.io/atom.xml"/>
+    <link rel="alternate" href="http://localhost:4000"/>
+    <link rel="self" href="http://localhost:4000/atom.xml"/>
     <subtitle>业精于勤，荒于嬉</subtitle>
-    <logo>https://violet404.github.io/images/avatar.png</logo>
-    <icon>https://violet404.github.io/favicon.ico</icon>
+    <logo>http://localhost:4000/images/avatar.png</logo>
+    <icon>http://localhost:4000/favicon.ico</icon>
     <rights>All rights reserved 2021, Violet</rights>
     <entry>
         <title type="html"><![CDATA[JVM 内存与垃圾回收（三）]]></title>
-        <id>https://violet404.github.io/cWnQiM59p/</id>
-        <link href="https://violet404.github.io/cWnQiM59p/">
+        <id>http://localhost:4000/cWnQiM59p/</id>
+        <link href="http://localhost:4000/cWnQiM59p/">
         </link>
         <updated>2021-07-14T15:30:46.000Z</updated>
     </entry>
     <entry>
         <title type="html"><![CDATA[JVM 内存与垃圾回收（二）]]></title>
-        <id>https://violet404.github.io/aa/</id>
-        <link href="https://violet404.github.io/aa/">
+        <id>http://localhost:4000/aa/</id>
+        <link href="http://localhost:4000/aa/">
         </link>
         <updated>2021-07-13T15:18:21.000Z</updated>
         <summary type="html"><![CDATA[<h2 id="3-运行时数据区概述及线程">3. 运行时数据区概述及线程</h2>
@@ -32,8 +32,8 @@
     </entry>
     <entry>
         <title type="html"><![CDATA[JVM 内存与垃圾回收（一）]]></title>
-        <id>https://violet404.github.io/jvm-1/</id>
-        <link href="https://violet404.github.io/jvm-1/">
+        <id>http://localhost:4000/jvm-1/</id>
+        <link href="http://localhost:4000/jvm-1/">
         </link>
         <updated>2021-07-05T03:58:27.000Z</updated>
         <summary type="html"><![CDATA[<h2 id="1-jvm与java体系结构"><strong>1. JVM与Java体系结构</strong></h2>
@@ -47,50 +47,50 @@
     </entry>
     <entry>
         <title type="html"><![CDATA[游标更新数据]]></title>
-        <id>https://violet404.github.io/you-biao-geng-xin-shu-ju/</id>
-        <link href="https://violet404.github.io/you-biao-geng-xin-shu-ju/">
+        <id>http://localhost:4000/you-biao-geng-xin-shu-ju/</id>
+        <link href="http://localhost:4000/you-biao-geng-xin-shu-ju/">
         </link>
         <updated>2021-04-28T09:56:14.000Z</updated>
     </entry>
     <entry>
         <title type="html"><![CDATA[@JsonFormatter 时间返回不对]]></title>
-        <id>https://violet404.github.io/jsonformatter-shi-jian-fan-hui-bu-dui/</id>
-        <link href="https://violet404.github.io/jsonformatter-shi-jian-fan-hui-bu-dui/">
+        <id>http://localhost:4000/jsonformatter-shi-jian-fan-hui-bu-dui/</id>
+        <link href="http://localhost:4000/jsonformatter-shi-jian-fan-hui-bu-dui/">
         </link>
         <updated>2021-04-28T06:28:35.000Z</updated>
     </entry>
     <entry>
         <title type="html"><![CDATA[illegal hex characters in escape(%) pattern]]></title>
-        <id>https://violet404.github.io/illegal-hex-characters-in-escape-pattern/</id>
-        <link href="https://violet404.github.io/illegal-hex-characters-in-escape-pattern/">
+        <id>http://localhost:4000/illegal-hex-characters-in-escape-pattern/</id>
+        <link href="http://localhost:4000/illegal-hex-characters-in-escape-pattern/">
         </link>
         <updated>2021-04-28T05:31:07.000Z</updated>
     </entry>
     <entry>
         <title type="html"><![CDATA[Oracle ResultSet.getDate()/getObject()无法获取时间]]></title>
-        <id>https://violet404.github.io/oracle-resultsetgetdategetobjectwu-fa-huo-qu-shi-jian/</id>
-        <link href="https://violet404.github.io/oracle-resultsetgetdategetobjectwu-fa-huo-qu-shi-jian/">
+        <id>http://localhost:4000/oracle-resultsetgetdategetobjectwu-fa-huo-qu-shi-jian/</id>
+        <link href="http://localhost:4000/oracle-resultsetgetdategetobjectwu-fa-huo-qu-shi-jian/">
         </link>
         <updated>2021-04-28T05:21:02.000Z</updated>
     </entry>
     <entry>
         <title type="html"><![CDATA[jQuery 操作多选框checkbox失效]]></title>
-        <id>https://violet404.github.io/jquery-cao-zuo-duo-xuan-kuang-checkbox-shi-xiao/</id>
-        <link href="https://violet404.github.io/jquery-cao-zuo-duo-xuan-kuang-checkbox-shi-xiao/">
+        <id>http://localhost:4000/jquery-cao-zuo-duo-xuan-kuang-checkbox-shi-xiao/</id>
+        <link href="http://localhost:4000/jquery-cao-zuo-duo-xuan-kuang-checkbox-shi-xiao/">
         </link>
         <updated>2021-04-28T05:18:57.000Z</updated>
     </entry>
     <entry>
         <title type="html"><![CDATA[Oracle 行转列]]></title>
-        <id>https://violet404.github.io/oracle-xing-zhuan-lie/</id>
-        <link href="https://violet404.github.io/oracle-xing-zhuan-lie/">
+        <id>http://localhost:4000/oracle-xing-zhuan-lie/</id>
+        <link href="http://localhost:4000/oracle-xing-zhuan-lie/">
         </link>
         <updated>2021-04-28T05:00:41.000Z</updated>
     </entry>
     <entry>
         <title type="html"><![CDATA[Uncaught RangeError：Maximum call stack size exceeded]]></title>
-        <id>https://violet404.github.io/uncaught-rangeerrormaximum-call-stack-size-exceeded/</id>
-        <link href="https://violet404.github.io/uncaught-rangeerrormaximum-call-stack-size-exceeded/">
+        <id>http://localhost:4000/uncaught-rangeerrormaximum-call-stack-size-exceeded/</id>
+        <link href="http://localhost:4000/uncaught-rangeerrormaximum-call-stack-size-exceeded/">
         </link>
         <updated>2021-04-28T04:50:27.000Z</updated>
     </entry>
