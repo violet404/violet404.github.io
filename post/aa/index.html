@@ -8,8 +8,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="http://violet404.github.io/favicon.ico?v=1626240190742">
-<link rel="stylesheet" href="http://violet404.github.io/styles/main.css">
+<link rel="shortcut icon" href="http://violet404.github.io//favicon.ico?v=1626241695628">
+<link rel="stylesheet" href="http://violet404.github.io//styles/main.css">
 
 
 
@@ -33,8 +33,8 @@ JVM定义了若干程序运行期间使用的数据区，其中一些随虚拟�
       <div class="sidebar" :class="{ 'full-height': menuVisible }">
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
-      <a class="site-title-container" href="http://violet404.github.io">
-        <img src="http://violet404.github.io/images/avatar.png?v=1626240190742" class="site-logo">
+      <a class="site-title-container" href="http://violet404.github.io/">
+        <img src="http://violet404.github.io//images/avatar.png?v=1626241695628" class="site-logo">
         <h1 class="site-title">Violet</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -87,7 +87,7 @@ JVM定义了若干程序运行期间使用的数据区，其中一些随虚拟�
       业精于勤，荒于嬉
     </div>
     <div class="site-footer">
-       | <a class="rss" href="http://violet404.github.io/atom.xml" target="_blank">RSS</a>
+       | <a class="rss" href="http://violet404.github.io//atom.xml" target="_blank">RSS</a>
     </div>
   </div>
 </div>
@@ -101,9 +101,9 @@ JVM定义了若干程序运行期间使用的数据区，其中一些随虚拟�
             
             <div class="post-content" v-pre>
               <h2 id="3-运行时数据区概述及线程">3. 运行时数据区概述及线程</h2>
-<p><img src="http://violet404.github.io/post-images/1626172536218.png" alt="" loading="lazy"><br>
+<p><img src="http://violet404.github.io//post-images/1626172536218.png" alt="" loading="lazy"><br>
 JVM定义了若干程序运行期间使用的数据区，其中一些随虚拟机的创建而创建，随虚拟机推出而销毁；另外一些则随线程的开始结束而创建与销毁。<br>
-<img src="http://violet404.github.io/post-images/1626160473166.png" alt="" loading="lazy"></p>
+<img src="http://violet404.github.io//post-images/1626160473166.png" alt="" loading="lazy"></p>
 <h2 id="4-程序计数器">4. 程序计数器</h2>
 <ul>
 <li>作用 存储指向下一条指令的地址，即即将执行的指令代码，由执行引擎读取下一条指令。</li>
@@ -124,7 +124,7 @@ JVM定义了若干程序运行期间使用的数据区，其中一些随虚拟�
     }
 }
 </code></pre>
-<figure data-type="image" tabindex="1"><img src="http://violet404.github.io/post-images/1626162896094.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="1"><img src="http://violet404.github.io//post-images/1626162896094.png" alt="" loading="lazy"></figure>
 <ul>
 <li>JVM的多线程是通过线程轮流切换并分配处理器执行时间的方式实现的，在任一确定的时刻，一个处理器（对于多核处理器来说一个内核）都只会执行一条线程中的指令。因此，为了线程切换后能够恢复到正确的执行位置，每个线程都需要由一个独立的程序计数器，各个线程之间计数器互不影响，独立存储。</li>
 </ul>
