@@ -8,7 +8,7 @@
 <meta name="keywords" content="全栈">
 <meta name="description" content="业精于勤，荒于嬉">
 <meta name="theme-color" content="#343a40">
-<title>EasyUI 窗口重复加载、窗口元素取值混乱 | Violet</title>
+<title>JVM 内存与垃圾回收（三） | Violet</title>
 <link rel="shortcut icon" href="/favicon.ico?v=1626281925957">
 <link rel="stylesheet" href="/media/css/pisces.css">
 <link rel="stylesheet" href="/media/fonts/font-awesome.css">
@@ -41,8 +41,8 @@
 
 
 
-  <meta name="description" content="EasyUI 窗口重复加载、窗口元素取值混乱" />
-  <meta name="keywords" content="问题整理" />
+  <meta name="description" content="JVM 内存与垃圾回收（三）" />
+  <meta name="keywords" content="" />
 </head>
 
 <body>
@@ -175,7 +175,8 @@
       <div class="sidebar-body pisces" id="sidebar_body">
         
           
-            
+            <div class="post-side-meta" id="post_side_meta">
+              
 <div class="sidebar-wrapper box-shadow-wrapper bg-color">
   <div class="sidebar-item">
     <img class="site-author-image right-motion" src="/images/avatar.png"/>
@@ -219,6 +220,202 @@
 
 
 </div>
+            </div>
+            <div class="post-toc sidebar-body-active" id="post_toc" style="opacity: 1;">
+              <div class="toc-box right-motion">
+  <div class="toc-wrapper  auto"
+    id="toc_wrapper">
+    <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#8-%E5%A0%86">8. 堆</a></li>
+<li><a href="#9-%E6%96%B9%E6%B3%95%E5%8C%BA">9. 方法区</a></li>
+<li><a href="#10-%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%AE%9E%E4%BE%8B%E5%8C%96%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80%E4%B8%8E%E8%AE%BF%E9%97%AE%E5%AE%9A%E4%BD%8D">10. 对象的实例化内存布局与访问定位</a></li>
+<li><a href="#11-%E7%9B%B4%E6%8E%A5%E5%86%85%E5%AD%98">11. 直接内存</a></li>
+<li><a href="#12-%E6%89%A7%E8%A1%8C%E5%BC%95%E6%93%8E">12. 执行引擎</a></li>
+<li><a href="#13-stringtable">13. StringTable</a></li>
+<li><a href="#14-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95">14. 垃圾回收算法</a></li>
+<li><a href="#15-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8">15. 垃圾回收器</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+</div>
+
+<script>
+
+  let lastTop = 0, lList = [], hList = [], postBody, lastIndex = -1;
+  let active = 'active-show', activeClass = 'active-current';
+  let tocWrapper = document.querySelector('#toc_wrapper');
+  let tocContent = tocWrapper.children[0];
+  let autoNumber = tocWrapper && tocWrapper.classList.contains('auto-number');
+
+  function addTocNumber(elem, deep) {
+    if (!elem) {
+      return;
+    }
+    let prop = elem.__proto__;
+
+    if (prop === HTMLUListElement.prototype) {
+      for (let i = 0; i < elem.children.length; i++) {
+        addTocNumber(elem.children[i], deep + (i + 1) + '.');
+      }
+    } else if (prop === HTMLLIElement.prototype) {
+      // 保存li元素
+      if (elem.children[0] && elem.children[0].__proto__ === HTMLAnchorElement.prototype) {
+        lList.push(elem);
+      }
+      for (let i = 0; i < elem.children.length; i++) {
+        let cur = elem.children[i];
+        if (cur.__proto__ === HTMLAnchorElement.prototype) {
+          if (autoNumber) {
+            cur.text = deep + ' ' + cur.text;
+          }
+        } else if (cur.__proto__ === HTMLUListElement.prototype) {
+          addTocNumber(cur, deep);
+        }
+      }
+    }
+  }
+
+  function removeParentActiveClass() {
+    let parents = tocContent.querySelectorAll('.' + active)
+    parents.forEach(function (elem) {
+      elem.classList.remove(active);
+    });
+  }
+
+  function addActiveClass(index) {
+    if (index >= 0 && index < hList.length) {
+      lList[index].classList.add(activeClass);
+    }
+  }
+
+  function removeActiveClass(index) {
+    if (index >= 0 && index < hList.length) {
+      lList[index].classList.remove(activeClass);
+    }
+  }
+
+  function addActiveLiElemment(elem, parent) {
+    if (!elem || elem === parent) {
+      return;
+    } else {
+      if (elem.__proto__ === HTMLLIElement.prototype) {
+        elem.classList.add(active);
+      }
+      addActiveLiElemment(elem.parentElement, parent);
+    }
+  }
+
+  function showToc() {
+    if (tocWrapper) {
+      postBody = document.querySelector('#post_body');
+      for (let i = 0; i < postBody.children.length; i++) {
+        if (postBody.children[i].__proto__ === HTMLHeadingElement.prototype) {
+          hList.push(postBody.children[i]);
+        }
+      }
+      if (tocWrapper.classList.contains('compress')) {
+        tocContent.classList.add('closed');
+      } else if (tocWrapper.classList.contains('no_compress')) {
+        tocContent.classList.add('expanded');
+      } else {
+        if (hList.length > 10) {
+          active = 'active-hidden'
+          tocContent.classList.add('closed');
+        } else {
+          tocContent.classList.add('expanded');
+        }
+      }
+    }
+  }
+
+  (function () {
+    // 处理不是从#一级标题开始目录
+    if (tocContent.children.length === 1 && tocContent.children[0].__proto__ === HTMLLIElement.prototype) {
+      let con = tocContent.children[0].children[0];
+      tocContent.innerHTML = con.innerHTML;
+    }
+    let markdownItTOC = document.querySelector('.markdownIt-TOC');
+    let innerHeight = window.innerHeight;
+    markdownItTOC.style = `max-height: ${innerHeight - 80 > 0 ? innerHeight - 80 : innerHeight}px`
+    addTocNumber(tocContent, '');
+  })();
+
+  document.addEventListener('scroll', function (e) {
+    if (lList.length <= 0) {
+      return;
+    }
+    let scrollTop = document.scrollingElement.scrollTop + 10;
+    let dir;
+
+    if (lastTop - scrollTop > 0) {
+      dir = 'up';
+    } else {
+      dir = 'down';
+    }
+
+    lastTop = scrollTop;
+    if (scrollTop <= 0) {
+      if (lastIndex >= 0 && lastIndex < hList.length) {
+        lList[lastIndex].classList.remove(activeClass);
+      }
+      return;
+    }
+
+    let current = 0, hasFind = false;
+    for (let i = 0; i < hList.length; i++) {
+      if (hList[i].offsetTop > scrollTop) {
+        current = i;
+        hasFind = true;
+        break;
+      }
+    }
+    if (!hasFind && scrollTop > lList[lList.length - 1].offsetTop) {
+      current = hList.length - 1;
+    } else {
+      current--;
+    }
+    if (dir === 'down') {
+      if (current > lastIndex) {
+        addActiveClass(current);
+        removeActiveClass(lastIndex)
+        lastIndex = current;
+        removeParentActiveClass();
+        lList[current] && addActiveLiElemment(lList[current].parentElement, tocContent);
+      }
+    } else {
+      if (current < lastIndex) {
+        addActiveClass(current);
+        removeActiveClass(lastIndex);
+        lastIndex = current;
+        removeParentActiveClass();
+        lList[current] && addActiveLiElemment(lList[current].parentElement, tocContent);
+      }
+    }
+  });
+
+
+  window.addEventListener('load', function () {
+    showToc();
+    document.querySelector('#sidebar').style = 'display: block;';
+    tocWrapper.classList.add('toc-active');
+    setTimeout(function () {
+      if ("createEvent" in document) {
+        let evt = document.createEvent("HTMLEvents");
+        evt.initEvent("scroll", false, true);
+        document.dispatchEvent(evt);
+      }
+      else {
+        document.fireEvent("scroll");
+      }
+    }, 500)
+  })
+
+</script>
+            </div>
           
         
       </div>
@@ -306,8 +503,8 @@
           <div class="section bg-color post post-page">
             <section class="post-header">
   <h1 class="post-title">
-    <a class="post-title-link" href="https://violet404.github.io/easyui-chuang-kou-chong-fu-jia-zai-chuang-kou-yuan-su-qu-zhi-hun-luan/">
-      EasyUI 窗口重复加载、窗口元素取值混乱
+    <a class="post-title-link" href="https://violet404.github.io/cWnQiM59p/">
+      JVM 内存与垃圾回收（三）
     </a>
   </h1>
   <div class="post-meta">
@@ -315,36 +512,23 @@
     <span class="meta-item pc-show">
       <i class="fa fa-calendar-o"></i>
       <span class="language" data-lan="publish">发布于</span>
-      <span class="publish-time" data-t="2021-04-28 12:19:25">2021-04-28</span>
+      <span class="publish-time" data-t="2021-07-14 23:30:46">2021-07-14</span>
       <span class="post-meta-divider pc-show">|</span>
     </span>
     
     <span class="meta-item">
-      <i class="fa fa-folder-o"></i>
-      <span class="pc-show language" data-lan="category-in">分类于</span>
-      
-      
-      <a href="https://violet404.github.io/Oq4KR_wv3/">
-        <span>问题整理</span>
-      </a>
-      
-      
-    </span>
-    <span class="post-meta-divider">|</span>
-    
-    <span class="meta-item">
       <i class="fa fa-clock-o"></i>
-      <span>2<span class="language" data-lan="minute">分钟</span></span>
+      <span>1<span class="language" data-lan="minute">分钟</span></span>
     </span>
     <span class="meta-item">
       <span class="post-meta-divider">|</span>
       <i class="fa fa-file-word-o"></i>
-      <span>262<span class="pc-show language" data-lan="words">字数</span></span>
+      <span>47<span class="pc-show language" data-lan="words">字数</span></span>
     </span>
     
     
     
-    <span id="/easyui-chuang-kou-chong-fu-jia-zai-chuang-kou-yuan-su-qu-zhi-hun-luan/" data-flag-title="EasyUI 窗口重复加载、窗口元素取值混乱" class="meta-item pc-show leancloud_visitors">
+    <span id="/cWnQiM59p/" data-flag-title="JVM 内存与垃圾回收（三）" class="meta-item pc-show leancloud_visitors">
       <span class="post-meta-divider">|</span>
       <i class="fa fa-eye"></i>
       <span><span class="language" data-lan="view">浏览量</span>：<span class="leancloud-visitors-count"></span></span>
@@ -353,41 +537,14 @@
   </div>
 </section>
             <div class="post-body next-md-body" id="post_body">
-              <ol>
-<li>EasyUI框架window类窗口使用方式</li>
-</ol>
-<pre><code class="language-bash"># 第一种方式
-&lt;div id=&quot;win&quot;&gt;&lt;/div&gt; 
-$('#win').window({})
-#第二中方式
-&lt;div id=&quot;win&quot; class=&quot;easyui-window&quot; data-options=&quot;closed:true&quot;&gt;&lt;/div&gt; 
-$('#win').window({}).window('open')
-
-# 如果混用两种方式，则会导致重复加载的问题
-&lt;div id=&quot;win&quot;&gt;&lt;/div&gt;
-$('#win').window({}).window('open')
-</code></pre>
-<ol start="2">
-<li>在父页面A弹出子页面B时，子页面B又弹出子页面C的情况，如果C页面对应的div定义在B页面，则C页面取值可能会混乱。EasyUI窗口类组件在调用close方式时，页面上的dom元素并不是直接销毁，而是隐藏。</li>
-</ol>
-<pre><code class="language-bash">#页面A弹出子页面B
-&lt;div id=&quot;winB&quot;&gt;&lt;/div&gt;
-$('#winB').window({})
-
-#页面B弹窗子页面C 错误方式
-&lt;div id=&quot;winC&quot;&gt;&lt;/div&gt;
-$('#winC').window({})
-
-#页面B弹窗子页面C 正确方式
-$('&lt;div id=&quot;winC&quot;&gt;&lt;/div&gt;').window({
-  onBeforeClose: function() {
-    $('#winC').window('destroy');
-  }
-})
-</code></pre>
-<ol start="3">
-<li>为避免窗口元素取值错误，定位时建议加上限定范围</li>
-</ol>
+              <h2 id="8-堆">8. 堆</h2>
+<h2 id="9-方法区">9. 方法区</h2>
+<h2 id="10-对象的实例化内存布局与访问定位">10. 对象的实例化内存布局与访问定位</h2>
+<h2 id="11-直接内存">11. 直接内存</h2>
+<h2 id="12-执行引擎">12. 执行引擎</h2>
+<h2 id="13-stringtable">13. StringTable</h2>
+<h2 id="14-垃圾回收算法">14. 垃圾回收算法</h2>
+<h2 id="15-垃圾回收器">15. 垃圾回收器</h2>
 
             </div>
             
@@ -400,7 +557,7 @@ $('&lt;div id=&quot;winC&quot;&gt;&lt;/div&gt;').window({
     </li>
     <li class="post-copyright-link">
       <strong class="language" data-lan="link">本文链接：</strong>
-      <a href="https://violet404.github.io/easyui-chuang-kou-chong-fu-jia-zai-chuang-kou-yuan-su-qu-zhi-hun-luan/" title="EasyUI 窗口重复加载、窗口元素取值混乱">https://violet404.github.io/easyui-chuang-kou-chong-fu-jia-zai-chuang-kou-yuan-su-qu-zhi-hun-luan/</a>
+      <a href="https://violet404.github.io/cWnQiM59p/" title="JVM 内存与垃圾回收（三）">https://violet404.github.io/cWnQiM59p/</a>
     </li>
     <li class="post-copyright-license">
       <strong class="language" data-lan="copyright">版权声明： </strong>
@@ -409,21 +566,15 @@ $('&lt;div id=&quot;winC&quot;&gt;&lt;/div&gt;').window({
   </ul>
   <div class="tags">
     
-      <a href="https://violet404.github.io/Oq4KR_wv3/"># 问题整理</a>
-    
   </div>
   <div class="nav">
     <div class="nav-prev">
       
-        <i class="fa fa-chevron-left"></i>
-        <a class="nav-pc-next" title="Uncaught RangeError：Maximum call stack size exceeded" href="https://violet404.github.io/uncaught-rangeerrormaximum-call-stack-size-exceeded/">Uncaught RangeError：Maximum call stack size exceeded</a class="nav-pc-next">
-        <a class="nav-mobile-prev" title="Uncaught RangeError：Maximum call stack size exceeded" href="https://violet404.github.io/uncaught-rangeerrormaximum-call-stack-size-exceeded/">上一篇</a>
-      
     </div>
     <div class="nav-next">
       
-        <a class="nav-pc-next" title="Mybatis 结果集数量与实际不符" href="https://violet404.github.io/mybatis-jie-guo-ji-shu-liang-yu-shi-ji-bu-fu/">Mybatis 结果集数量与实际不符</a>
-        <a class="nav-mobile-next" title="Mybatis 结果集数量与实际不符" href="https://violet404.github.io/mybatis-jie-guo-ji-shu-liang-yu-shi-ji-bu-fu/">下一篇</a>
+        <a class="nav-pc-next" title="JVM 内存与垃圾回收（二）" href="https://violet404.github.io/aa/">JVM 内存与垃圾回收（二）</a>
+        <a class="nav-mobile-next" title="JVM 内存与垃圾回收（二）" href="https://violet404.github.io/aa/">下一篇</a>
         <i class="fa fa-chevron-right"></i>
       
     </div>

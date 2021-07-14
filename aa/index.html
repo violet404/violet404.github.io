@@ -9,7 +9,7 @@
 <meta name="description" content="业精于勤，荒于嬉">
 <meta name="theme-color" content="#343a40">
 <title>JVM 内存与垃圾回收（二） | Violet</title>
-<link rel="shortcut icon" href="/favicon.ico?v=1626273205043">
+<link rel="shortcut icon" href="/favicon.ico?v=1626281925957">
 <link rel="stylesheet" href="/media/css/pisces.css">
 <link rel="stylesheet" href="/media/fonts/font-awesome.css">
 <link
@@ -193,7 +193,7 @@
     <div class="sidebar-item-box">
       <a href="/archives/">
         
-        <span class="site-item-stat-count">17</span>
+        <span class="site-item-stat-count">18</span>
         <span class="site-item-stat-name language" data-lan="article">文章</span>
       </a>
     </div>
@@ -234,18 +234,13 @@
 *
 <ul>
 <li><a href="#51-%E6%A6%82%E8%BF%B0">5.1 概述</a></li>
+<li><a href="#52-%E6%A0%88%E7%9A%84%E5%AD%98%E5%82%A8%E5%8D%95%E4%BD%8D">5.2 栈的存储单位</a></li>
+<li><a href="#53-%E6%A0%88%E5%B8%A7%E7%9A%84%E5%86%85%E9%83%A8%E7%BB%93%E6%9E%84">5.3 栈帧的内部结构</a></li>
+<li><a href="#54-%E5%AD%97%E8%8A%82%E7%A0%81%E6%96%B9%E6%B3%95%E5%86%85%E9%83%A8%E7%BB%93%E6%9E%84%E5%89%96%E6%9E%90">5.4 字节码方法内部结构剖析</a></li>
 </ul>
 </li>
 <li><a href="#6-%E6%9C%AC%E5%9C%B0%E6%96%B9%E6%B3%95%E6%8E%A5%E5%8F%A3">6. 本地方法接口</a></li>
 <li><a href="#7-%E6%9C%AC%E5%9C%B0%E6%96%B9%E6%B3%95%E6%A0%88">7. 本地方法栈</a></li>
-<li><a href="#8-%E5%A0%86">8. 堆</a></li>
-<li><a href="#9-%E6%96%B9%E6%B3%95%E5%8C%BA">9. 方法区</a></li>
-<li><a href="#10-%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%AE%9E%E4%BE%8B%E5%8C%96%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80%E4%B8%8E%E8%AE%BF%E9%97%AE%E5%AE%9A%E4%BD%8D">10. 对象的实例化内存布局与访问定位</a></li>
-<li><a href="#11-%E7%9B%B4%E6%8E%A5%E5%86%85%E5%AD%98">11. 直接内存</a></li>
-<li><a href="#12-%E6%89%A7%E8%A1%8C%E5%BC%95%E6%93%8E">12. 执行引擎</a></li>
-<li><a href="#13-stringtable">13. StringTable</a></li>
-<li><a href="#14-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95">14. 垃圾回收算法</a></li>
-<li><a href="#15-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8">15. 垃圾回收器</a></li>
 </ul>
 </li>
 </ul>
@@ -519,6 +514,12 @@
   </h1>
   <div class="post-meta">
     
+    <span class="meta-item">
+      <i class="fa fa-thumb-tack"></i>
+      <span class="language" data-lan="top">置顶</span>
+      <span class="post-meta-divider">|</span>
+    </span>
+    
     <span class="meta-item pc-show">
       <i class="fa fa-calendar-o"></i>
       <span class="language" data-lan="publish">发布于</span>
@@ -528,12 +529,12 @@
     
     <span class="meta-item">
       <i class="fa fa-clock-o"></i>
-      <span>2<span class="language" data-lan="minute">分钟</span></span>
+      <span>4<span class="language" data-lan="minute">分钟</span></span>
     </span>
     <span class="meta-item">
       <span class="post-meta-divider">|</span>
       <i class="fa fa-file-word-o"></i>
-      <span>495<span class="pc-show language" data-lan="words">字数</span></span>
+      <span>1023<span class="pc-show language" data-lan="words">字数</span></span>
     </span>
     
     
@@ -578,21 +579,46 @@
 </ul>
 <h2 id="5-虚拟机栈">5. 虚拟机栈</h2>
 <h4 id="51-概述">5.1 概述</h4>
+<ul>
+<li>栈的生命周期与线程一致</li>
+<li>作用：保存方法的局部变量（8种基本数据类型、对象的引用地址）、部分结果，并参与方法的调用与返回</li>
+<li>快速有效的分配方式，仅次于程序计数器</li>
+<li>不存在垃圾回收的问题，但是会存在OOM</li>
+<li>JVM规范允许Java虚拟机栈动态的（OutOfMemoryError，尝试扩展时无法申请足够的内存或者创建新线程时没有足够的内存创建新线程对应的虚拟机栈）或者固定不变的（StackOverflowError，线程请求分配的栈容量达到Java虚拟机允许的最大容量）</li>
+<li>设置最大栈大小 -Xss 例如: -Xss256K -Xss256M</li>
+</ul>
+<h4 id="52-栈的存储单位">5.2 栈的存储单位</h4>
+<ul>
+<li>每个线程由自己的栈内存，栈中的数据以栈帧为基本存储单位</li>
+<li>线程种执行的每一个方法都对应一个栈帧， 存储方法执行过程种的各种数据信息；</li>
+<li>java方法的执行与结束对应栈帧的入栈出栈</li>
+<li>JVM对栈的操作只有两种：压栈、出栈； 遵循FILO的规则；</li>
+<li>当前栈帧 当前方法 当前类；执行引擎执行的操作指令都是对当前栈帧进行操作</li>
+<li>方法的技术方式：１、正常return结束；２、抛出异常。无论哪种方式结束，都会使当前栈帧出栈</li>
+</ul>
+<h4 id="53-栈帧的内部结构">5.3 栈帧的内部结构</h4>
+<ul>
+<li>局部变量表 Local Variable</li>
+</ul>
 <ol>
-<li>栈是运行时单位，而堆是存储单位</li>
-<li>生命周期与线程一致</li>
-<li>一个栈帧对应一个java方法</li>
+<li>定义为一个 <em><strong><font color="red">数字数组</font>,主要用于存储方法参数和定义在方法体内的局部变量</strong></em> ，数据类型包括基本数据类型、对象引用以及returnAddress类型。</li>
+<li><em><strong>容量大小在编译阶段就能确定</strong></em> 保存在方法的code属性的maximum_local_variables数据项，方法运行期间不会改变局部变量表的大小</li>
+<li>栈的大小--&gt;栈帧的个数---&gt;方法嵌套调用的次数</li>
+<li>局部变量表随栈帧的出栈而销毁</li>
 </ol>
+<ul>
+<li>操作数栈 Operand Stack</li>
+<li>动态链接 Dynamic Linking 指向运行时常量池的方法引用（与多态有关吗？？）</li>
+<li>方法返回地址 Return Address 方法正常退出或异常退出的定义</li>
+<li>一些附加信息</li>
+</ul>
+<h4 id="54-字节码方法内部结构剖析">5.4 字节码方法内部结构剖析</h4>
+<figure data-type="image" tabindex="2"><img src="https://violet404.github.io//post-images/1626281631376.png" alt="" loading="lazy"></figure>
+<ul>
+<li>参数args在main方法内都生效-&gt;源码16~19 -&gt; 字节码 0 ~18 -&gt;生效位置0,长度19；其他参数类似</li>
+</ul>
 <h2 id="6-本地方法接口">6. 本地方法接口</h2>
 <h2 id="7-本地方法栈">7. 本地方法栈</h2>
-<h2 id="8-堆">8. 堆</h2>
-<h2 id="9-方法区">9. 方法区</h2>
-<h2 id="10-对象的实例化内存布局与访问定位">10. 对象的实例化内存布局与访问定位</h2>
-<h2 id="11-直接内存">11. 直接内存</h2>
-<h2 id="12-执行引擎">12. 执行引擎</h2>
-<h2 id="13-stringtable">13. StringTable</h2>
-<h2 id="14-垃圾回收算法">14. 垃圾回收算法</h2>
-<h2 id="15-垃圾回收器">15. 垃圾回收器</h2>
 
             </div>
             
@@ -617,6 +643,10 @@
   </div>
   <div class="nav">
     <div class="nav-prev">
+      
+        <i class="fa fa-chevron-left"></i>
+        <a class="nav-pc-next" title="JVM 内存与垃圾回收（三）" href="https://violet404.github.io/cWnQiM59p/">JVM 内存与垃圾回收（三）</a class="nav-pc-next">
+        <a class="nav-mobile-prev" title="JVM 内存与垃圾回收（三）" href="https://violet404.github.io/cWnQiM59p/">上一篇</a>
       
     </div>
     <div class="nav-next">
@@ -1625,6 +1655,19 @@
     <div class="result" id="result">
       
       <div class="item">
+        <a class="result-title" style="opacity: 0;" href="https://violet404.github.io/cWnQiM59p/"" data-c="
+          &lt;h2 id=&#34;8-堆&#34;&gt;8. 堆&lt;/h2&gt;
+&lt;h2 id=&#34;9-方法区&#34;&gt;9. 方法区&lt;/h2&gt;
+&lt;h2 id=&#34;10-对象的实例化内存布局与访问定位&#34;&gt;10. 对象的实例化内存布局与访问定位&lt;/h2&gt;
+&lt;h2 id=&#34;11-直接内存&#34;&gt;11. 直接内存&lt;/h2&gt;
+&lt;h2 id=&#34;12-执行引擎&#34;&gt;12. 执行引擎&lt;/h2&gt;
+&lt;h2 id=&#34;13-stringtable&#34;&gt;13. StringTable&lt;/h2&gt;
+&lt;h2 id=&#34;14-垃圾回收算法&#34;&gt;14. 垃圾回收算法&lt;/h2&gt;
+&lt;h2 id=&#34;15-垃圾回收器&#34;&gt;15. 垃圾回收器&lt;/h2&gt;
+">JVM 内存与垃圾回收（三）</a>
+      </div>
+      
+      <div class="item">
         <a class="result-title" style="opacity: 0;" href="https://violet404.github.io/aa/"" data-c="
           &lt;h2 id=&#34;3-运行时数据区概述及线程&#34;&gt;3. 运行时数据区概述及线程&lt;/h2&gt;
 &lt;p&gt;JVM定义了若干程序运行期间使用的数据区，其中一些随虚拟机的创建而创建，随虚拟机推出而销毁；另外一些则随线程的开始结束而创建与销毁。&lt;/p&gt;
@@ -1657,21 +1700,46 @@
 &lt;/ul&gt;
 &lt;h2 id=&#34;5-虚拟机栈&#34;&gt;5. 虚拟机栈&lt;/h2&gt;
 &lt;h4 id=&#34;51-概述&#34;&gt;5.1 概述&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;栈的生命周期与线程一致&lt;/li&gt;
+&lt;li&gt;作用：保存方法的局部变量（8种基本数据类型、对象的引用地址）、部分结果，并参与方法的调用与返回&lt;/li&gt;
+&lt;li&gt;快速有效的分配方式，仅次于程序计数器&lt;/li&gt;
+&lt;li&gt;不存在垃圾回收的问题，但是会存在OOM&lt;/li&gt;
+&lt;li&gt;JVM规范允许Java虚拟机栈动态的（OutOfMemoryError，尝试扩展时无法申请足够的内存或者创建新线程时没有足够的内存创建新线程对应的虚拟机栈）或者固定不变的（StackOverflowError，线程请求分配的栈容量达到Java虚拟机允许的最大容量）&lt;/li&gt;
+&lt;li&gt;设置最大栈大小 -Xss 例如: -Xss256K -Xss256M&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;52-栈的存储单位&#34;&gt;5.2 栈的存储单位&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;每个线程由自己的栈内存，栈中的数据以栈帧为基本存储单位&lt;/li&gt;
+&lt;li&gt;线程种执行的每一个方法都对应一个栈帧， 存储方法执行过程种的各种数据信息；&lt;/li&gt;
+&lt;li&gt;java方法的执行与结束对应栈帧的入栈出栈&lt;/li&gt;
+&lt;li&gt;JVM对栈的操作只有两种：压栈、出栈； 遵循FILO的规则；&lt;/li&gt;
+&lt;li&gt;当前栈帧 当前方法 当前类；执行引擎执行的操作指令都是对当前栈帧进行操作&lt;/li&gt;
+&lt;li&gt;方法的技术方式：１、正常return结束；２、抛出异常。无论哪种方式结束，都会使当前栈帧出栈&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;53-栈帧的内部结构&#34;&gt;5.3 栈帧的内部结构&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;局部变量表 Local Variable&lt;/li&gt;
+&lt;/ul&gt;
 &lt;ol&gt;
-&lt;li&gt;栈是运行时单位，而堆是存储单位&lt;/li&gt;
-&lt;li&gt;生命周期与线程一致&lt;/li&gt;
-&lt;li&gt;一个栈帧对应一个java方法&lt;/li&gt;
+&lt;li&gt;定义为一个 &lt;em&gt;&lt;strong&gt;&lt;font color=&#34;red&#34;&gt;数字数组&lt;/font&gt;,主要用于存储方法参数和定义在方法体内的局部变量&lt;/strong&gt;&lt;/em&gt; ，数据类型包括基本数据类型、对象引用以及returnAddress类型。&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;&lt;strong&gt;容量大小在编译阶段就能确定&lt;/strong&gt;&lt;/em&gt; 保存在方法的code属性的maximum_local_variables数据项，方法运行期间不会改变局部变量表的大小&lt;/li&gt;
+&lt;li&gt;栈的大小--&amp;gt;栈帧的个数---&amp;gt;方法嵌套调用的次数&lt;/li&gt;
+&lt;li&gt;局部变量表随栈帧的出栈而销毁&lt;/li&gt;
 &lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;操作数栈 Operand Stack&lt;/li&gt;
+&lt;li&gt;动态链接 Dynamic Linking 指向运行时常量池的方法引用（与多态有关吗？？）&lt;/li&gt;
+&lt;li&gt;方法返回地址 Return Address 方法正常退出或异常退出的定义&lt;/li&gt;
+&lt;li&gt;一些附加信息&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;54-字节码方法内部结构剖析&#34;&gt;5.4 字节码方法内部结构剖析&lt;/h4&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;2&#34;&gt;&lt;img src=&#34;https://violet404.github.io//post-images/1626281631376.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;ul&gt;
+&lt;li&gt;参数args在main方法内都生效-&amp;gt;源码16~19 -&amp;gt; 字节码 0 ~18 -&amp;gt;生效位置0,长度19；其他参数类似&lt;/li&gt;
+&lt;/ul&gt;
 &lt;h2 id=&#34;6-本地方法接口&#34;&gt;6. 本地方法接口&lt;/h2&gt;
 &lt;h2 id=&#34;7-本地方法栈&#34;&gt;7. 本地方法栈&lt;/h2&gt;
-&lt;h2 id=&#34;8-堆&#34;&gt;8. 堆&lt;/h2&gt;
-&lt;h2 id=&#34;9-方法区&#34;&gt;9. 方法区&lt;/h2&gt;
-&lt;h2 id=&#34;10-对象的实例化内存布局与访问定位&#34;&gt;10. 对象的实例化内存布局与访问定位&lt;/h2&gt;
-&lt;h2 id=&#34;11-直接内存&#34;&gt;11. 直接内存&lt;/h2&gt;
-&lt;h2 id=&#34;12-执行引擎&#34;&gt;12. 执行引擎&lt;/h2&gt;
-&lt;h2 id=&#34;13-stringtable&#34;&gt;13. StringTable&lt;/h2&gt;
-&lt;h2 id=&#34;14-垃圾回收算法&#34;&gt;14. 垃圾回收算法&lt;/h2&gt;
-&lt;h2 id=&#34;15-垃圾回收器&#34;&gt;15. 垃圾回收器&lt;/h2&gt;
 ">JVM 内存与垃圾回收（二）</a>
       </div>
       
