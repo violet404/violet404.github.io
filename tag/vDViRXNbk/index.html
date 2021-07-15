@@ -8,7 +8,7 @@
 <meta name="keywords" content="Gridea静态个人博客">
 <meta name="description" content="业精于勤，荒于嬉">
 <meta name="theme-color" content="#000">
-<title>JVM 内存与垃圾回收（一） | Violet</title>
+<title>Violet</title>
 <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/violet404/violet404.github.io@master/favicon.ico?v=1626321289494">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/violet404/violet404.github.io@master/media/css/pisces.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/violet404/violet404.github.io@master/media/fonts/font-awesome.css">
@@ -41,8 +41,6 @@
 
 
 
-  <meta name="description" content="JVM 内存与垃圾回收（一）" />
-  <meta name="keywords" content="ClassLoader,双亲委派,Java,JVM" />
 </head>
 
 <body>
@@ -175,26 +173,10 @@
   <div class="main-continer">
     
     <div
-      class="section-layout pisces ">
+      class="section-layout  pisces">
       <div class="section-layout-wrapper">
-        
-
-<div class="sidebar">
-  
-    <div class="sidebar-box box-shadow-wrapper bg-color right-motion" id="sidebar">
-      
-        <div class="post-list-sidebar">
-          <div class="sidebar-title">
-            <span id="tocSideBar" class="sidebar-title-item sidebar-title-active language" data-lan="index">文章目录</span>
-            <span id="metaSideBar" class="sidebar-title-item language" data-lan="preview">站点概览</span>
-          </div>
-        </div>
-      
-      <div class="sidebar-body pisces" id="sidebar_body">
-        
-          
-            <div class="post-side-meta" id="post_side_meta">
-              
+        <div id="sidebarMeta" class="sidebar">
+    
 <div class="sidebar-wrapper box-shadow-wrapper bg-color">
   <div class="sidebar-item">
     <img class="site-author-image right-motion" src="https://cdn.jsdelivr.net/gh/violet404/violet404.github.io@master/images/avatar.png"/>
@@ -237,1091 +219,144 @@
 
 
 </div>
-            </div>
-            <div class="post-toc sidebar-body-active" id="post_toc" style="opacity: 1;">
-              <div class="toc-box right-motion">
-  <div class="toc-wrapper auto-number auto"
-    id="toc_wrapper">
-    <ul class="markdownIt-TOC">
-<li>
-<ul>
-<li><a href="#1-jvm%E4%B8%8Ejava%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84"><strong>1. JVM与Java体系结构</strong></a>
-<ul>
-<li><a href="#11-%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%80%A7">1.1 跨平台性</a></li>
-<li><a href="#12-%E8%99%9A%E6%8B%9F%E6%9C%BA">1.2 虚拟机</a></li>
-<li><a href="#13-jvm-%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84-hotspot">1.3 JVM 整体结构 HotSpot</a></li>
-<li><a href="#14-jvm-%E6%9E%B6%E6%9E%84%E6%A8%A1%E5%9E%8B">1.4 JVM 架构模型</a></li>
-</ul>
-</li>
-<li><a href="#2-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%AD%90%E7%B3%BB%E7%BB%9F"><strong>2. 类加载子系统</strong></a>
-<ul>
-<li><a href="#21-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%AD%90%E7%B3%BB%E7%BB%9F%E7%9A%84%E4%BD%9C%E7%94%A8">2.1 类加载子系统的作用：</a></li>
-<li><a href="#22-%E7%B1%BB%E7%9A%84%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B">2.2 类的加载过程</a>
-<ul>
-<li><a href="#221-%E5%8A%A0%E8%BD%BD">2.2.1 <strong>加载</strong></a></li>
-<li><a href="#222-%E9%AA%8C%E8%AF%81">2.2.2 <strong>验证</strong></a></li>
-<li><a href="#223-%E5%87%86%E5%A4%87">2.2.3. <strong>准备</strong></a></li>
-<li><a href="#224-%E8%A7%A3%E6%9E%90">2.2.4 <strong>解析</strong></a></li>
-<li><a href="#225-%E5%88%9D%E5%A7%8B%E5%8C%96">2.2.5 <strong>初始化</strong></a></li>
-<li><a href="#226-%E7%B1%BB%E7%9A%84%E4%BD%BF%E7%94%A8">2.2.6 <strong>类的使用</strong></a></li>
-</ul>
-</li>
-<li><a href="#23-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8">2.3 类加载器</a></li>
-<li><a href="#24-classloader">2.4 ClassLoader</a></li>
-<li><a href="#25-%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%9C%BA%E5%88%B6">2.5 双亲委派机制</a></li>
-<li><a href="#26-jvm%E8%87%AA%E5%B8%A6%E5%8A%A0%E8%BD%BD%E5%8A%A0%E8%BD%BD%E8%B7%AF%E5%BE%84">2.6 JVM自带加载加载路径</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-  </div>
 </div>
-
 <script>
-
-  let lastTop = 0, lList = [], hList = [], postBody, lastIndex = -1;
-  let active = 'active-show', activeClass = 'active-current';
-  let tocWrapper = document.querySelector('#toc_wrapper');
-  let tocContent = tocWrapper.children[0];
-  let autoNumber = tocWrapper && tocWrapper.classList.contains('auto-number');
-
-  function addTocNumber(elem, deep) {
-    if (!elem) {
-      return;
-    }
-    let prop = elem.__proto__;
-
-    if (prop === HTMLUListElement.prototype) {
-      for (let i = 0; i < elem.children.length; i++) {
-        addTocNumber(elem.children[i], deep + (i + 1) + '.');
+  let sidebarMeta = document.querySelector('#sidebarMeta');
+  let scheme = 'pisces';
+  let sidebarWrapper = document.querySelector('.sidebar-wrapper');
+  if (sidebarMeta && (scheme === 'pisces' || scheme === 'gemini')) {
+    document.addEventListener('scroll', function(e) {
+      if (document.scrollingElement.scrollTop > parseInt(sidebarMeta.style.marginTop) + 10) {
+        sidebarWrapper.classList.add('home-sidebar-fixed')
+      } else {
+        sidebarWrapper.classList.remove('home-sidebar-fixed')
       }
-    } else if (prop === HTMLLIElement.prototype) {
-      // 保存li元素
-      if (elem.children[0] && elem.children[0].__proto__ === HTMLAnchorElement.prototype) {
-        lList.push(elem);
-      }
-      for (let i = 0; i < elem.children.length; i++) {
-        let cur = elem.children[i];
-        if (cur.__proto__ === HTMLAnchorElement.prototype) {
-          if (autoNumber) {
-            cur.text = deep + ' ' + cur.text;
-          }
-        } else if (cur.__proto__ === HTMLUListElement.prototype) {
-          addTocNumber(cur, deep);
-        }
-      }
-    }
-  }
-
-  function removeParentActiveClass() {
-    let parents = tocContent.querySelectorAll('.' + active)
-    parents.forEach(function (elem) {
-      elem.classList.remove(active);
     });
   }
-
-  function addActiveClass(index) {
-    if (index >= 0 && index < hList.length) {
-      lList[index].classList.add(activeClass);
-    }
-  }
-
-  function removeActiveClass(index) {
-    if (index >= 0 && index < hList.length) {
-      lList[index].classList.remove(activeClass);
-    }
-  }
-
-  function addActiveLiElemment(elem, parent) {
-    if (!elem || elem === parent) {
-      return;
-    } else {
-      if (elem.__proto__ === HTMLLIElement.prototype) {
-        elem.classList.add(active);
-      }
-      addActiveLiElemment(elem.parentElement, parent);
-    }
-  }
-
-  function showToc() {
-    if (tocWrapper) {
-      postBody = document.querySelector('#post_body');
-      for (let i = 0; i < postBody.children.length; i++) {
-        if (postBody.children[i].__proto__ === HTMLHeadingElement.prototype) {
-          hList.push(postBody.children[i]);
-        }
-      }
-      if (tocWrapper.classList.contains('compress')) {
-        tocContent.classList.add('closed');
-      } else if (tocWrapper.classList.contains('no_compress')) {
-        tocContent.classList.add('expanded');
-      } else {
-        if (hList.length > 10) {
-          active = 'active-hidden'
-          tocContent.classList.add('closed');
-        } else {
-          tocContent.classList.add('expanded');
-        }
-      }
-    }
-  }
-
-  (function () {
-    // 处理不是从#一级标题开始目录
-    if (tocContent.children.length === 1 && tocContent.children[0].__proto__ === HTMLLIElement.prototype) {
-      let con = tocContent.children[0].children[0];
-      tocContent.innerHTML = con.innerHTML;
-    }
-    let markdownItTOC = document.querySelector('.markdownIt-TOC');
-    let innerHeight = window.innerHeight;
-    markdownItTOC.style = `max-height: ${innerHeight - 80 > 0 ? innerHeight - 80 : innerHeight}px`
-    addTocNumber(tocContent, '');
-  })();
-
-  document.addEventListener('scroll', function (e) {
-    if (lList.length <= 0) {
-      return;
-    }
-    let scrollTop = document.scrollingElement.scrollTop + 10;
-    let dir;
-
-    if (lastTop - scrollTop > 0) {
-      dir = 'up';
-    } else {
-      dir = 'down';
-    }
-
-    lastTop = scrollTop;
-    if (scrollTop <= 0) {
-      if (lastIndex >= 0 && lastIndex < hList.length) {
-        lList[lastIndex].classList.remove(activeClass);
-      }
-      return;
-    }
-
-    let current = 0, hasFind = false;
-    for (let i = 0; i < hList.length; i++) {
-      if (hList[i].offsetTop > scrollTop) {
-        current = i;
-        hasFind = true;
-        break;
-      }
-    }
-    if (!hasFind && scrollTop > lList[lList.length - 1].offsetTop) {
-      current = hList.length - 1;
-    } else {
-      current--;
-    }
-    if (dir === 'down') {
-      if (current > lastIndex) {
-        addActiveClass(current);
-        removeActiveClass(lastIndex)
-        lastIndex = current;
-        removeParentActiveClass();
-        lList[current] && addActiveLiElemment(lList[current].parentElement, tocContent);
-      }
-    } else {
-      if (current < lastIndex) {
-        addActiveClass(current);
-        removeActiveClass(lastIndex);
-        lastIndex = current;
-        removeParentActiveClass();
-        lList[current] && addActiveLiElemment(lList[current].parentElement, tocContent);
-      }
-    }
-  });
-
-
-  window.addEventListener('load', function () {
-    showToc();
-    document.querySelector('#sidebar').style = 'display: block;';
-    tocWrapper.classList.add('toc-active');
-    setTimeout(function () {
-      if ("createEvent" in document) {
-        let evt = document.createEvent("HTMLEvents");
-        evt.initEvent("scroll", false, true);
-        document.dispatchEvent(evt);
-      }
-      else {
-        document.fireEvent("scroll");
-      }
-    }, 500)
-  })
-
-</script>
-            </div>
-          
-        
+  </script>
+        <div class="section-box tag-line box-shadow-wrapper">
+          <section class="section tags-section posts-expand bg-color">
+            <div class="padding-wrapper">
+  <div class="tag-timeline-box">
+    <div class="tag-timeline-wrapper">
+      <div class="tag-timeline-title">
+        <h2>
+          虚拟机栈
+          <small class="language" data-lan="tag">标签</small>
+        </h2>
       </div>
-    </div>
-  
-</div>
-<script>
-  const SIDEBAR_TITLE_ACTIVE = 'sidebar-title-active';
-  const SIDEBAR_BODY_ACTIVE = 'sidebar-body-active';
-  const SLIDE_UP_IN = 'slide-up-in';
-
-  let sidebar = document.querySelector('#sidebar'),
-  tocSideBar = document.querySelector('#tocSideBar'),
-  metaSideBar = document.querySelector('#metaSideBar'),
-  postToc = document.querySelector('#post_toc'),
-  postSiteMeta = document.querySelector('#post_side_meta'),
-  sidebarTitle = document.querySelector('.sidebar-title'),
-  sidebarBody = document.querySelector('#sidebar_body');
-
-  tocSideBar && tocSideBar.addEventListener('click', (e) => {
-    toggleSidebar(e);
-  });
-
-  metaSideBar && metaSideBar.addEventListener('click', (e) => {
-    toggleSidebar(e);
-  });
-
-  function toggleSidebar(e) {
-    let currentTitle = document.querySelector("."+SIDEBAR_TITLE_ACTIVE);
-    if (currentTitle == e.srcElement) {
-      return ;
-    }
-    let current, showElement, hideElement;
-    if (e.srcElement == metaSideBar) {
-      showElement = postSiteMeta;
-      hideElement = postToc;
-    } else if (e.srcElement == tocSideBar){
-      showElement = postToc;
-      hideElement = postSiteMeta;
-    }
-    currentTitle.classList.remove(SIDEBAR_TITLE_ACTIVE);
-    e.srcElement.classList.add(SIDEBAR_TITLE_ACTIVE);
-
-    jQuery.Velocity(hideElement, 'stop');
-    jQuery.Velocity(hideElement, 'transition.slideUpOut', {
-      display: 'none',
-      duration: 200,
-      complete: function () {
-        jQuery.Velocity(showElement, 'transition.slideDownIn', {
-          duration: 200
-        });
-      }
-    })
-    hideElement.classList.remove(SIDEBAR_BODY_ACTIVE);
-    showElement.classList.add(SIDEBAR_BODY_ACTIVE);
-  }
-
-  postToc && postToc.addEventListener('transitionend', function() {
-    this.classList.remove(SLIDE_UP_IN);
-  });
-
-  if (sidebarBody) {
-    if (sidebarBody.classList.contains('pisces') || sidebarBody.classList.contains('gemini')) {
-      let hasFix = false;
-      let scrollEl = document.querySelector('.main-continer');
-      let limitTop = document.querySelector('#nav_ul').children.length * 42 + 162;
-      window.addEventListener('scroll', function(e) {
-        if (document.scrollingElement.scrollTop >= limitTop) {
-          if (!hasFix) {
-            sidebar.classList.add('sidebar-fixed');
-            hasFix = true;
-          }
-        } else {
-          if (hasFix) {
-            sidebar.classList.remove('sidebar-fixed');
-            hasFix = false;
-          }
-        }
-      });
-    }
-  }
-  
-</script>
-        <div class="section-box box-shadow-wrapper">
-          <div class="section bg-color post post-page">
-            <section class="post-header">
-  <h1 class="post-title">
-    <a class="post-title-link" href="http://violet404.github.io/post/jvm-1/">
-      JVM 内存与垃圾回收（一）
-    </a>
-  </h1>
-  <div class="post-meta">
-    
-    <span class="meta-item">
-      <i class="fa fa-thumb-tack"></i>
-      <span class="language" data-lan="top">置顶</span>
-      <span class="post-meta-divider">|</span>
-    </span>
-    
-    <span class="meta-item pc-show">
-      <i class="fa fa-calendar-o"></i>
-      <span class="language" data-lan="publish">发布于</span>
-      <span class="publish-time" data-t="2021-07-05 11:58:27">2021-07-05</span>
-      <span class="post-meta-divider pc-show">|</span>
-    </span>
-    
-    <span class="meta-item">
-      <i class="fa fa-folder-o"></i>
-      <span class="pc-show language" data-lan="category-in">分类于</span>
-      
-      
-      <a href="http://violet404.github.io/tag/I36zpcWlv/">
-        <span>ClassLoader</span>
-      </a>、
       
       
       
-      <a href="http://violet404.github.io/tag/fTx4aow76T/">
-        <span>双亲委派</span>
-      </a>、
       
       
-      
-      <a href="http://violet404.github.io/tag/-Dt1tObS1/">
-        <span>Java</span>
-      </a>、
-      
-      
-      
-      <a href="http://violet404.github.io/tag/KqKxCCwsI/">
-        <span>JVM</span>
+      <a href="http://violet404.github.io/post/jvm-2/">
+        <div class="motion-warpper">
+          <div class="tag-post-node">
+            <h1>
+              07-13
+              <small>JVM 内存与垃圾回收（二）</small>
+            </h1>
+          </div>
+        </div>
       </a>
       
       
-    </span>
-    <span class="post-meta-divider">|</span>
-    
-    <span class="meta-item">
-      <i class="fa fa-clock-o"></i>
-      <span>21<span class="language" data-lan="minute">分钟</span></span>
-    </span>
-    <span class="meta-item">
-      <span class="post-meta-divider">|</span>
-      <i class="fa fa-file-word-o"></i>
-      <span>4921<span class="pc-show language" data-lan="words">字数</span></span>
-    </span>
-    
-  </div>
-</section>
-            <div class="post-body next-md-body" id="post_body">
-              <h2 id="1-jvm与java体系结构"><strong>1. JVM与Java体系结构</strong></h2>
-<h3 id="11-跨平台性">1.1 跨平台性</h3>
-<p>Java 是一门跨平台的语言，JVM则跨语言的平台，JSR-292 JVM可以运行非Java语言编写的程序;Java平台的多语言混合编程将成主流方向，使用特定领域的语言解决特定领域的问题</p>
-<!-- more -->
-<figure data-type="image" tabindex="1"><img src="http://violet404.github.io//post-images/1626273142484.png" alt="" loading="lazy"></figure>
-<h3 id="12-虚拟机">1.2 虚拟机</h3>
-<ul>
-<li>系统虚拟机 对物理计算机的仿真 VMware</li>
-<li>程序虚拟机 为执行单个计算机程序而设计 JVM</li>
-<li>Java技术的核心就是JVM</li>
-</ul>
-<h3 id="13-jvm-整体结构-hotspot">1.3 JVM 整体结构 HotSpot</h3>
-<figure data-type="image" tabindex="2"><img src="http://violet404.github.io//post-images/1626272081353.png" alt="" loading="lazy"></figure>
-<h3 id="14-jvm-架构模型">1.4 JVM 架构模型</h3>
-<p>Java 编译器输入的指令流是一种基于栈的指令集架构，除此之外还有一种基于寄存器的指令集架构<br>
-这两种指令集架构的区别</p>
-<ol>
-<li>基于栈式机构的特点
-<ul>
-<li>设计 <em><strong>实现简单</strong></em>，适用于资源受限的系统</li>
-<li>避开寄存器的分配难题，使用零地址指令（8位字节对齐）方式分配</li>
-<li>指令流中大部分指令是零地址，执行过程依赖与操作数栈，<em><strong>指令集更小（不代表指令少）</strong></em>，编译器易实现</li>
-<li>不需要硬件支持，移植性好，易实现 <em><strong>跨平台</strong></em></li>
-</ul>
-</li>
-<li>基于寄存器架构的特点
-<ul>
-<li>典型的应用是X86二进制指令集</li>
-<li>依赖硬件，移植性差</li>
-<li>性能优秀，<em><strong>执行高效</strong></em></li>
-<li>花费更少的指令完成操作</li>
-<li>大部分指令以一地址指令、二地址指令和三地址指令为主，16位双字节对齐</li>
-</ul>
-</li>
-</ol>
-<h2 id="2-类加载子系统"><strong>2. 类加载子系统</strong></h2>
-<h3 id="21-类加载子系统的作用">2.1 类加载子系统的作用：</h3>
-<figure data-type="image" tabindex="3"><img src="http://violet404.github.io//post-images/1626151607809.png" alt="" loading="lazy"></figure>
-<ul>
-<li>负责从文件系统或者网络中加载class文件，class开头有特定的文件标识</li>
-<li>只负责加载class文件，至于能否运行又执行引擎决定</li>
-<li>加载的类信息存放在方法区内存空间，除类的信息之外，还包括运行时的常量池的信息，</li>
-</ul>
-<h3 id="22-类的加载过程">2.2 类的加载过程</h3>
-<figure data-type="image" tabindex="4"><img src="http://violet404.github.io//post-images/1626173300019.png" alt="" loading="lazy"></figure>
-<h4 id="221-加载">2.2.1 <strong>加载</strong></h4>
-<ul>
-<li>通过一个类的全类名获取定义此类的二进制流</li>
-<li>将这个字节流代表的静态存储结构转化位方法去运行时数据结构</li>
-<li>在内存中生成一个代表此类的<code>java.lang.Class</code>对象，作为方法区该类的各种数据的访问入口</li>
-<li>类的加载器并不需要等到某个类被“首次主动使用”时再加载它
-<ul>
-<li>JVM规范允许类加载器在预料将要被使用时就预先加载它，如果在预先加载的过程中遇到.class文件缺失或存在错误，类加载器必须在程序首次主动使用该类时才报告错误(LinkError错误)</li>
-<li>如果这个类一直没有被程序主动使用，那么类加载器就不会报告错误。</li>
-</ul>
-</li>
-<li>加载.class文件的方式
-<ul>
-<li>从本地系统中直接加载</li>
-<li>通过网络下载.class文件</li>
-<li>从zip，jar等归档文件中加载.class文件</li>
-<li>从专有数据库中提取 .class文件</li>
-<li>将Java源文件动态编译为.class文件</li>
-</ul>
-</li>
-</ul>
-<h4 id="222-验证">2.2.2 <strong>验证</strong></h4>
-<ul>
-<li><em><strong>确保class文件符合虚拟机规范</strong></em>，不会危害虚拟机自身安全</li>
-<li>文件格式验证、元数据验证、字节码验证、符号引用验证</li>
-</ul>
-<h4 id="223-准备">2.2.3. <strong>准备</strong></h4>
-<ul>
-<li><em><strong>为<font color="red">类变量(静态变量)</font>分配内存并设置<font color="red">初始值</font></strong></em></li>
-<li>不包括常量、实例变量，其中实例变量在类实例化时随对象分配在堆中，类变量在编译阶段就会分配，而在准备阶段时就会显式的初始化（那种不确定的常量的情形待验证！）</li>
-</ul>
-<h4 id="224-解析">2.2.4 <strong>解析</strong></h4>
-<ul>
-<li><em><strong><font color="red">将常量池的符号引用转换位直接引用</font></strong></em></li>
-<li>符号引用：一组符号来描述引用的目标，符号引用的字面量形式在java虚拟机规范的Class文件格式</li>
-<li>直接引用：直接指向目标的指针、相对偏移量或者一个间接定位到目标的句柄</li>
-<li>解析操作主要针对类、接口、字段、类方法、接口方法等，对应常量池中的CONSTANT_class_info、CONSTANT_Fieldref_info、CONSTANT_Methodref_info等</li>
-</ul>
-<h4 id="225-初始化">2.2.5 <strong>初始化</strong></h4>
-<ul>
-<li>初始化就是执行类构造器方法<code>&lt;clinit&gt;()</code>的过程</li>
-<li>不需要定义，由javac自动收集类中 <em><strong>所有类变量的赋值动作和静态代码块语句合并而来</strong></em></li>
-<li><code>&lt;clinit&gt;()</code>对于类或者接口不是必须的，如果一个类没有静态代码块，也没有对变量的赋值操作，编译器将不会为该类生成<code>&lt;clinit&gt;()</code>方法</li>
-<li><em><strong>构造器方法的指令按照语句在源文件出现的顺序执行</strong></em></li>
-<li>静态代码块只能访问定义在代码块之前的类变量；定义在后台的类变量，前面的代码块可以赋值，但是不能访问；</li>
-<li><code>&lt;clinit&gt;()</code>不等同与类的构造器<code>&lt;init&gt;()</code>，任何一个类生命以后，至少会存在一个构造器函数（虚拟机视角为<code>&lt;init&gt;()</code>）</li>
-<li>JVM会在执行子类<code>&lt;clinit&gt;()</code>方法之前执行父类的<code>&lt;clinit&gt;()</code>方法</li>
-<li>JVM保证<code>&lt;clinit&gt;()</code>在多线程场景下的同步执行</li>
-</ul>
-<h4 id="226-类的使用">2.2.6 <strong>类的使用</strong></h4>
-<ul>
-<li>所有的Java虚拟机实现必须在每个类或者接口被Java程序 <em><strong><font color="red">“首次主动使用”</font></strong></em> 时才初始化他们。
-<ul>
-<li>创建类的实例</li>
-<li>访问某个类、接口的静态变量，或对静态变量赋值</li>
-<li>调用类的静态方法</li>
-<li>反射</li>
-<li>初始化一个类的子类</li>
-<li>JVM启动时标记为启动类的类</li>
-<li>jdk7 开始提供的动态语言支持 <code>java.lang.invoke.MethodHandle</code>实例的解析结果<code>REF_getStatic</code>、<code>REF_putStatic</code>、<code>REF_invokeStatic</code>句柄对应的类如果没有初始化，则初始化</li>
-</ul>
-</li>
-<li>除上述7中情况外，其他使用Java类的方式均为 <em><strong><font color="red">被动使用，不会导致类的初始化</font></strong></em></li>
-<li>类被动使用示例</li>
-</ul>
-<pre><code class="language-java">/*
--XX:+TraceClassLoading 用于追踪类的加载信息并打印出来
--XX:+&lt;option&gt; 表示开启option选项
--XX:-&lt;option&gt; 表示关闭option选项
--XX:&lt;option&gt;=&lt;value&gt;,表示将option的选项的值设置为value
-*/
-class SuperClass {
-
-    static {
-        System.out.println(&quot;SuperClass initialization&quot;);
-    }
-
-    public static String value = &quot;Super&quot;;
-}
-
-class SubClass extends SuperClass {
-
-    static {
-        System.out.println(&quot;SubClass initialization&quot;);
-    }
-}
-
-class ConstantClass {
-
-    static {
-        System.out.println(&quot;ConstantClass initialization&quot;);
-    }
-    public static final String HELLO_WORLD = &quot;Hello Constant&quot;;
-}
-
-class ConstantClass1 {
-
-    static {
-        System.out.println(&quot;ConstantClass1 initialization&quot;);
-    }
-    public static final String UUID_STR = UUID.randomUUID().toString();
-}
-</code></pre>
-<ol>
-<li><em><strong>对于静态字段，只有直接定义该变量的类才会初始化</strong></em>；通过子类引用父类定义的静态变量，指挥触发父类的初始化，而不会导致子类初始化（仅指初始化阶段）</li>
-</ol>
-<pre><code class="language-java">public class NotInitializationTest {
-
-    public static void main(String[] args) {
-        // SuperClass initialization 
-        // Hello Super
-        System.out.println(&quot;Hello &quot; + SubClass.value); 
-    }
-}
-</code></pre>
-<ol start="2">
-<li><em><strong>通过数组定义来引用类，不会触发此类的初始化</strong></em> 对于数组实例来说，其类型是由JVM在运行期间动态生成的，表示为<code>[LSuperClass</code>形式。动态生成的类型（类似于动态代理），其父类型就是Object。<br>
-对于数组来说，JavaDoc经常讲构成数组的元素称为Component，实际上就是将数组降低一个维度后的类型。<br>
-助记词：
-<ul>
-<li><strong>anewarray</strong> : 表示创建一个引用类型的(如类、接口、数组)数组，并将其引用值压入栈顶</li>
-<li><strong>newarray</strong> : 表示创建一个指定的原始类型（如int、float、char等）的数组，并将其压入栈顶</li>
-</ul>
-</li>
-</ol>
-<pre><code class="language-java">public class NotInitializationTest {
-
-    public static void main(String[] args) {
-        SuperClass[] sca = new SuperClass[10];
-        System.out.println(sca.getClass()); // class [LSuperClass;
-        System.out.println(sca.getClass().getSuperclass());  // class java.lang.Object
-        SuperClass [][] sca1 =  new SuperClass[1][1];
-        System.out.println(sca1.getClass()); // class [[LSuperClass;
-        System.out.println(sca1.getClass().getSuperclass()); // class java.lang.Object
-
-        System.out.println(&quot;==============&quot;);
-        int [] ints = new int[1];
-        System.out.println(ints.getClass()); // class [I
-        System.out.println(ints.getClass().getSuperclass()); 
-
-        byte [] bytes = new byte[1];
-        System.out.println(bytes.getClass()); // class [B
-        System.out.println(bytes.getClass().getSuperclass());
-
-        short [] shorts = new short[1];
-        System.out.println(shorts.getClass()); // class [S
-        System.out.println(shorts.getClass().getSuperclass());
-
-        boolean [] booleans =new boolean[1];
-        System.out.println(booleans.getClass()); // class [Z
-        System.out.println(booleans.getClass().getSuperclass()); 
-    }
-}
-</code></pre>
-<ol start="3">
-<li><em><strong>针对在编译阶段就能确定常量值的常量</strong></em>  ,在编译阶段就会存入调用类的常量池，本质上没有直接引用定义常量的类，所以 <em><strong>不会触发定义常量类的初始化</strong></em> ；  <em><strong>当一个常量的值并非编译期可以确定的</strong></em>，那么其值就不会被放到调用类的常量池中，这时的程序运行时，会导致 <em><strong>主动使用这个常量所在的类</strong></em> ，显然 <em><strong>会导致这个类被初始化</strong></em> 。</li>
-</ol>
-<pre><code class="language-java">/**
-ConstantClass.HELLO_WORLD所表示的常量存入NotInitializationTest常量池中, 
-之后ConstantClass与NotInitializationTest将再无关系，甚至，可以将ConstantClass删除
-
-但是UUID是多少只有在运行期间才会被确定，所以会触发ConstantClass1的初始化
-*/
-public class NotInitializationTest {
-
-    public static void main(String[] args) {
-        System.out.println(ConstantClass.HELLO_WORLD); 
-        System.out.println(ConstantClass1.UUID_STR); 
-    }
-}
-</code></pre>
-<ol start="4">
-<li><em><strong>一个接口初始化时并不要求父接口全部完成初始化，只有真正使用父接口时才会触发初始化</strong></em></li>
-</ol>
-<pre><code class="language-java">interface SuperInterface {
-
-    Thread iSuperThread = new Thread() {
-        {
-            System.out.println(&quot;SuperInterface init&quot;);
-        }
-    };
-
-    int SUPER_CONSTANT = 111111;
-
-    int SUPER_DYNAMIC = new Random().nextInt(5);
-}
-
-interface SubInterface extends SuperInterface {
-
-    Thread iSubThread = new Thread() {
-        {
-            System.out.println(&quot;SubInterface init&quot;);
-        }
-    };
-    int SUB_CONSTANT = 222222;
-
-    int SUB_DYNAMIC = new Random().nextInt(4);
-}
-
-class ImplementClass implements SubInterface {
-
-    public static String IMPLEMENT_CONSTANT = &quot;ImplementClass&quot;;
-    
-    public static String IMPLEMENT_DYNAMIC = UUID.randomUUID().toString();
-    
-    static {
-
-        System.out.println(&quot;ImplementClass init&quot;);
-    }
-}
-</code></pre>
-<p>4.1 接口的在编译阶段即可确定常量值的常量使用与类常量情况一致</p>
-<pre><code class="language-java">// 接口与实现类的编译文件删掉后正常=&gt;相关常量已经写入InterfaceNotInitializationTest常量池中
-public class InterfaceNotInitializationTest {
-
-    public static void main(String[] args) {
-
-        System.out.println(SubInterface.SUPER_CONSTANT);
-        System.out.println(ImplementClass.SUPER_CONSTANT);
-    }
-}
-</code></pre>
-<p>4.2 通过子接口调用接口父接口编译阶段不能确定值的常量, 父接口会触发初始化，子接口<strong>应该</strong>不会；即使通过实现类调用，也只会触发定义这个常量所在接口的初始化</p>
-<pre><code class="language-java">public class InterfaceInitializationTest {
-
-    public static void method1() {
-        // SuperInterface init
-        // 没有打印出子接口初始化的信息，但是删除子接口后会报错
-        System.out.println(SubInterface.SUPER_DYNAMIC);
-    }
-
-    public static void method2() {
-        // SuperInterface init
-        // 没有打印出子接口初始化的信息，删除子接口后正常
-        System.out.println(ImplementClass.SUPER_DYNAMIC);
-    }
-}
-</code></pre>
-<p>4.3 调用实现类的两种常量=&gt;实现类初始化并不会导致所实现的接口完成初始化</p>
-<pre><code class="language-java">public class InterfaceInitializationTest {
-
-    public static void method1() {
-        System.out.println(ImplementClass.IMPLEMENT_CONSTANT);
-    }
-
-    public static void method2() {
-        System.out.println(ImplementClass.IMPLEMENT_DYNAMIC);
-    }
-}
-</code></pre>
-<h3 id="23-类加载器">2.3 类加载器</h3>
-<p><img src="http://violet404.github.io//post-images/1626152456313.png" alt="" loading="lazy"><br>
-这四者为包含关系，<strong>不是继承关系</strong></p>
-<pre><code class="language-java">public class ClassLoaderTest {
-
-    public static void main(String[] args) {
-        // 获取系统类加载器
-        ClassLoader systemClassLoader = ClassLoader.getSystemClassLoader();
-        System.out.println(systemClassLoader);
-
-        // 获取扩展类加载器，系统类加载的上层
-        ClassLoader extensionClassLoader = systemClassLoader.getParent();
-        System.out.println(extensionClassLoader);
-
-        // 扩展类加载器的上层并不是BootStrap ClassLoader，而是Null
-        ClassLoader bootStrapClassLoader = extensionClassLoader.getParent();
-        System.out.println(bootStrapClassLoader);
-
-        // 对于用户自定义的类（Test），默认使用系统类加载器
-        ClassLoader classLoader = Test.class.getClassLoader();
-        System.out.println(classLoader);
-
-        // Java 核心类库都是由引导类加载器进行加载
-        ClassLoader classLoader1 = String.class.getClassLoader();
-        System.out.println(classLoader1); // null
-    }
-}
-</code></pre>
-<ul>
-<li>按照虚拟机规范，分为两类: 引导类加载器、自定义类加载器</li>
-<li>引导类加载器:<code>BootStrap ClassLoader</code>
-<ul>
-<li>C/C++ 语言实现</li>
-<li><strong>加载Java核心类库</strong>，提供JVM自身需要的类
-<ul>
-<li><code>JAVA_HOME/jre/lib/rt.jar</code></li>
-<li><code>JAVA_HOME/jre/lib/resources.jar</code></li>
-<li><code>sun.boot.class.path</code>路径下的内容</li>
-</ul>
-</li>
-<li><strong>不是继承于ClassLoader</strong></li>
-<li><strong>加载 扩展类加载器与系统类加载器</strong></li>
-<li>处于安全考虑，只加载包名java、javax、sun等开头的类</li>
-</ul>
-</li>
-<li>自定义加载器：Java语言实现 派生于<code>ClassLoader</code>的类加载器
-<ul>
-<li>扩展类加载器
-<ol>
-<li>父 类加载器为启动类加载器</li>
-<li>从<code>java.ext.dirs</code>系统属性所指定的目录加载类库、或JDK安装路径下<code>jre/lib/ext</code>目录下加载类库，如果用户创建的jar放在该目录下，也将由扩展类加载器进行加载</li>
-</ol>
-</li>
-<li>应用/程序/系统类加载器
-<ol>
-<li>父 类加载器为扩展类加载器</li>
-<li>负责加载<code>classpath</code>或者系统属性<code>java.class.path</code>指定路径下的类库</li>
-<li><strong>程序中默认的类加载器</strong>，</li>
-<li>通过<code>ClassLoader#getSystemClassLoader()</code>方法获取该类加载器</li>
-</ol>
-</li>
-<li>用户自定义类加载器
-<ul>
-<li>场景
-<ol>
-<li>隔离加载类</li>
-<li>修改类的加载方式</li>
-<li>扩展加载源</li>
-<li>防止代码泄露</li>
-</ol>
-</li>
-<li>实现步骤
-<ol>
-<li>继承抽象类<code>ClassLoader</code>，1.2之前重写<code>loadClass()</code>方法，1.2之后建议建议将加载逻辑写在<code>findClass()</code>方法</li>
-<li>如果没有过于复杂的需求建议直接实现<code>URLClassLoader</code>类，避免自己编写<code>findClass()</code>方法及获取字节码流，使自定义类加载器更加简洁</li>
-</ol>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="24-classloader">2.4 ClassLoader</h3>
-<ul>
-<li>若有一个类加载器能够成功加载某个类，那么这个类加载器成为该类的定义类加载器</li>
-<li>任何一个类都有一个定义这个类的<code>ClassLoader</code>的引用</li>
-<li>所有能成功返回某个Class对象引用的类加载器（包括定义类加载器）都被称为该类的初始类加载器</li>
-<li><strong>对于数组的类加载器来说，通过<code>Class.getClassLoader()</code> 返回的和数组元素的类型类加载器是一样的，如果数组的元素是原生类型的，那么这个数组是没有类加载器的。</strong></li>
-<li>获取当前类的类加载器<code>claszz.getClassLoader()</code></li>
-<li>获取当前线程上下文的类加载器<code>Thread.currentThread().getContextClassLoader()</code></li>
-<li>获取系统类加载器<code>ClassLoader.getSystemClassLoader()</code></li>
-<li>获取调用者的类加载器<code>DriverManager.getCallerClassLoader()</code></li>
-<li>自定义类加载器，<br>
-下面的代码执行发现自定义的类加载器并未生效，因为<code>CustomizationClassLoader</code>使用系统类加载器作为该类加载器的父 类加载器，而<code>ClassLoaderTest</code>属于classpath下，系统类加载器可以加载classpath下的类，所以<code>CustomizationClassLoader</code>未生效；将<code>ClassLoaderTest.class</code>移动至<code>D:/</code>同时将项目中生成的<code>ClassLoaderTest</code>删除，并把<code>CustomizationClassLoader.filePathPrefix</code> 更新为<code>D:/</code>，重新实行代码，发现先<code>CustomizationClassLoader</code>生效</li>
-</ul>
-<pre><code class="language-java">public class CustomizationClassLoader extends ClassLoader {
-
-    private String classLoaderName;
-
-    private final String fileExtension = &quot;.class&quot;;
-
-    @setter
-    private String filePathPrefix = &quot;out/production/CodeWar/&quot;;
-
-    public CustomizationClassLoader(String classLoaderName) {
-        this.classLoaderName = classLoaderName;
-    }
-
-    public CustomizationClassLoader(ClassLoader classLoader, String classLoaderName) {
-        super(classLoader);
-        this.classLoaderName = classLoaderName;
-    }
-
-    @Override
-    protected Class&lt;?&gt; findClass(String name) throws ClassNotFoundException {
-        byte[] data = loadClassData(name);
-        return defineClass(name, data, 0, data.length);
-    }
-
-    private byte[] loadClassData(String name) {
-        byte[] data = null;
-
-        try (InputStream inputStream = new FileInputStream(filePathPrefix
-                + name.replace(&quot;.&quot;, &quot;/&quot;) + fileExtension);
-             ByteArrayOutputStream baos = new ByteArrayOutputStream();) {
-            int ch = 0;
-            while (-1 != (ch = inputStream.read())) {
-                baos.write(ch);
-            }
-            data = baos.toByteArray();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return data;
-    }
-
-    public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
-
-        CustomizationClassLoader classLoader =
-                new CustomizationClassLoader(CustomizationClassLoader.class.getClassLoader(), &quot;CustomizationClassLoader&quot;);
-
-        Class&lt;?&gt; test = classLoader.loadClass(&quot;ClassLoaderTest&quot;);
-
-        System.out.println(test.newInstance());
-    }
-}
-</code></pre>
-<ul>
-<li>命名空间</li>
-</ul>
-<pre><code class="language-java">public class CustomizationClassLoaderTest {
-    
-    public static void main(String[] args) {
-
-        CustomizationClassLoader classLoader = 
-                new CustomizationClassLoader(&quot;CustomizationClassLoader&quot;);
-        classLoader.setFilePathPrefix(&quot;D:/&quot;);
-        Class&lt;?&gt; test = classLoader.loadClass(&quot;ClassLoaderTest&quot;);
-        System.out.println(&quot;class: &quot;test.hashCode());
-        System.out.println(&quot;classLoader: &quot;test.getClassLoader());
-
-        CustomizationClassLoader classLoader1 = 
-                new CustomizationClassLoader(&quot;CustomizationClassLoader1&quot;);
-        classLoader1.setFilePathPrefix(&quot;D:/&quot;);
-        Class&lt;?&gt; test1 = classLoader1.loadClass(&quot;ClassLoaderTest&quot;);
-        System.out.println(&quot;class: &quot;test1.hashCode());
-        System.out.println(&quot;classLoader: &quot;test1.getClassLoader());
-    }
-}
-</code></pre>
-<ol>
-<li>ClassLoaderTest被加载了两次，因为Class对象的hashCode不同，</li>
-<li>JVM中表示两个类为同一个类的必要条件
-<ol>
-<li>类的全限定名相同</li>
-<li>加载该类的类加载器（ClassLoader的实例对象）相同</li>
-</ol>
-</li>
-<li>每一个类加载器都有自己的命名空间，命名空间由该类加载器及所有父类加载器所加载类
-<ul>
-<li><em><strong>在同一个命名空间下，不会出现全限定名完全相同的两个类</strong></em></li>
-<li><em><strong>不同的命名空间中，可能会出现全限定名完全相同的两个类</strong></em></li>
-</ul>
-</li>
-</ol>
-<pre><code class="language-java">public class CustomizationClassLoaderTest {
-    
-    public static void main(String[] args) {
-
-        CustomizationClassLoader classLoader = 
-                new CustomizationClassLoader(&quot;CustomizationClassLoader&quot;);
-        classLoader.setFilePathPrefix(&quot;D:/&quot;);
-        Class&lt;?&gt; test = classLoader.loadClass(&quot;ClassLoaderTest&quot;);
-        System.out.println(&quot;class: &quot;test.hashCode());
-        System.out.println(&quot;classLoader: &quot;test.getClassLoader());
-
-        CustomizationClassLoader classLoader1 = 
-                new CustomizationClassLoader(classLoader,&quot;CustomizationClassLoader1&quot;);
-        classLoader1.setFilePathPrefix(&quot;D:/&quot;);
-        Class&lt;?&gt; test1 = classLoader1.loadClass(&quot;ClassLoaderTest&quot;);
-        System.out.println(&quot;class: &quot;test1.hashCode());
-        System.out.println(&quot;classLoader: &quot;test1.getClassLoader());
-    }
-}
-</code></pre>
-<ol start="4">
-<li><em><strong>一个类何时结束生命周期，取决于代表它的Class对象合适结束生命周期</strong></em></li>
-<li>Java虚拟机自带的加载器加载的类不会在整个jvm的生命周期中被卸载，而自定义加载器加载的类可以被卸载 <em><strong>-XX:+TraceClassUnloading</strong></em> 需要代码中显示的将ClassLoader及ClassLoader加载的类置空
-<ul>
-<li><em><strong>子加载器所加载的类能够访问到父加载器所加载的类</strong></em></li>
-<li><em><strong>父加载器所加载的类无法访问到子类加载器所加载的类</strong></em></li>
-</ul>
-</li>
-</ol>
-<pre><code class="language-java">class Test1 {
-
-    public Test1() {
-        System.out.println(&quot;Test1 loaded by &quot; + Test1.class.getClassLoader());
-    }
-}
-
-class Test2 {
-
-    public Test2() {
-        System.out.println(&quot;Test2 loaded by &quot; + Test2.class.getClassLoader());
-        new Test1();
-    }
-}
-
-public class CustomizationClassLoaderTest {
-    
-    public static void method1() {
-
-        CustomizationClassLoader classLoader = 
-                new CustomizationClassLoader(&quot;CustomizationClassLoader&quot;);
-        classLoader.setFilePathPrefix(&quot;D:/&quot;);
-        Class&lt;?&gt; test = classLoader.loadClass(&quot;Test2&quot;);
-        System.out.println(&quot;class: &quot;test.hashCode());
-        test.newInstance();
-    }
-
-    // 将工程下Test2、Test1移动到D:/，删除工程目录下同名文件
-    public static void method2() {
-
-        CustomizationClassLoader classLoader = 
-                new CustomizationClassLoader(&quot;CustomizationClassLoader&quot;);
-        classLoader.setFilePathPrefix(&quot;D:/&quot;);
-        Class&lt;?&gt; test = classLoader.loadClass(&quot;Test2&quot;);
-        System.out.println(&quot;class: &quot;test.hashCode());
-        test.newInstance();
-    }
-
-    // 工程 Test2 ，D Test2 Test1 =&gt;报错 
-    // Test2 由系统类加载器加载，实例化时主动使用Test1，由Test2加载器尝试加载Test1，报错 
-    public static void method3() {
-
-        CustomizationClassLoader classLoader = 
-                new CustomizationClassLoader(&quot;CustomizationClassLoader&quot;);
-        classLoader.setFilePathPrefix(&quot;D:/&quot;);
-        Class&lt;?&gt; test = classLoader.loadClass(&quot;Test2&quot;);
-        System.out.println(&quot;class: &quot;test.hashCode());
-        test.newInstance();
-    }
-
-    // 工程 Test1 ，D Test2 Test1 =&gt;正常
-    // Test2 由CustomizationClassLoader加载，
-    // Test2 实例化时CustomizationClassLoader尝试加载Test1，双亲委托由系统类加载器加载
-    public static void method3() {
-
-        CustomizationClassLoader classLoader = 
-                new CustomizationClassLoader(&quot;CustomizationClassLoader&quot;);
-        classLoader.setFilePathPrefix(&quot;D:/&quot;);
-        Class&lt;?&gt; test = classLoader.loadClass(&quot;Test2&quot;);
-        System.out.println(&quot;class: &quot;test.hashCode());
-        test.newInstance();
-    }
-}
-</code></pre>
-<pre><code class="language-java">class Test1 {
-
-    public Test1() {
-        System.out.println(&quot;Test1 loaded by &quot; + Test1.class.getClassLoader());
-        System.out.println(&quot;from Test1 : &quot; + Test2.class);
-    }
-}
-
-public class CustomizationClassLoaderTest {
-
-    // D Test1 Test2 工程 Test1 
-    // Test2 CustomizationClassLoader Test1 AppClassLoader
-    // 父 类加载器看不到子 类加载器加载的类=&gt;Test1实例化时获取不到Test2的Class对象，报错
-    public static void method3() {
-
-        CustomizationClassLoader classLoader = 
-                new CustomizationClassLoader(&quot;CustomizationClassLoader&quot;);
-        classLoader.setFilePathPrefix(&quot;D:/&quot;);
-        Class&lt;?&gt; test = classLoader.loadClass(&quot;Test2&quot;);
-        System.out.println(&quot;class: &quot;test.hashCode());
-        test.newInstance();
-    }
-}
-</code></pre>
-<pre><code class="language-java">
-class Test1 {
-
-    public Test1() {
-        System.out.println(&quot;Test1 loaded by &quot; + Test1.class.getClassLoader());
-    }
-}
-
-class Test2 {
-
-    public Test2() {
-        System.out.println(&quot;Test2 loaded by &quot; + Test2.class.getClassLoader());
-        new Test1();
-        System.out.println(&quot;from Test2 : &quot; + Test1.class);
-    }
-}
-
-public class CustomizationClassLoaderTest {
-
-    // D Test1 Test2 工程 Test1 
-    // Test2 CustomizationClassLoader Test1 AppClassLoader
-    // 子 类加载器可以看到父 类加载器加载的类=&gt;Test2实例化时可以获取到Test1的Class对象
-    public static void method3() {
-
-        CustomizationClassLoader classLoader = 
-                new CustomizationClassLoader(&quot;CustomizationClassLoader&quot;);
-        classLoader.setFilePathPrefix(&quot;D:/&quot;);
-        Class&lt;?&gt; test = classLoader.loadClass(&quot;Test2&quot;);
-        System.out.println(&quot;class: &quot;test.hashCode());
-        test.newInstance();
-    }
-}
-</code></pre>
-<h3 id="25-双亲委派机制">2.5 双亲委派机制</h3>
-<figure data-type="image" tabindex="5"><img src="http://violet404.github.io//post-images/1626156053649.png" alt="" loading="lazy"></figure>
-<ul>
-<li>原理
-<ol>
-<li>如果一个类加载器收到类加载请求，并不会自己先去加载，而是将这个请求委托给父 类加载器执行</li>
-<li>如果父 类加载器还存在其父 类加载器，则进一步向上委托，依次请求最终到达顶层启动类加载器</li>
-<li>如果父 类加载器可以完成类加载请求，则成功返回，否则将由其子 类加载器尝试加载</li>
-</ol>
-</li>
-<li>优势、为什么
-<ol>
-<li>避免重复加载</li>
-<li>保护程序安全，防止核心类库被随意篡改 沙箱安全机制</li>
-</ol>
-</li>
-<li>对类加载器的引用</li>
-<li>双亲委派机制的破坏
-<ol>
-<li>之前实现自定义类加载器继承ClassLoader重写<code>loadClass</code>方法，JVM进行类加载的时候会调用私有的<code>loadClassInternal</code>()方法，这个方法唯一逻辑就是调用自己的<code>loadClass</code>方法，所以需要在<code>loadClass</code>方法中显示的执行双亲委派逻辑=&gt;1.2之后建议重写<code>findClass</code>方法</li>
-<li><code>JDK</code> <code>JNDI</code>加载厂商代码</li>
-<li><code>OSGi</code></li>
-</ol>
-</li>
-</ul>
-<h3 id="26-jvm自带加载加载路径">2.6 JVM自带加载加载路径</h3>
-<pre><code class="language-java">public class Test {
-    
-    public static void main(String[] args) {
-        //系统类加载器加载路径
-        System.out.println(System.getProperty(&quot;sun.boot.class.path&quot;));
-        //扩展类加载器加载路径
-        System.out.println(System.getProperty(&quot;java.ext.dirs&quot;));
-        //应用类加载器加载过程
-        System.out.println(System.getProperty(&quot;java.class.path&quot;));
-    }
-}
-</code></pre>
-
-            </div>
-            
-            
-              <div class="post-footer">
-  <ul class="post-copyright">
-    <li class="post-copyright-author">
-      <strong class="language" data-lan="author">本文作者：</strong>
-      Violet
-    </li>
-    <li class="post-copyright-link">
-      <strong class="language" data-lan="link">本文链接：</strong>
-      <a href="http://violet404.github.io/post/jvm-1/" title="JVM 内存与垃圾回收（一）">http://violet404.github.io/post/jvm-1/</a>
-    </li>
-    <li class="post-copyright-license">
-      <strong class="language" data-lan="copyright">版权声明： </strong>
-      本博客所有文章除特别声明外，均采用<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i> BY-NC-SA</a> 许可协议。转载请注明出处！
-    </li>
-  </ul>
-  <div class="tags">
-    
-      <a href="http://violet404.github.io/tag/I36zpcWlv/"># ClassLoader</a>
-    
-      <a href="http://violet404.github.io/tag/fTx4aow76T/"># 双亲委派</a>
-    
-      <a href="http://violet404.github.io/tag/-Dt1tObS1/"># Java</a>
-    
-      <a href="http://violet404.github.io/tag/KqKxCCwsI/"># JVM</a>
-    
-  </div>
-  <div class="nav">
-    <div class="nav-prev">
       
-        <i class="fa fa-chevron-left"></i>
-        <a class="nav-pc-next" title="JVM 内存与垃圾回收（二）" href="http://violet404.github.io/post/jvm-2/">JVM 内存与垃圾回收（二）</a class="nav-pc-next">
-        <a class="nav-mobile-prev" title="JVM 内存与垃圾回收（二）" href="http://violet404.github.io/post/jvm-2/">上一篇</a>
       
-    </div>
-    <div class="nav-next">
       
-        <a class="nav-pc-next" title="游标更新数据" href="http://violet404.github.io/post/you-biao-geng-xin-shu-ju/">游标更新数据</a>
-        <a class="nav-mobile-next" title="游标更新数据" href="http://violet404.github.io/post/you-biao-geng-xin-shu-ju/">下一篇</a>
-        <i class="fa fa-chevron-right"></i>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
       
     </div>
   </div>
 </div>
-            
-            
-  
-
-          </div>
+          </section>
         </div>
       </div>
     </div>
@@ -2076,223 +1111,6 @@ public class CustomizationClassLoaderTest {
     aelem.appendChild(image);
     parent.insertBefore(aelem, next);
   })
-</script>
-
-    <div class="reward-mask" style="display: none;">
-  <div class="reward-relative">
-    <span class="close" aria-hidden="true">x</span>
-    <div class="reward-body">
-      <h2>感谢您的支持，我会继续努力的!</h2>
-      <div class="reward-img-box">
-        <div style="position: relative; width: 140px; height: 140px;">
-          
-          
-          
-        </div>
-      </div>
-      <p class="reward-word">扫码打赏，你说多少就多少</p>
-      <p class="reward-tip">打开微信扫一扫，即可进行扫码打赏哦</p>
-    </div>
-    <div class="bottom">
-      
-      
-    </div>
-  </div>
-</div>
-<style>
-  .reward-mask {
-    position: fixed;
-    z-index: 99999;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: #00000054;
-  }
-
-  .reward-relative {
-    position: relative;
-    width: 480px;
-    text-align: center;
-    margin: 0 auto;
-    border-radius: 5px;
-    background-color: #fff;
-    top: 50%;
-    margin-top: -205px;
-  }
-
-  .reward-relative .close {
-    position: absolute;
-    right: 10px;
-    font-weight: normal;
-    font-size: 16px;
-    color: #929292;
-  }
-
-  .reward-body {
-    padding: 40px 20px 20px;
-  }
-
-  .bottom {
-    display: flex;
-  }
-
-  .reward-btn {
-    text-align: center;
-  }
-
-  .reward-btn-text {
-    display: inline-block;
-    cursor: pointer;
-    width: 60px;
-    height: 60px;
-    line-height: 60px;
-    border-radius: 50%;
-    background-color: #ff9734;
-    color: #FFF;
-    margin-top: 20px;
-  }
-
-  .pay-text {
-    margin-top: 10px;
-    padding: 10px;
-    flex: 1;
-    transition: all .2s linear;
-  }
-
-  .pay-text:hover {
-    background-color: #a5a5a536;
-  }
-
-  .reward-body h2 {
-    padding-top: 10px;
-    text-align: center;
-    color: #a3a3a3;
-    font-size: 16px;
-    font-weight: normal;
-    margin: 0 0 20px;
-  }
-
-  .reward-body h2:after,
-  .reward-body h2:before {
-    font-family: Arial, Helvetica, sans-serif;
-    background: 0 0;
-    width: 0;
-    height: 0;
-    font-style: normal;
-    color: #eee;
-    font-size: 80px;
-    position: absolute;
-    top: 20px;
-  }
-
-  .reward-body h2:before {
-    content: '\201c';
-    left: 50px;
-  }
-
-  .reward-body h2:after {
-    content: '\201d';
-    right: 80px;
-  }
-
-  .reward-img-box {
-    display: inline-block;
-    padding: 10px;
-    border: 6px solid #ea5f00;
-    margin: 0 auto;
-    border-radius: 3px;
-    position: relative;
-  }
-
-  .reward-img {
-    position: absolute;
-    left: 0px;
-    top: 0px;
-    width: 100%;
-    height: 100%;
-  }
-
-  @media (max-width: 767px) {
-    .reward-relative {
-      height: 100%;
-      top: 0px;
-      margin-top: 0;
-      width: auto;
-    }
-
-    .reward-relative .bottom {
-      flex-direction: column;
-    }
-
-    .reward-relative .pay-text {
-      width: 80%;
-      margin: 5px auto;
-      border: 1px solid silver;
-      padding: 6px;
-      border-radius: 4px;
-    }
-
-    .reward-body h2:after {
-      right: 40px;
-    }
-
-    .reward-body h2:after,
-    .reward-body h2:before {
-      font-size: 60px;
-    }
-
-    .reward-body h2:before {
-      left: 20px;
-    }
-  }
-</style>
-<script>
-  !function () {
-    var mask = document.querySelector('.reward-mask');
-    let close = document.querySelector('.reward-relative .close');
-    let rewardBtn = document.querySelector('.reward-btn');
-
-    let zfb = document.querySelector('#zfb'),
-      wx = document.querySelector('#wx'),
-      zfbBtn = document.querySelector('#zfbBtn'),
-      wxBtn = document.querySelector('#wxBtn');
-
-    if (zfbBtn && wxBtn) {
-      zfbBtn.addEventListener('click', () => {
-        jQuery.Velocity(zfb, 'transition.slideLeftIn', {
-          duration: 400
-        });
-        jQuery.Velocity(wx, 'transition.slideRightOut', {
-          display: 'none',
-          duration: 400
-        });
-      });
-
-      wxBtn.addEventListener('click', () => {
-        jQuery.Velocity(wx, 'transition.slideRightIn', {
-          duration: 400
-        });
-        jQuery.Velocity(zfb, 'transition.slideLeftOut', {
-          display: 'none',
-          duration: 400
-        });
-      });
-    }
-
-    rewardBtn.addEventListener('click', (e) => {
-      jQuery.Velocity(mask, 'transition.slideDownIn', {
-        duration: 400
-      })
-    });
-
-    close.addEventListener('click', (e) => {
-      e.preventDefault();
-      jQuery.Velocity(mask, 'transition.slideUpOut', {
-        duration: 400
-      })
-    })
-  }()
 </script>
 
   </div>
@@ -4215,5 +3033,6 @@ redis 帮助命令 help @&amp;lt;类型名词&amp;gt;&lt;/p&gt;
 
   <div class="snow-container"></div>
   <script src="https://cdn.jsdelivr.net/gh/violet404/violet404.github.io@master/media/js/bg/snow.js"></script>
+
 
 </html>
