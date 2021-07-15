@@ -9,7 +9,7 @@
 <meta name="description" content="业精于勤，荒于嬉">
 <meta name="theme-color" content="#343a40">
 <title>游标更新数据 | Violet</title>
-<link rel="shortcut icon" href="/favicon.ico?v=1626292555500">
+<link rel="shortcut icon" href="/favicon.ico?v=1626310720677">
 <link rel="stylesheet" href="/media/css/pisces.css">
 <link rel="stylesheet" href="/media/fonts/font-awesome.css">
 <link
@@ -1547,9 +1547,71 @@ end;
 // javap -v OperandStackTest.class
 &lt;/code&gt;&lt;/pre&gt;
 &lt;figure data-type=&#34;image&#34; tabindex=&#34;2&#34;&gt;&lt;img src=&#34;https://violet404.github.io//post-images/1626291407651.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
-&lt;h5 id=&#34;533-动态链接-dynamic-linking-指向运行时常量池的方法引用与多态有关吗&#34;&gt;5.3.3. 动态链接 Dynamic Linking 指向运行时常量池的方法引用（与多态有关吗？？）&lt;/h5&gt;
+&lt;ul&gt;
+&lt;li&gt;栈顶缓存技术&lt;br&gt;
+基于栈式架构虚拟机指令集少，指令数更多，更多的指令分派次数与内存读写次数。&lt;br&gt;
+Hotspot &lt;em&gt;将栈顶元素全部缓存到物理cpu的寄存器中，以降低对内存的读写次数，提升引擎的执行效率&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h5 id=&#34;533-动态链接-dynamic-linking-font-colorred指向运行时常量池的方法引用font&#34;&gt;5.3.3. 动态链接 Dynamic Linking （&lt;font color=&#34;red&#34;&gt;指向运行时常量池的方法引用&lt;/font&gt;）&lt;/h5&gt;
+&lt;p&gt;栈帧内部包含一个指向运行时常量池中该栈帧所属方法的引用---&amp;gt;支持当前方法实现动态链接&lt;br&gt;
+&lt;em&gt;编译阶段，所有变量、方法啊引用都作为符号引用存储在常量池中&lt;/em&gt; ，比如，一个方法调用另一个方法--&amp;gt;常量池中指向方法的符号引用。动态链接就是&lt;font color=&#34;red&#34;&gt;&lt;em&gt;&lt;strong&gt;为了将这些符号引用转换为调用方法的直接引用&lt;/strong&gt;&lt;/em&gt;&lt;/font&gt;&lt;br&gt;
+&lt;strong&gt;动态链接与类加载阶段的解析Linking有啥区别？是解析后存储在动态链接区域？&lt;/strong&gt;&lt;br&gt;
+&lt;strong&gt;动态链接与多态性有关吗？&lt;/strong&gt;&lt;/p&gt;
 &lt;h5 id=&#34;534-方法返回地址-return-address-方法正常退出或异常退出的定义&#34;&gt;5.3.4. 方法返回地址 Return Address 方法正常退出或异常退出的定义&lt;/h5&gt;
 &lt;h5 id=&#34;535-一些附加信息&#34;&gt;5.3.5. 一些附加信息&lt;/h5&gt;
+&lt;h5 id=&#34;536-方法的调用&#34;&gt;5.3.6. 方法的调用&lt;/h5&gt;
+&lt;p&gt;符号引用转换为直接引用与方法的绑定机制有关&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;静态链接（早期绑定） 调用目标方法编译阶段确定且运行时不变&lt;/li&gt;
+&lt;li&gt;动态链接（晚期绑定） 调用目标方法运行时才能确定&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;abstract class Animal {
+    public abstract void eat();
+}
+interface Huntable {
+    void hunt();
+}
+class Dig extends Animal implements Huntable {
+
+    public void eat() {System.out.println(&amp;quot;狗吃骨头&amp;quot;);}
+
+    public void hunt() {System.out.println(&amp;quot;狗拿耗子多管闲事&amp;quot;);}
+}
+class Cat extends Animal implements Huntable {
+
+    public Cat() {super();} // 早期绑定
+
+    private String name;
+
+    // 早期绑定
+    public Cat(String name) {this(); this.name = name;}
+
+    public void eat() {System.out.println(&amp;quot;猫吃鱼&amp;quot;);}
+
+    public void hunt() {System.out.println(&amp;quot;猫抓耗子天经地义&amp;quot;);}
+}
+public class AnimalTest {
+   
+   // 晚期绑定
+   public void showAnimal(Animal) {Animal.eat();} 
+
+    // 晚期绑定
+   public void showHunt(Huntable h) {h.hunt();}
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;标识为&lt;code&gt;final&lt;/code&gt;的方法，不能被重写，在编译就能确定，早期绑定&lt;/li&gt;
+&lt;li&gt;方法在编译器就确定具体的调用版本，且运行时是不可变的称之为**非虚方法 **。静态方法、私有方法、&lt;code&gt;final&lt;/code&gt;方法、实例构造器方法、父类方法。其他方法称为虚方法。&lt;/li&gt;
+&lt;li&gt;多态：《Java编程思想》，方法的重写才能算作多态性的体现。同一个类方法之间的重载不能算作多态性&lt;/li&gt;
+&lt;li&gt;方法调用指令&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;font color=&#34;blue&#34;&gt;invokestatic&lt;/font&gt; 调用静态方法，解析阶段确定唯一不变的方法版本&lt;/li&gt;
+&lt;li&gt;&lt;font color=&#34;blue&#34;&gt;invokespecial&lt;/font&gt; 调用&lt;code&gt;&amp;lt;init&amp;gt;&lt;/code&gt;、私有及父类方法，解析阶段确定唯一不变的方法版本&lt;/li&gt;
+&lt;li&gt;invokevirtual 调用虚方法，调用final修饰的方法&lt;/li&gt;
+&lt;li&gt;invokeinterface 调用接口方法&lt;/li&gt;
+&lt;li&gt;invokedynamic 动态解析出需要调用大的方法，然后执行。&lt;strong&gt;动态代理模式？&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
 &lt;h2 id=&#34;6-本地方法接口&#34;&gt;6. 本地方法接口&lt;/h2&gt;
 &lt;h2 id=&#34;7-本地方法栈&#34;&gt;7. 本地方法栈&lt;/h2&gt;
 ">JVM 内存与垃圾回收（二）</a>
