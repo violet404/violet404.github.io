@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://violet404.github.io/</id>
     <title>Violet</title>
-    <updated>2021-07-15T06:32:03.256Z</updated>
+    <updated>2021-07-15T10:08:15.369Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://violet404.github.io/"/>
     <link rel="self" href="http://violet404.github.io/atom.xml"/>
@@ -11,23 +11,30 @@
     <icon>http://violet404.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, Violet</rights>
     <entry>
+        <title type="html"><![CDATA[JVM 内存与垃圾回收（四）]]></title>
+        <id>http://violet404.github.io/post/DI3xGNxed/</id>
+        <link href="http://violet404.github.io/post/DI3xGNxed/">
+        </link>
+        <updated>2021-07-15T10:02:41.000Z</updated>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[JVM 内存与垃圾回收（三）]]></title>
         <id>http://violet404.github.io/post/jvm-3/</id>
         <link href="http://violet404.github.io/post/jvm-3/">
         </link>
         <updated>2021-07-14T15:30:46.000Z</updated>
         <summary type="html"><![CDATA[<h1 id="8-堆">8. 堆</h1>
-<h2 id="81-概述">8.1 概述</h2>
+<h2 id="概述">概述</h2>
 <ul>
-<li>1个JVM实例只存在1个堆内存，所有的线程共享堆。</li>
-<li>堆随虚拟机的启动而创建，其大小也确定。<em><strong>堆内存的大小是可以调节的。<font color="red">-Xms 初始堆内存大小 -Xmx 最大堆内存大小</font></strong></em></li>
+<li>一个JVM实例只存在一个堆内存，堆也是Java内存管理的核心区域</li>
+<li>Java堆区在JVM启动的时候即被创建，其空间大小也就确定了。<em><strong>堆内存的大小是可以调节的。<font color="red">-Xms 初始堆内存大小 -Xmx 最大堆内存大小</font></strong></em></li>
 </ul>
 ]]></summary>
         <content type="html"><![CDATA[<h1 id="8-堆">8. 堆</h1>
-<h2 id="81-概述">8.1 概述</h2>
+<h2 id="概述">概述</h2>
 <ul>
-<li>1个JVM实例只存在1个堆内存，所有的线程共享堆。</li>
-<li>堆随虚拟机的启动而创建，其大小也确定。<em><strong>堆内存的大小是可以调节的。<font color="red">-Xms 初始堆内存大小 -Xmx 最大堆内存大小</font></strong></em></li>
+<li>一个JVM实例只存在一个堆内存，堆也是Java内存管理的核心区域</li>
+<li>Java堆区在JVM启动的时候即被创建，其空间大小也就确定了。<em><strong>堆内存的大小是可以调节的。<font color="red">-Xms 初始堆内存大小 -Xmx 最大堆内存大小</font></strong></em></li>
 </ul>
 ]]></content>
     </entry>
@@ -51,11 +58,11 @@
         </link>
         <updated>2021-07-05T03:58:27.000Z</updated>
         <summary type="html"><![CDATA[<h1 id="1-jvm与java体系结构"><strong>1. JVM与Java体系结构</strong></h1>
-<h2 id="11-跨平台性">1.1 跨平台性</h2>
+<h2 id="跨平台性">跨平台性</h2>
 <p>Java 是一门跨平台的语言，JVM则跨语言的平台，JSR-292 JVM可以运行非Java语言编写的程序;Java平台的多语言混合编程将成主流方向，使用特定领域的语言解决特定领域的问题</p>
 ]]></summary>
         <content type="html"><![CDATA[<h1 id="1-jvm与java体系结构"><strong>1. JVM与Java体系结构</strong></h1>
-<h2 id="11-跨平台性">1.1 跨平台性</h2>
+<h2 id="跨平台性">跨平台性</h2>
 <p>Java 是一门跨平台的语言，JVM则跨语言的平台，JSR-292 JVM可以运行非Java语言编写的程序;Java平台的多语言混合编程将成主流方向，使用特定领域的语言解决特定领域的问题</p>
 ]]></content>
     </entry>
@@ -100,12 +107,5 @@
         <link href="http://violet404.github.io/post/oracle-xing-zhuan-lie/">
         </link>
         <updated>2021-04-28T05:00:41.000Z</updated>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Uncaught RangeError：Maximum call stack size exceeded]]></title>
-        <id>http://violet404.github.io/post/uncaught-rangeerrormaximum-call-stack-size-exceeded/</id>
-        <link href="http://violet404.github.io/post/uncaught-rangeerrormaximum-call-stack-size-exceeded/">
-        </link>
-        <updated>2021-04-28T04:50:27.000Z</updated>
     </entry>
 </feed>
