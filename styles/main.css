@@ -2054,7 +2054,7 @@ p > code {
 .bg-color .bg-color {
       background: transparent !important;
     }body {
-      background-color: #f9f9f9cc !important;
+      background-color: #eee;
     }.header {
         width: 960px;
         margin: 0 auto;
@@ -2160,7 +2160,7 @@ p > code {
       color: #ffa8a8;
       border-bottom-color: #ffa8a8;
     }.bg-color {
-      background-color: #ced4dacc;
+      background-color: #eeeeeecc;
     }
     .gemini .blog-header, .gemini .sidebar-wrapper, .gemini .article-wrapper, .gemini .post, .gemini .page, .gemini .section, .gemini .section-box, .gemini .sidebar-box, .gemini .friends-section {
       border-radius: 5px;
@@ -2178,10 +2178,10 @@ p > code {
       background: #495057cc;
     }
     .main-title, .brand {
-      color: #dee2e6 !important;
+      color: #212529 !important;
     }
     .mist .site-title i {
-      background: #dee2e6cc;
+      background: #212529cc;
     }.box-shadow-wrapper {
       box-shadow: none !important;
     }body {
