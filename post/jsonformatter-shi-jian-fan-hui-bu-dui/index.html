@@ -9,7 +9,7 @@
 <meta name="description" content="业精于勤，荒于嬉">
 <meta name="theme-color" content="#000">
 <title>@JsonFormatter 时间返回不对 | Violet</title>
-<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/violet404/violet404.github.io@latest/favicon.ico?v=1626343726879">
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/violet404/violet404.github.io@latest/favicon.ico?v=1626346186159">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/violet404/violet404.github.io@latest/media/css/pisces.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/violet404/violet404.github.io@latest/media/fonts/font-awesome.css">
 <link
@@ -210,13 +210,13 @@
     </div>
     <div class="sidebar-item-box">
       <a href="">
-        <span class="site-item-stat-count">10</span>
+        <span class="site-item-stat-count">11</span>
         <span class="site-item-stat-name language" data-lan="category">分类</span>
       </a>
     </div>
     <div class="sidebar-item-box">
       <a href="/tags/">
-        <span class="site-item-stat-count">10</span>
+        <span class="site-item-stat-count">11</span>
         <span class="site-item-stat-name language" data-lan="tag">标签</span>
       </a>
     </div>
@@ -925,7 +925,7 @@
 		}
 		$(document).ready(function () {
 			var AIimgSrc = [];
-			let chooseLive2d = 'tororo'
+			let chooseLive2d = 'aoba'
 			if (chooseLive2d === 'histoire') {
 				AIimgSrc.push(message_Path + "model/histoire/histoire.1024/texture_00.png");
 				AIimgSrc.push(message_Path + "model/histoire/histoire.1024/texture_01.png");
@@ -1559,6 +1559,44 @@ public class OomTest {
 	at dump.HeapAllocationTest.&amp;lt;init&amp;gt;(HeapAllocationTest.java:12)
 	at dump.HeapAllocationTest.main(HeapAllocationTest.java:17)
 &lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;minor-gcmajorgc-full-gc&#34;&gt;Minor GC，MajorGC、Full GC&lt;/h2&gt;
+&lt;p&gt;JVM在进行GC时，并非每次都对上面三个内存区域一起回收的，大部分时候回收的都是指新生代。针对Hotspot VM的实现，它里面的GC按照回收区域又分为两大种类型：一种是部分收集（Partial GC），一种是整堆收集（FullGC）&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;部分收集：不是完整收集整个Java堆的垃圾收集。
+&lt;ul&gt;
+&lt;li&gt;新生代收集（MinorGC/YoungGC）：只是新生代的垃圾收集&lt;/li&gt;
+&lt;li&gt;老年代收集（MajorGC/OldGC）：只是老年代的圾收集。
+&lt;ul&gt;
+&lt;li&gt;不过一般老年代垃圾收集都伴随着新生代的垃圾收集。&lt;/li&gt;
+&lt;li&gt;很多时候Major GC会和Fu11GC混淆使用，需要具体分辨是老年代回收还是整堆回收&lt;/li&gt;
+&lt;li&gt;只有CMSGC会有单独收集老年代的行为。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;混合收集（MixedGC）：收集整个新生代以及部分老年代的垃圾收集。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;整堆收集（FullGC）：收集整个java堆和方法区的垃圾收集。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;在垃圾回收的过程中，出现&lt;code&gt;STW(stop the word)&lt;/code&gt;，暂停其它用户的线程，等垃圾回收结束，用户线程才恢复运行，而 &lt;strong&gt;&lt;code&gt;Major GC&lt;/code&gt; 和 &lt;code&gt;Full GC&lt;/code&gt;出现STW的时间，远大于Minor GC&lt;/strong&gt;。&lt;/p&gt;
+&lt;h3 id=&#34;minor-gc&#34;&gt;Minor GC&lt;/h3&gt;
+&lt;p&gt;当年轻代空间（Eden区）不足时，就会触发MinorGC，Survivor满不会引发GC。（每次Minor GC会清理年轻代的内存。）&lt;/p&gt;
+&lt;p&gt;因为Java对象大多都具备 朝生夕灭 的特性，所以Minor GC非常频繁，一般回收速度也比较快。&lt;br&gt;
+&lt;img src=&#34;http://violet404.github.io//post-images/1626345769145.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/p&gt;
+&lt;h3 id=&#34;major-gc&#34;&gt;Major GC&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;在老年代空间不足时，会先尝试触发&lt;code&gt;MinorGC&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;出现了MajorGc，经常会伴随至少一次的Minor GC（但非绝对的，在Paralle1 Scavenge收集器的收集策略里就有直接进行MajorGC的策略选择过程）&lt;/li&gt;
+&lt;li&gt;Major GC的速度一般会比MinorGc慢10倍以上，STW的时间更长。&lt;/li&gt;
+&lt;li&gt;Major GC后，内存还不足，就报OOM了&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;full-gc&#34;&gt;Full GC&lt;/h3&gt;
+&lt;p&gt;触发Fu11GC执行的情况有如下五种：&lt;br&gt;
+1. 调用System.gc（）时，系统建议执行Fu11GC，但是不必然执行&lt;br&gt;
+2. 老年代空间不足&lt;br&gt;
+3. 方法区空间不足&lt;br&gt;
+4. 通过Minor GC后进入老年代的平均大小大于老年代的可用内存&lt;br&gt;
+5. 由Eden区、survivor spacee（From Space）区向survivor spacel（To Space）区复制时，对象大小大于To Space可用内存，则把该对象转存到老年代，且老年代的可用内存小于该对象大小&lt;/p&gt;
+&lt;p&gt;说明：Full GC 是开发或调优中尽量要避免的。这样STW暂时时间会短一些&lt;/p&gt;
 ">JVM 内存与垃圾回收（三）</a>
       </div>
       
