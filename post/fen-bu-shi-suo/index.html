@@ -9,7 +9,7 @@
 <meta name="description" content="业精于勤，荒于嬉">
 <meta name="theme-color" content="#000">
 <title>分布式锁 | Violet</title>
-<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/violet404/violet404.github.io@latest/favicon.ico?v=1626322248101">
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/violet404/violet404.github.io@latest/favicon.ico?v=1626330684635">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/violet404/violet404.github.io@latest/media/css/pisces.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/violet404/violet404.github.io@latest/media/fonts/font-awesome.css">
 <link
@@ -1402,26 +1402,89 @@ service2</p>
     <div class="result" id="result">
       
       <div class="item">
-        <a class="result-title" style="opacity: 0;" href="http://violet404.github.io/post/cWnQiM59p/"" data-c="
-          &lt;h2 id=&#34;8-堆&#34;&gt;8. 堆&lt;/h2&gt;
-&lt;h2 id=&#34;9-方法区&#34;&gt;9. 方法区&lt;/h2&gt;
-&lt;h2 id=&#34;10-对象的实例化内存布局与访问定位&#34;&gt;10. 对象的实例化内存布局与访问定位&lt;/h2&gt;
-&lt;h2 id=&#34;11-直接内存&#34;&gt;11. 直接内存&lt;/h2&gt;
-&lt;h2 id=&#34;12-执行引擎&#34;&gt;12. 执行引擎&lt;/h2&gt;
-&lt;h2 id=&#34;13-stringtable&#34;&gt;13. StringTable&lt;/h2&gt;
-&lt;h2 id=&#34;14-垃圾回收算法&#34;&gt;14. 垃圾回收算法&lt;/h2&gt;
-&lt;h2 id=&#34;15-垃圾回收器&#34;&gt;15. 垃圾回收器&lt;/h2&gt;
+        <a class="result-title" style="opacity: 0;" href="http://violet404.github.io/post/jvm-3/"" data-c="
+          &lt;h1 id=&#34;8-堆&#34;&gt;8. 堆&lt;/h1&gt;
+&lt;h2 id=&#34;81-概述&#34;&gt;8.1 概述&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;1个JVM实例只存在1个堆内存，所有的线程共享堆。&lt;/li&gt;
+&lt;li&gt;堆随虚拟机的启动而创建，其大小也确定。&lt;em&gt;&lt;strong&gt;堆内存的大小是可以调节的。&lt;font color=&#34;red&#34;&gt;-Xms 初始堆内存大小 -Xmx 最大堆内存大小&lt;/font&gt;&lt;/strong&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;!-- more --&gt; 
+&lt;ul&gt;
+&lt;li&gt;可视化堆内存空间 &lt;code&gt;jvisualvm&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;1&#34;&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626324843221.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;ul&gt;
+&lt;li&gt;JVM规范规定，堆可以处于物理上不连续的内存空间中，但在逻辑上应该被视为连续的&lt;/li&gt;
+&lt;li&gt;并不是堆所有的空间都是共享的，可以按线程划分&lt;code&gt;TLAB缓存区&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;JVM规范，所有的对象实例与数组都应该分配在堆上。但其实并不绝对，某些情况可能在栈上分配&lt;/li&gt;
+&lt;li&gt;栈帧中的运行时常量池保存引用，这个引用指向对象、数组在堆中的位置。&lt;/li&gt;
+&lt;li&gt;方法结束后，堆中的对象并不是马上移除，仅仅在GC时才尝试回收这部分空间&lt;/li&gt;
+&lt;li&gt;&lt;font color=&#34;red&#34;&gt;&lt;strong&gt;垃圾回收的重点区域&lt;/strong&gt;&lt;/font&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;82-堆内存空间划分&#34;&gt;8.2 堆内存空间划分&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;JDK 7 及以前逻辑上划分3部分
+&lt;ul&gt;
+&lt;li&gt;新生代 &lt;code&gt;Young Generation Space&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;老年代 &lt;code&gt;Tenure Generation Space&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;永久代 Permanent Space&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;JDK 8及以后逻辑划也分为3部分
+&lt;ul&gt;
+&lt;li&gt;新生代 &lt;code&gt;Young Generation Space&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;老年代 &lt;code&gt;Tenure Generation Space&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;元空间 &lt;code&gt;Meta Space&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;83-堆空间大小设置与查看&#34;&gt;8.3 堆空间大小设置与查看&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;-Xms&lt;/code&gt;、&lt;code&gt;-XX:InitialHeapSize&lt;/code&gt; 堆区初始内存大小&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;-Xmx&lt;/code&gt;、&lt;code&gt;-XX:MaxHeapSize&lt;/code&gt; 堆区最大内存大小&lt;/li&gt;
+&lt;li&gt;&lt;font color=&#34;red&#34;&gt;&lt;strong&gt;为了能够在Java垃圾回收机制清理堆区后不需要重新分配计算堆大小，提高性能，&lt;/strong&gt;&lt;/font&gt;&lt;em&gt;&lt;strong&gt;通常会将&lt;code&gt;-Xms&lt;/code&gt;、&lt;code&gt;-Xmx&lt;/code&gt; 两个参数设置为相同的值&lt;/strong&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;&lt;strong&gt;默认堆空间大小，初始堆区大小 = 物理内存 / 64 ; 最大堆区大小 = 物理内存 / 4&lt;/strong&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;//Runtime#totalMemory(),Runtime#maxMemory()获取内存时只会计算1个Survivor区大小
+public class HeapDumpSizeTest {
+    
+    public void method1() {
+
+        Runtime runtime = Runtime.getRuntime();
+
+        long totalMemory = runtime.totalMemory() / (1024 * 1024);
+        System.out.println(&amp;quot;-Xms : &amp;quot; + totalMemory);
+
+        long maxMemory = runtime.maxMemory() / (1024 * 1024);
+        System.out.println(&amp;quot;-Xmx: &amp;quot; + maxMemory);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;jps&lt;/code&gt; 查看当前系统java进程 &lt;code&gt;jstat -gc pid&lt;/code&gt; 查看指定java进程 gc 时的内存分配情况&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;2&#34;&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626327015214.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;h2 id=&#34;84-oom异常示例与说明&#34;&gt;8.4 OOM异常示例与说明&lt;/h2&gt;
+&lt;h2 id=&#34;85&#34;&gt;8.5&lt;/h2&gt;
+&lt;h1 id=&#34;9-方法区&#34;&gt;9. 方法区&lt;/h1&gt;
+&lt;h1 id=&#34;10-对象的实例化内存布局与访问定位&#34;&gt;10. 对象的实例化内存布局与访问定位&lt;/h1&gt;
+&lt;h1 id=&#34;11-直接内存&#34;&gt;11. 直接内存&lt;/h1&gt;
+&lt;h1 id=&#34;12-执行引擎&#34;&gt;12. 执行引擎&lt;/h1&gt;
+&lt;h1 id=&#34;13-stringtable&#34;&gt;13. StringTable&lt;/h1&gt;
+&lt;h1 id=&#34;14-垃圾回收算法&#34;&gt;14. 垃圾回收算法&lt;/h1&gt;
+&lt;h1 id=&#34;15-垃圾回收器&#34;&gt;15. 垃圾回收器&lt;/h1&gt;
 ">JVM 内存与垃圾回收（三）</a>
       </div>
       
       <div class="item">
         <a class="result-title" style="opacity: 0;" href="http://violet404.github.io/post/jvm-2/"" data-c="
-          &lt;h2 id=&#34;3-运行时数据区概述及线程&#34;&gt;3. 运行时数据区概述及线程&lt;/h2&gt;
+          &lt;h1 id=&#34;3-运行时数据区概述及线程&#34;&gt;3. 运行时数据区概述及线程&lt;/h1&gt;
 &lt;p&gt;JVM定义了若干程序运行期间使用的数据区，其中一些随虚拟机的创建而创建，随虚拟机推出而销毁；另外一些则随线程的开始结束而创建与销毁。&lt;/p&gt;
 &lt;!-- more --&gt;
 &lt;p&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626172536218.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;br&gt;
 &lt;img src=&#34;http://violet404.github.io//post-images/1626160473166.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/p&gt;
-&lt;h2 id=&#34;4-程序计数器&#34;&gt;4. 程序计数器&lt;/h2&gt;
+&lt;h1 id=&#34;4-程序计数器&#34;&gt;4. 程序计数器&lt;/h1&gt;
 &lt;ul&gt;
 &lt;li&gt;作用 存储指向下一条指令的地址，即即将执行的指令代码，由执行引擎读取下一条指令。&lt;/li&gt;
 &lt;li&gt;一块很小的内存空间，运行速度最快的空间&lt;/li&gt;
@@ -1445,8 +1508,8 @@ service2</p>
 &lt;ul&gt;
 &lt;li&gt;JVM的多线程是通过线程轮流切换并分配处理器执行时间的方式实现的，在任一确定的时刻，一个处理器（对于多核处理器来说一个内核）都只会执行一条线程中的指令。因此，为了线程切换后能够恢复到正确的执行位置，每个线程都需要由一个独立的程序计数器，各个线程之间计数器互不影响，独立存储。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;5-虚拟机栈&#34;&gt;5. 虚拟机栈&lt;/h2&gt;
-&lt;h4 id=&#34;51-概述&#34;&gt;5.1 概述&lt;/h4&gt;
+&lt;h1 id=&#34;5-虚拟机栈&#34;&gt;5. 虚拟机栈&lt;/h1&gt;
+&lt;h2 id=&#34;51-概述&#34;&gt;5.1 概述&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;em&gt;&lt;strong&gt;栈的生命周期与线程一致&lt;/strong&gt;&lt;/em&gt;&lt;/li&gt;
 &lt;li&gt;作用：保存方法的局部变量（8种基本数据类型、对象的引用地址）、部分结果，并参与方法的调用与返回&lt;/li&gt;
@@ -1455,7 +1518,7 @@ service2</p>
 &lt;li&gt;JVM规范允许Java虚拟机栈动态的（&lt;code&gt;OutOfMemoryError&lt;/code&gt;，尝试扩展时无法申请足够的内存或者创建新线程时没有足够的内存创建新线程对应的虚拟机栈）或者固定不变的（&lt;code&gt;StackOverflowError&lt;/code&gt;，线程请求分配的栈容量达到Java虚拟机允许的最大容量）&lt;/li&gt;
 &lt;li&gt;设置最大栈大小 &lt;code&gt;-Xss&lt;/code&gt; 例如: -Xss256K -Xss256M&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h4 id=&#34;52-栈的存储单位&#34;&gt;5.2 栈的存储单位&lt;/h4&gt;
+&lt;h2 id=&#34;52-栈的存储单位&#34;&gt;5.2 栈的存储单位&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;每个线程由自己的栈内存，&lt;em&gt;&lt;strong&gt;栈中的数据以栈帧为基本存储单位&lt;/strong&gt;&lt;/em&gt;&lt;/li&gt;
 &lt;li&gt;线程种执行的每一个方法都对应一个栈帧， 存储方法执行过程种的各种数据信息；&lt;/li&gt;
@@ -1464,8 +1527,8 @@ service2</p>
 &lt;li&gt;当前栈帧 当前方法 当前类；执行引擎执行的操作指令都是对当前栈帧进行操作&lt;/li&gt;
 &lt;li&gt;方法的技术方式：１、正常return结束；２、抛出异常。无论哪种方式结束，都会使当前栈帧出栈&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h4 id=&#34;53-栈帧的内部结构&#34;&gt;5.3 栈帧的内部结构&lt;/h4&gt;
-&lt;h5 id=&#34;531-局部变量表-local-variable&#34;&gt;5.3.1. 局部变量表 Local Variable&lt;/h5&gt;
+&lt;h2 id=&#34;53-栈帧的内部结构&#34;&gt;5.3 栈帧的内部结构&lt;/h2&gt;
+&lt;h3 id=&#34;531-局部变量表-local-variable&#34;&gt;5.3.1. 局部变量表 Local Variable&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;定义为一个 &lt;em&gt;&lt;strong&gt;&lt;font color=&#34;red&#34;&gt;数字数组&lt;/font&gt;,主要用于存储方法参数和定义在方法体内的局部变量&lt;/strong&gt;&lt;/em&gt; ，数据类型包括基本数据类型、对象引用以及&lt;code&gt;returnAddress&lt;/code&gt;类型。&lt;/li&gt;
 &lt;li&gt;&lt;em&gt;&lt;strong&gt;容量大小在编译阶段就能确定&lt;/strong&gt;&lt;/em&gt; 保存在方法的code属性的&lt;code&gt;maximum_local_variables&lt;/code&gt;数据项，方法运行期间不会改变局部变量表的大小&lt;/li&gt;
@@ -1489,7 +1552,7 @@ service2</p>
 &lt;ul&gt;
 &lt;li&gt;&lt;font color=&#34;red&#34;&gt;&lt;em&gt;&lt;strong&gt;局部变量表中的变量时重要的垃圾回收根节点，只要被局部变量表中变量直接或间接引用的对象都不会回收&lt;/strong&gt;&lt;/em&gt;&lt;/font&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h5 id=&#34;532-操作数栈-operand-stack&#34;&gt;5.3.2.  操作数栈 Operand Stack&lt;/h5&gt;
+&lt;h3 id=&#34;532-操作数栈-operand-stack&#34;&gt;5.3.2.  操作数栈 Operand Stack&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;数组（顺序存储）实现，同时满足FILO的规则&lt;/strong&gt;&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;操作数栈在方法执行过程中，根据字节码指令，往栈中写入数据或读取数据，即入栈与出栈&lt;/strong&gt;&lt;/li&gt;
@@ -1521,12 +1584,12 @@ service2</p>
 基于栈式架构虚拟机指令集少，指令数更多，更多的指令分派次数与内存读写次数。&lt;br&gt;
 Hotspot &lt;em&gt;将栈顶元素全部缓存到物理cpu的寄存器中，以降低对内存的读写次数，提升引擎的执行效率&lt;/em&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h5 id=&#34;533-动态链接-dynamic-linking-font-colorred指向运行时常量池的方法引用font&#34;&gt;5.3.3. 动态链接 Dynamic Linking （&lt;font color=&#34;red&#34;&gt;指向运行时常量池的方法引用&lt;/font&gt;）&lt;/h5&gt;
+&lt;h3 id=&#34;533-动态链接-dynamic-linking-font-colorred指向运行时常量池的方法引用font&#34;&gt;5.3.3. 动态链接 Dynamic Linking （&lt;font color=&#34;red&#34;&gt;指向运行时常量池的方法引用&lt;/font&gt;）&lt;/h3&gt;
 &lt;p&gt;栈帧内部包含一个指向运行时常量池中该栈帧所属方法的引用---&amp;gt;支持当前方法实现动态链接&lt;br&gt;
 &lt;em&gt;编译阶段，所有变量、方法啊引用都作为符号引用存储在常量池中&lt;/em&gt; ，比如，一个方法调用另一个方法--&amp;gt;常量池中指向方法的符号引用。动态链接就是&lt;font color=&#34;red&#34;&gt;&lt;em&gt;&lt;strong&gt;为了将这些符号引用转换为调用方法的直接引用&lt;/strong&gt;&lt;/em&gt;&lt;/font&gt;&lt;br&gt;
 &lt;strong&gt;动态链接与类加载阶段的解析Linking有啥区别？是解析后存储在动态链接区域？&lt;/strong&gt;&lt;br&gt;
 &lt;strong&gt;动态链接与多态性有关吗？&lt;/strong&gt;&lt;/p&gt;
-&lt;h5 id=&#34;534-方法返回地址-return-address-方法正常退出或异常退出的定义&#34;&gt;5.3.4. 方法返回地址 Return Address 方法正常退出或异常退出的定义&lt;/h5&gt;
+&lt;h3 id=&#34;534-方法返回地址-return-address-方法正常退出或异常退出的定义&#34;&gt;5.3.4. 方法返回地址 Return Address 方法正常退出或异常退出的定义&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;存放该方法的pc寄存器的值&lt;/li&gt;
 &lt;li&gt;方法结束：正常执行完成、出现未处理的异常&lt;/li&gt;
@@ -1552,8 +1615,8 @@ Hotspot &lt;em&gt;将栈顶元素全部缓存到物理cpu的寄存器中，以�
 &lt;/ol&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h5 id=&#34;535-一些附加信息&#34;&gt;5.3.5. 一些附加信息&lt;/h5&gt;
-&lt;h5 id=&#34;536-方法的调用&#34;&gt;5.3.6. 方法的调用&lt;/h5&gt;
+&lt;h3 id=&#34;535-一些附加信息&#34;&gt;5.3.5. 一些附加信息&lt;/h3&gt;
+&lt;h3 id=&#34;536-方法的调用&#34;&gt;5.3.6. 方法的调用&lt;/h3&gt;
 &lt;p&gt;符号引用转换为直接引用与方法的绑定机制有关&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;静态链接（早期绑定） 调用目标方法编译阶段确定且运行时不变&lt;/li&gt;
@@ -1626,9 +1689,9 @@ public class AnimalTest {
 &lt;/ol&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;6-本地方法接口&#34;&gt;6. 本地方法接口&lt;/h2&gt;
+&lt;h1 id=&#34;6-本地方法接口&#34;&gt;6. 本地方法接口&lt;/h1&gt;
 &lt;p&gt;一个&lt;code&gt;native method&lt;/code&gt; 就是一个Java调用非Java代码的接口&lt;/p&gt;
-&lt;h2 id=&#34;7-本地方法栈&#34;&gt;7. 本地方法栈&lt;/h2&gt;
+&lt;h1 id=&#34;7-本地方法栈&#34;&gt;7. 本地方法栈&lt;/h1&gt;
 &lt;ul&gt;
 &lt;li&gt;管理本地方法的调用&lt;/li&gt;
 &lt;li&gt;线程私有&lt;/li&gt;
@@ -1641,20 +1704,20 @@ public class AnimalTest {
       
       <div class="item">
         <a class="result-title" style="opacity: 0;" href="http://violet404.github.io/post/jvm-1/"" data-c="
-          &lt;h2 id=&#34;1-jvm与java体系结构&#34;&gt;&lt;strong&gt;1. JVM与Java体系结构&lt;/strong&gt;&lt;/h2&gt;
-&lt;h3 id=&#34;11-跨平台性&#34;&gt;1.1 跨平台性&lt;/h3&gt;
+          &lt;h1 id=&#34;1-jvm与java体系结构&#34;&gt;&lt;strong&gt;1. JVM与Java体系结构&lt;/strong&gt;&lt;/h1&gt;
+&lt;h2 id=&#34;11-跨平台性&#34;&gt;1.1 跨平台性&lt;/h2&gt;
 &lt;p&gt;Java 是一门跨平台的语言，JVM则跨语言的平台，JSR-292 JVM可以运行非Java语言编写的程序;Java平台的多语言混合编程将成主流方向，使用特定领域的语言解决特定领域的问题&lt;/p&gt;
 &lt;!-- more --&gt;
 &lt;figure data-type=&#34;image&#34; tabindex=&#34;1&#34;&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626273142484.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
-&lt;h3 id=&#34;12-虚拟机&#34;&gt;1.2 虚拟机&lt;/h3&gt;
+&lt;h2 id=&#34;12-虚拟机&#34;&gt;1.2 虚拟机&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;系统虚拟机 对物理计算机的仿真 VMware&lt;/li&gt;
 &lt;li&gt;程序虚拟机 为执行单个计算机程序而设计 JVM&lt;/li&gt;
 &lt;li&gt;Java技术的核心就是JVM&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;13-jvm-整体结构-hotspot&#34;&gt;1.3 JVM 整体结构 HotSpot&lt;/h3&gt;
+&lt;h2 id=&#34;13-jvm-整体结构-hotspot&#34;&gt;1.3 JVM 整体结构 HotSpot&lt;/h2&gt;
 &lt;figure data-type=&#34;image&#34; tabindex=&#34;2&#34;&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626272081353.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
-&lt;h3 id=&#34;14-jvm-架构模型&#34;&gt;1.4 JVM 架构模型&lt;/h3&gt;
+&lt;h2 id=&#34;14-jvm-架构模型&#34;&gt;1.4 JVM 架构模型&lt;/h2&gt;
 &lt;p&gt;Java 编译器输入的指令流是一种基于栈的指令集架构，除此之外还有一种基于寄存器的指令集架构&lt;br&gt;
 这两种指令集架构的区别&lt;/p&gt;
 &lt;ol&gt;
@@ -1676,17 +1739,17 @@ public class AnimalTest {
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;h2 id=&#34;2-类加载子系统&#34;&gt;&lt;strong&gt;2. 类加载子系统&lt;/strong&gt;&lt;/h2&gt;
-&lt;h3 id=&#34;21-类加载子系统的作用&#34;&gt;2.1 类加载子系统的作用：&lt;/h3&gt;
+&lt;h1 id=&#34;2-类加载子系统&#34;&gt;&lt;strong&gt;2. 类加载子系统&lt;/strong&gt;&lt;/h1&gt;
+&lt;h2 id=&#34;21-类加载子系统的作用&#34;&gt;2.1 类加载子系统的作用：&lt;/h2&gt;
 &lt;figure data-type=&#34;image&#34; tabindex=&#34;3&#34;&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626151607809.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
 &lt;ul&gt;
 &lt;li&gt;负责从文件系统或者网络中加载class文件，class开头有特定的文件标识&lt;/li&gt;
 &lt;li&gt;只负责加载class文件，至于能否运行又执行引擎决定&lt;/li&gt;
 &lt;li&gt;加载的类信息存放在方法区内存空间，除类的信息之外，还包括运行时的常量池的信息，&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;22-类的加载过程&#34;&gt;2.2 类的加载过程&lt;/h3&gt;
+&lt;h2 id=&#34;22-类的加载过程&#34;&gt;2.2 类的加载过程&lt;/h2&gt;
 &lt;figure data-type=&#34;image&#34; tabindex=&#34;4&#34;&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626173300019.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
-&lt;h4 id=&#34;221-加载&#34;&gt;2.2.1 &lt;strong&gt;加载&lt;/strong&gt;&lt;/h4&gt;
+&lt;h3 id=&#34;221-加载&#34;&gt;2.2.1 &lt;strong&gt;加载&lt;/strong&gt;&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;通过一个类的全类名获取定义此类的二进制流&lt;/li&gt;
 &lt;li&gt;将这个字节流代表的静态存储结构转化位方法去运行时数据结构&lt;/li&gt;
@@ -1707,24 +1770,24 @@ public class AnimalTest {
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h4 id=&#34;222-验证&#34;&gt;2.2.2 &lt;strong&gt;验证&lt;/strong&gt;&lt;/h4&gt;
+&lt;h3 id=&#34;222-验证&#34;&gt;2.2.2 &lt;strong&gt;验证&lt;/strong&gt;&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;em&gt;&lt;strong&gt;确保class文件符合虚拟机规范&lt;/strong&gt;&lt;/em&gt;，不会危害虚拟机自身安全&lt;/li&gt;
 &lt;li&gt;文件格式验证、元数据验证、字节码验证、符号引用验证&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h4 id=&#34;223-准备&#34;&gt;2.2.3. &lt;strong&gt;准备&lt;/strong&gt;&lt;/h4&gt;
+&lt;h3 id=&#34;223-准备&#34;&gt;2.2.3. &lt;strong&gt;准备&lt;/strong&gt;&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;em&gt;&lt;strong&gt;为&lt;font color=&#34;red&#34;&gt;类变量(静态变量)&lt;/font&gt;分配内存并设置&lt;font color=&#34;red&#34;&gt;初始值&lt;/font&gt;&lt;/strong&gt;&lt;/em&gt;&lt;/li&gt;
 &lt;li&gt;不包括常量、实例变量，其中实例变量在类实例化时随对象分配在堆中，类变量在编译阶段就会分配，而在准备阶段时就会显式的初始化（那种不确定的常量的情形待验证！）&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h4 id=&#34;224-解析&#34;&gt;2.2.4 &lt;strong&gt;解析&lt;/strong&gt;&lt;/h4&gt;
+&lt;h3 id=&#34;224-解析&#34;&gt;2.2.4 &lt;strong&gt;解析&lt;/strong&gt;&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;em&gt;&lt;strong&gt;&lt;font color=&#34;red&#34;&gt;将常量池的符号引用转换位直接引用&lt;/font&gt;&lt;/strong&gt;&lt;/em&gt;&lt;/li&gt;
 &lt;li&gt;符号引用：一组符号来描述引用的目标，符号引用的字面量形式在java虚拟机规范的Class文件格式&lt;/li&gt;
 &lt;li&gt;直接引用：直接指向目标的指针、相对偏移量或者一个间接定位到目标的句柄&lt;/li&gt;
 &lt;li&gt;解析操作主要针对类、接口、字段、类方法、接口方法等，对应常量池中的CONSTANT_class_info、CONSTANT_Fieldref_info、CONSTANT_Methodref_info等&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h4 id=&#34;225-初始化&#34;&gt;2.2.5 &lt;strong&gt;初始化&lt;/strong&gt;&lt;/h4&gt;
+&lt;h3 id=&#34;225-初始化&#34;&gt;2.2.5 &lt;strong&gt;初始化&lt;/strong&gt;&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;初始化就是执行类构造器方法&lt;code&gt;&amp;lt;clinit&amp;gt;()&lt;/code&gt;的过程&lt;/li&gt;
 &lt;li&gt;不需要定义，由javac自动收集类中 &lt;em&gt;&lt;strong&gt;所有类变量的赋值动作和静态代码块语句合并而来&lt;/strong&gt;&lt;/em&gt;&lt;/li&gt;
@@ -1735,7 +1798,7 @@ public class AnimalTest {
 &lt;li&gt;JVM会在执行子类&lt;code&gt;&amp;lt;clinit&amp;gt;()&lt;/code&gt;方法之前执行父类的&lt;code&gt;&amp;lt;clinit&amp;gt;()&lt;/code&gt;方法&lt;/li&gt;
 &lt;li&gt;JVM保证&lt;code&gt;&amp;lt;clinit&amp;gt;()&lt;/code&gt;在多线程场景下的同步执行&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h4 id=&#34;226-类的使用&#34;&gt;2.2.6 &lt;strong&gt;类的使用&lt;/strong&gt;&lt;/h4&gt;
+&lt;h3 id=&#34;226-类的使用&#34;&gt;2.2.6 &lt;strong&gt;类的使用&lt;/strong&gt;&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;所有的Java虚拟机实现必须在每个类或者接口被Java程序 &lt;em&gt;&lt;strong&gt;&lt;font color=&#34;red&#34;&gt;“首次主动使用”&lt;/font&gt;&lt;/strong&gt;&lt;/em&gt; 时才初始化他们。
 &lt;ul&gt;
@@ -1936,7 +1999,7 @@ public class InterfaceNotInitializationTest {
     }
 }
 &lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&#34;23-类加载器&#34;&gt;2.3 类加载器&lt;/h3&gt;
+&lt;h2 id=&#34;23-类加载器&#34;&gt;2.3 类加载器&lt;/h2&gt;
 &lt;p&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626152456313.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;br&gt;
 这四者为包含关系，&lt;strong&gt;不是继承关系&lt;/strong&gt;&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class ClassLoaderTest {
@@ -2018,7 +2081,7 @@ public class InterfaceNotInitializationTest {
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;24-classloader&#34;&gt;2.4 ClassLoader&lt;/h3&gt;
+&lt;h2 id=&#34;24-classloader&#34;&gt;2.4 ClassLoader&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;若有一个类加载器能够成功加载某个类，那么这个类加载器成为该类的定义类加载器&lt;/li&gt;
 &lt;li&gt;任何一个类都有一个定义这个类的&lt;code&gt;ClassLoader&lt;/code&gt;的引用&lt;/li&gt;
@@ -2271,7 +2334,7 @@ public class CustomizationClassLoaderTest {
     }
 }
 &lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&#34;25-双亲委派机制&#34;&gt;2.5 双亲委派机制&lt;/h3&gt;
+&lt;h2 id=&#34;25-双亲委派机制&#34;&gt;2.5 双亲委派机制&lt;/h2&gt;
 &lt;figure data-type=&#34;image&#34; tabindex=&#34;5&#34;&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626156053649.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
 &lt;ul&gt;
 &lt;li&gt;原理
@@ -2296,7 +2359,7 @@ public class CustomizationClassLoaderTest {
 &lt;/ol&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;26-jvm自带加载加载路径&#34;&gt;2.6 JVM自带加载加载路径&lt;/h3&gt;
+&lt;h2 id=&#34;26-jvm自带加载加载路径&#34;&gt;2.6 JVM自带加载加载路径&lt;/h2&gt;
 &lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class Test {
     
     public static void main(String[] args) {
