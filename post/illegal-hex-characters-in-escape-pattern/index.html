@@ -9,7 +9,7 @@
 <meta name="description" content="业精于勤，荒于嬉">
 <meta name="theme-color" content="#000">
 <title>illegal hex characters in escape(%) pattern | Violet</title>
-<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/violet404/violet404.github.io@latest/favicon.ico?v=1626499880803">
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/violet404/violet404.github.io@latest/favicon.ico?v=1626508878972">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/violet404/violet404.github.io@latest/media/css/pisces.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/violet404/violet404.github.io@latest/media/fonts/font-awesome.css">
 <link
@@ -205,7 +205,7 @@
     <div class="sidebar-item-box">
       <a href="/archives/">
         
-        <span class="site-item-stat-count">20</span>
+        <span class="site-item-stat-count">23</span>
         <span class="site-item-stat-name language" data-lan="article">文章</span>
       </a>
     </div>
@@ -1607,14 +1607,307 @@
     <div class="result" id="result">
       
       <div class="item">
-        <a class="result-title" style="opacity: 0;" href="http://violet404.github.io/post/5myC2JTLs/"" data-c="
+        <a class="result-title" style="opacity: 0;" href="http://violet404.github.io/post/5myC2JTLs12/"" data-c="
           &lt;h1 id=&#34;对象的实例化内存布局与访问定位&#34;&gt;对象的实例化内存布局与访问定位&lt;/h1&gt;
+&lt;h2 id=&#34;对象的实例化&#34;&gt;对象的实例化&lt;/h2&gt;
+&lt;h3 id=&#34;对象创建的方式和创建步骤&#34;&gt;&lt;strong&gt;对象创建的方式&lt;/strong&gt;和&lt;strong&gt;创建步骤&lt;/strong&gt;&lt;/h3&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;1&#34;&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626508872134.jpg&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;h3 id=&#34;对象创建步骤&#34;&gt;&lt;strong&gt;对象创建步骤&lt;/strong&gt;&lt;/h3&gt;
+&lt;h4 id=&#34;判断对象对应的类是否加载-链接-初始化&#34;&gt;判断对象对应的类是否加载、链接、初始化&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;虚拟机遇到一条new指令，首先去检查这个指令的参数能否在Metaspace的常量池中定位到一个类的符号引用，并且检查这个符号引用代表的类是否已经被加载，解析和初始化。（即判断类元信息是否存在）。如果没有，那么在双亲委派模式下，使用当前类加载器以ClassLoader + 包名 + 类名为key进行查找对应的 .class文件，如果没有找到文件，则抛出ClassNotFoundException异常，如果找到，则进行类加载，并生成对应的Class对象。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;为对象分配内存&#34;&gt;为对象分配内存&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;首先计算对象占用空间大小，接着在堆中划分一块内存给新对象。&lt;br&gt;
+如果实例成员变量是引用变量，仅分配引用变量空间即可，即4个字节大小。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;如果内存规整，使用指针碰撞&lt;/strong&gt;&lt;br&gt;
+如果内存是规整的，那么虚拟机将采用的是指针碰撞法（BumpThePointer）来为对象分配内存。意思是&lt;em&gt;所有用过的内存在一边，空闲的内存在另外一边，中间放着一个指针作为分界点的指示器，分配内存就仅仅是把指针向空闲那边挪动一段与对象大小相等的距离&lt;/em&gt;罢了。如果垃圾收集器选择的是Serial、ParNew这种基于压缩算法的，虚拟机采用这种分配方式。一般使用带有compact（整理）过程的收集器时，使用指针碰撞。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;如果内存不规整，虚拟机需要维护一个列表，使用空闲列表分配&lt;/strong&gt;&lt;br&gt;
+如果内存不是规整的，已使用的内存和未使用的内存相互交错，那么虛拟机将采用的是空闲列表法来为对象分配内存。意思是虚拟机维护了一个列表，&lt;em&gt;记录上哪些内存块是可用的，再分配的时候从列表中找到一块足够大的空间划分给对象实例，并更新列表上的内容&lt;/em&gt;。这种分配方式成为“空闲列表（Free List） ”。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;说明：选择哪种分配方式&lt;strong&gt;由Java堆是否规整&lt;/strong&gt;决定，而&lt;strong&gt;Java堆是否规整又由所采用的垃圾收集器是否带有压缩整理功能&lt;/strong&gt;决定。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;初始化分配到的内存&#34;&gt;初始化分配到的内存&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;属性的默认初始化&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;显式初始化&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;代码块中初始化&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;构造器中初始化&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;设置对象的对象头&#34;&gt;设置对象的对象头&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;将对象的所属类（即类的元数据信息）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;对象的HashCode和对象的GC信息&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;锁信息等&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;具体设置方式取决于JVM实现。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;执行init方法进行初始化&#34;&gt;执行init方法进行初始化&lt;/h4&gt;
+&lt;p&gt;在Java程序的视角看来，初始化才正式开始。初始化成员变量，执行实例化代码块，调用类的构造方法，并把堆内对象的首地址赋值给引用变量&lt;/p&gt;
+&lt;p&gt;因此一般来说（由字节码中跟随invokespecial指令所决定），new指令之后会接着就是执行方法，把对象按照程序员的意愿进行初始化，这样一个真正可用的对象才算完成创建出来。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class Customer extends BaseObj{
+
+    int id = 1001;
+    String name;
+    Account acct;
+    String address;
+
+    {
+        name = &amp;quot;匿名客户&amp;quot;;
+    }
+
+    public Customer() {
+        acct = new Account();
+    }
+    
+    int age = 45;
+
+    {
+        address = &amp;quot;test&amp;quot;;
+    }
+
+}
+
+class Account {}
+
+class BaseObj{}
+
+/*
+ 0 aload_0
+ 1 invokespecial #1 &amp;lt;obj/BaseObj.&amp;lt;init&amp;gt;&amp;gt;
+ 4 aload_0
+ 5 sipush 1001
+ 8 putfield #2 &amp;lt;obj/Customer.id&amp;gt;
+11 aload_0
+12 ldc #3 &amp;lt;匿名客户&amp;gt;
+14 putfield #4 &amp;lt;obj/Customer.name&amp;gt;
+17 aload_0
+18 bipush 45
+20 putfield #5 &amp;lt;obj/Customer.age&amp;gt;
+23 aload_0
+24 ldc #6 &amp;lt;test&amp;gt;
+26 putfield #7 &amp;lt;obj/Customer.address&amp;gt;
+29 aload_0
+30 new #8 &amp;lt;obj/Account&amp;gt;
+33 dup
+34 invokespecial #9 &amp;lt;obj/Account.&amp;lt;init&amp;gt;&amp;gt;
+37 putfield #10 &amp;lt;obj/Customer.acct&amp;gt;
+40 return
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;① 加载类元信息&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;② 为对象分配内存&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;③ 处理并发问题&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;④ 属性的默认初始化（零值初始化）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;⑤ 设置对象头的信息&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;⑥ 给对象的属性赋值的操作&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;① 属性的默认初始化 - ② 显式初始化 / ③ 代码块中初始化 - ④ 构造器中初始化&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;构造器&lt;code&gt;&amp;lt;init&amp;gt;()&lt;/code&gt;最后执行，其他初始化按照顺序&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;对象的内存布局&#34;&gt;对象的内存布局&lt;/h2&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;2&#34;&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626505852753.jpg&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;class Customer{
+
+    int id = 1001;
+    String name;
+    Account acct;
+
+    {
+        name = &amp;quot;匿名客户&amp;quot;;
+    }
+
+    public Customer() {
+        acct = new Account();
+    }
+}
+
+class Account {}
+
+public class CustomerTest {
+
+    public static void main(String[] args) {
+        Customer cust = new Customer();
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;3&#34;&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626506085286.jpg&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;h2 id=&#34;对象的访问定位&#34;&gt;对象的访问定位&lt;/h2&gt;
+&lt;p&gt;JVM是如何通过栈帧中的对象引用访问到其内部的对象实例呢？&lt;/p&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;4&#34;&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626506518033.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;5&#34;&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626506579821.jpg&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;h3 id=&#34;对象访问的两种方式&#34;&gt;对象访问的两种方式&lt;/h3&gt;
+&lt;h4 id=&#34;句柄访问&#34;&gt;句柄访问&lt;/h4&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;6&#34;&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626506606236.jpg&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;句柄访问就是说栈的局部变量表中，记录的对象的引用，然后在堆空间中开辟了一块空间，也就是句柄池&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;reference中存储稳定句柄地址，对象被移动（垃圾收集时移动对象很普遍）时只会改变句柄中实例数据指针即可，reference本身不需要被修改&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;效率低，浪费空间&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;直接指针hotspot采用&#34;&gt;直接指针（HotSpot采用）&lt;/h4&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;7&#34;&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626506618451.jpg&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;直接指针是局部变量表中的引用，直接指向堆中的实例，在对象实例中有类型指针，指向的是方法区中的对象类型数据&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;效果高，节省空间&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
 &lt;h1 id=&#34;直接内存&#34;&gt;直接内存&lt;/h1&gt;
-&lt;h1 id=&#34;执行引擎&#34;&gt;执行引擎&lt;/h1&gt;
-&lt;h1 id=&#34;stringtable&#34;&gt;StringTable&lt;/h1&gt;
-&lt;h1 id=&#34;垃圾回收算法&#34;&gt;垃圾回收算法&lt;/h1&gt;
-&lt;h1 id=&#34;垃圾回收器&#34;&gt;垃圾回收器&lt;/h1&gt;
-">JVM 内存与垃圾回收（五）</a>
+&lt;ul&gt;
+&lt;li&gt;不是虚拟机运行时数据区的一部分，也不是《Java虚拟机规范》中定义的内存区域。&lt;br&gt;
+简单理解，&lt;strong&gt;java process memory = java heap + native memory&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;8&#34;&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626508646823.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;直接内存是在Java堆外的、直接向系统申请的内存区间。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;来源于NIO，通过存在堆中的DirectByteBuffer操作Native内存&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;9&#34;&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626507507671.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;10&#34;&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626507548712.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;通常，访问直接内存的速度会优于Java堆。即&lt;strong&gt;读写性能高&lt;/strong&gt;。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;出于性能考虑，读写频繁的场合可能会考虑使用直接内存。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Java的NIO库允许Java程序使用直接内存，用于数据缓冲区&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;存在的问题&#34;&gt;存在的问题&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;可能导致&lt;code&gt;OutOfMemoryError&lt;/code&gt;异常 &lt;code&gt;OutOfMemoryError: Direct buffer memory&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class BufferTest2 {
+
+    private static final int BUFFER = 1024 * 1024 * 20;//20MB
+
+    public static void main(String[] args) {
+        ArrayList&amp;lt;ByteBuffer&amp;gt; list = new ArrayList&amp;lt;&amp;gt;();
+
+        int count = 0;
+        try {
+            while (true) {
+                ByteBuffer byteBuffer = ByteBuffer.allocateDirect(BUFFER);
+                list.add(byteBuffer);
+                count++;
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        } finally {
+            System.out.println(count);
+        }
+    }
+}
+/*
+174
+Exception in thread &amp;quot;main&amp;quot; java.lang.OutOfMemoryError: Direct buffer memory
+	at java.nio.Bits.reserveMemory(Bits.java:695)
+	at java.nio.DirectByteBuffer.&amp;lt;init&amp;gt;(DirectByteBuffer.java:123)
+	at java.nio.ByteBuffer.allocateDirect(ByteBuffer.java:311)
+	at direct.BufferTest2.main(BufferTest2.java:20)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;由于直接内存在Java堆外，因此它的大小不会直接受限于-Xmx指定的最大堆大小，但是系统内存是有限的，Java堆和直接内存的总和依然受限于操作系统能给出的最大内存。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;缺点&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;分配回收成本较高&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;不受JVM内存回收管理&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;直接内存大小可以通过MaxDirectMemorySize设置&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;默认与堆的最大值-Xmx参数值一致&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+">JVM 内存与垃圾回收（五）对象的实例化 & 直接内存</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="http://violet404.github.io/post/6Qm1ARH3Y/"" data-c="
+          &lt;p&gt;a&lt;/p&gt;
+">JVM 内存与垃圾回收（八）垃圾回收</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="http://violet404.github.io/post/sfGQyVhCE/"" data-c="
+          &lt;p&gt;啊&lt;/p&gt;
+">JVM 内存与垃圾回收（七）字符串常量</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="http://violet404.github.io/post/PwsytJfe7/"" data-c="
+          &lt;p&gt;啊啊&lt;/p&gt;
+">JVM 内存与垃圾回收（六）执行引擎</a>
       </div>
       
       <div class="item">

@@ -8,7 +8,7 @@
 <meta name="keywords" content="Gridea静态个人博客">
 <meta name="description" content="业精于勤，荒于嬉">
 <meta name="theme-color" content="#000">
-<title>Ibatis 批量保存（基于Oracle） | Violet</title>
+<title>JVM 内存与垃圾回收（五）对象的实例化 &amp; 直接内存 | Violet</title>
 <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/violet404/violet404.github.io@latest/favicon.ico?v=1626508878972">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/violet404/violet404.github.io@latest/media/css/pisces.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/violet404/violet404.github.io@latest/media/fonts/font-awesome.css">
@@ -41,8 +41,8 @@
 
 
 
-  <meta name="description" content="Ibatis 批量保存（基于Oracle）" />
-  <meta name="keywords" content="Ibatis,问题整理" />
+  <meta name="description" content="JVM 内存与垃圾回收（五）对象的实例化 & 直接内存" />
+  <meta name="keywords" content="" />
 </head>
 
 <body>
@@ -193,7 +193,8 @@
       <div class="sidebar-body pisces" id="sidebar_body">
         
           
-            
+            <div class="post-side-meta" id="post_side_meta">
+              
 <div class="sidebar-wrapper box-shadow-wrapper bg-color">
   <div class="sidebar-item">
     <img class="site-author-image right-motion" src="https://cdn.jsdelivr.net/gh/violet404/violet404.github.io@latest/images/avatar.png"/>
@@ -236,6 +237,224 @@
 
 
 </div>
+            </div>
+            <div class="post-toc sidebar-body-active" id="post_toc" style="opacity: 1;">
+              <div class="toc-box right-motion">
+  <div class="toc-wrapper auto-number auto"
+    id="toc_wrapper">
+    <ul class="markdownIt-TOC">
+<li><a href="#%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%AE%9E%E4%BE%8B%E5%8C%96%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80%E4%B8%8E%E8%AE%BF%E9%97%AE%E5%AE%9A%E4%BD%8D">对象的实例化内存布局与访问定位</a>
+<ul>
+<li><a href="#%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%AE%9E%E4%BE%8B%E5%8C%96">对象的实例化</a>
+<ul>
+<li><a href="#%E5%AF%B9%E8%B1%A1%E5%88%9B%E5%BB%BA%E7%9A%84%E6%96%B9%E5%BC%8F%E5%92%8C%E5%88%9B%E5%BB%BA%E6%AD%A5%E9%AA%A4"><strong>对象创建的方式</strong>和<strong>创建步骤</strong></a></li>
+<li><a href="#%E5%AF%B9%E8%B1%A1%E5%88%9B%E5%BB%BA%E6%AD%A5%E9%AA%A4"><strong>对象创建步骤</strong></a>
+<ul>
+<li><a href="#%E5%88%A4%E6%96%AD%E5%AF%B9%E8%B1%A1%E5%AF%B9%E5%BA%94%E7%9A%84%E7%B1%BB%E6%98%AF%E5%90%A6%E5%8A%A0%E8%BD%BD-%E9%93%BE%E6%8E%A5-%E5%88%9D%E5%A7%8B%E5%8C%96">判断对象对应的类是否加载、链接、初始化</a></li>
+<li><a href="#%E4%B8%BA%E5%AF%B9%E8%B1%A1%E5%88%86%E9%85%8D%E5%86%85%E5%AD%98">为对象分配内存</a></li>
+<li><a href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E5%88%86%E9%85%8D%E5%88%B0%E7%9A%84%E5%86%85%E5%AD%98">初始化分配到的内存</a></li>
+<li><a href="#%E8%AE%BE%E7%BD%AE%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%AF%B9%E8%B1%A1%E5%A4%B4">设置对象的对象头</a></li>
+<li><a href="#%E6%89%A7%E8%A1%8Cinit%E6%96%B9%E6%B3%95%E8%BF%9B%E8%A1%8C%E5%88%9D%E5%A7%8B%E5%8C%96">执行init方法进行初始化</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80">对象的内存布局</a></li>
+<li><a href="#%E5%AF%B9%E8%B1%A1%E7%9A%84%E8%AE%BF%E9%97%AE%E5%AE%9A%E4%BD%8D">对象的访问定位</a>
+<ul>
+<li><a href="#%E5%AF%B9%E8%B1%A1%E8%AE%BF%E9%97%AE%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F">对象访问的两种方式</a>
+<ul>
+<li><a href="#%E5%8F%A5%E6%9F%84%E8%AE%BF%E9%97%AE">句柄访问</a></li>
+<li><a href="#%E7%9B%B4%E6%8E%A5%E6%8C%87%E9%92%88hotspot%E9%87%87%E7%94%A8">直接指针（HotSpot采用）</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E7%9B%B4%E6%8E%A5%E5%86%85%E5%AD%98">直接内存</a>
+<ul>
+<li><a href="#%E5%AD%98%E5%9C%A8%E7%9A%84%E9%97%AE%E9%A2%98">存在的问题</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+</div>
+
+<script>
+
+  let lastTop = 0, lList = [], hList = [], postBody, lastIndex = -1;
+  let active = 'active-show', activeClass = 'active-current';
+  let tocWrapper = document.querySelector('#toc_wrapper');
+  let tocContent = tocWrapper.children[0];
+  let autoNumber = tocWrapper && tocWrapper.classList.contains('auto-number');
+
+  function addTocNumber(elem, deep) {
+    if (!elem) {
+      return;
+    }
+    let prop = elem.__proto__;
+
+    if (prop === HTMLUListElement.prototype) {
+      for (let i = 0; i < elem.children.length; i++) {
+        addTocNumber(elem.children[i], deep + (i + 1) + '.');
+      }
+    } else if (prop === HTMLLIElement.prototype) {
+      // 保存li元素
+      if (elem.children[0] && elem.children[0].__proto__ === HTMLAnchorElement.prototype) {
+        lList.push(elem);
+      }
+      for (let i = 0; i < elem.children.length; i++) {
+        let cur = elem.children[i];
+        if (cur.__proto__ === HTMLAnchorElement.prototype) {
+          if (autoNumber) {
+            cur.text = deep + ' ' + cur.text;
+          }
+        } else if (cur.__proto__ === HTMLUListElement.prototype) {
+          addTocNumber(cur, deep);
+        }
+      }
+    }
+  }
+
+  function removeParentActiveClass() {
+    let parents = tocContent.querySelectorAll('.' + active)
+    parents.forEach(function (elem) {
+      elem.classList.remove(active);
+    });
+  }
+
+  function addActiveClass(index) {
+    if (index >= 0 && index < hList.length) {
+      lList[index].classList.add(activeClass);
+    }
+  }
+
+  function removeActiveClass(index) {
+    if (index >= 0 && index < hList.length) {
+      lList[index].classList.remove(activeClass);
+    }
+  }
+
+  function addActiveLiElemment(elem, parent) {
+    if (!elem || elem === parent) {
+      return;
+    } else {
+      if (elem.__proto__ === HTMLLIElement.prototype) {
+        elem.classList.add(active);
+      }
+      addActiveLiElemment(elem.parentElement, parent);
+    }
+  }
+
+  function showToc() {
+    if (tocWrapper) {
+      postBody = document.querySelector('#post_body');
+      for (let i = 0; i < postBody.children.length; i++) {
+        if (postBody.children[i].__proto__ === HTMLHeadingElement.prototype) {
+          hList.push(postBody.children[i]);
+        }
+      }
+      if (tocWrapper.classList.contains('compress')) {
+        tocContent.classList.add('closed');
+      } else if (tocWrapper.classList.contains('no_compress')) {
+        tocContent.classList.add('expanded');
+      } else {
+        if (hList.length > 10) {
+          active = 'active-hidden'
+          tocContent.classList.add('closed');
+        } else {
+          tocContent.classList.add('expanded');
+        }
+      }
+    }
+  }
+
+  (function () {
+    // 处理不是从#一级标题开始目录
+    if (tocContent.children.length === 1 && tocContent.children[0].__proto__ === HTMLLIElement.prototype) {
+      let con = tocContent.children[0].children[0];
+      tocContent.innerHTML = con.innerHTML;
+    }
+    let markdownItTOC = document.querySelector('.markdownIt-TOC');
+    let innerHeight = window.innerHeight;
+    markdownItTOC.style = `max-height: ${innerHeight - 80 > 0 ? innerHeight - 80 : innerHeight}px`
+    addTocNumber(tocContent, '');
+  })();
+
+  document.addEventListener('scroll', function (e) {
+    if (lList.length <= 0) {
+      return;
+    }
+    let scrollTop = document.scrollingElement.scrollTop + 10;
+    let dir;
+
+    if (lastTop - scrollTop > 0) {
+      dir = 'up';
+    } else {
+      dir = 'down';
+    }
+
+    lastTop = scrollTop;
+    if (scrollTop <= 0) {
+      if (lastIndex >= 0 && lastIndex < hList.length) {
+        lList[lastIndex].classList.remove(activeClass);
+      }
+      return;
+    }
+
+    let current = 0, hasFind = false;
+    for (let i = 0; i < hList.length; i++) {
+      if (hList[i].offsetTop > scrollTop) {
+        current = i;
+        hasFind = true;
+        break;
+      }
+    }
+    if (!hasFind && scrollTop > lList[lList.length - 1].offsetTop) {
+      current = hList.length - 1;
+    } else {
+      current--;
+    }
+    if (dir === 'down') {
+      if (current > lastIndex) {
+        addActiveClass(current);
+        removeActiveClass(lastIndex)
+        lastIndex = current;
+        removeParentActiveClass();
+        lList[current] && addActiveLiElemment(lList[current].parentElement, tocContent);
+      }
+    } else {
+      if (current < lastIndex) {
+        addActiveClass(current);
+        removeActiveClass(lastIndex);
+        lastIndex = current;
+        removeParentActiveClass();
+        lList[current] && addActiveLiElemment(lList[current].parentElement, tocContent);
+      }
+    }
+  });
+
+
+  window.addEventListener('load', function () {
+    showToc();
+    document.querySelector('#sidebar').style = 'display: block;';
+    tocWrapper.classList.add('toc-active');
+    setTimeout(function () {
+      if ("createEvent" in document) {
+        let evt = document.createEvent("HTMLEvents");
+        evt.initEvent("scroll", false, true);
+        document.dispatchEvent(evt);
+      }
+      else {
+        document.fireEvent("scroll");
+      }
+    }, 500)
+  })
+
+</script>
+            </div>
           
         
       </div>
@@ -323,67 +542,319 @@
           <div class="section bg-color post post-page">
             <section class="post-header">
   <h1 class="post-title">
-    <a class="post-title-link" href="http://violet404.github.io/post/ibatis-pi-liang-bao-cun-ji-yu-oracle/">
-      Ibatis 批量保存（基于Oracle）
+    <a class="post-title-link" href="http://violet404.github.io/post/5myC2JTLs12/">
+      JVM 内存与垃圾回收（五）对象的实例化 &amp; 直接内存
     </a>
   </h1>
   <div class="post-meta">
     
+    <span class="meta-item">
+      <i class="fa fa-thumb-tack"></i>
+      <span class="language" data-lan="top">置顶</span>
+      <span class="post-meta-divider">|</span>
+    </span>
+    
     <span class="meta-item pc-show">
       <i class="fa fa-calendar-o"></i>
       <span class="language" data-lan="publish">发布于</span>
-      <span class="publish-time" data-t="2021-04-28 11:07:57">2021-04-28</span>
+      <span class="publish-time" data-t="2021-07-17 22:01:00">2021-07-17</span>
       <span class="post-meta-divider pc-show">|</span>
     </span>
     
     <span class="meta-item">
-      <i class="fa fa-folder-o"></i>
-      <span class="pc-show language" data-lan="category-in">分类于</span>
-      
-      
-      <a href="http://violet404.github.io/tag/Wg3yAEB2F/">
-        <span>Ibatis</span>
-      </a>、
-      
-      
-      
-      <a href="http://violet404.github.io/tag/Oq4KR_wv3/">
-        <span>问题整理</span>
-      </a>
-      
-      
-    </span>
-    <span class="post-meta-divider">|</span>
-    
-    <span class="meta-item">
       <i class="fa fa-clock-o"></i>
-      <span>1<span class="language" data-lan="minute">分钟</span></span>
+      <span>7<span class="language" data-lan="minute">分钟</span></span>
     </span>
     <span class="meta-item">
       <span class="post-meta-divider">|</span>
       <i class="fa fa-file-word-o"></i>
-      <span>63<span class="pc-show language" data-lan="words">字数</span></span>
+      <span>1740<span class="pc-show language" data-lan="words">字数</span></span>
     </span>
     
   </div>
 </section>
             <div class="post-body next-md-body" id="post_body">
-              <pre><code class="language-bash"># 第一种方式
-insert all 
-&lt;iterate conjunction=&quot; &quot;&gt;
-into tb1(col1, col2) values(#list[].col1#, #list[].col2#)
-&lt;/iterate&gt;
-select 1 from dual
+              <h1 id="对象的实例化内存布局与访问定位">对象的实例化内存布局与访问定位</h1>
+<h2 id="对象的实例化">对象的实例化</h2>
+<h3 id="对象创建的方式和创建步骤"><strong>对象创建的方式</strong>和<strong>创建步骤</strong></h3>
+<figure data-type="image" tabindex="1"><img src="http://violet404.github.io//post-images/1626508872134.jpg" alt="" loading="lazy"></figure>
+<h3 id="对象创建步骤"><strong>对象创建步骤</strong></h3>
+<h4 id="判断对象对应的类是否加载-链接-初始化">判断对象对应的类是否加载、链接、初始化</h4>
+<ul>
+<li>虚拟机遇到一条new指令，首先去检查这个指令的参数能否在Metaspace的常量池中定位到一个类的符号引用，并且检查这个符号引用代表的类是否已经被加载，解析和初始化。（即判断类元信息是否存在）。如果没有，那么在双亲委派模式下，使用当前类加载器以ClassLoader + 包名 + 类名为key进行查找对应的 .class文件，如果没有找到文件，则抛出ClassNotFoundException异常，如果找到，则进行类加载，并生成对应的Class对象。</li>
+</ul>
+<h4 id="为对象分配内存">为对象分配内存</h4>
+<ul>
+<li>
+<p>首先计算对象占用空间大小，接着在堆中划分一块内存给新对象。<br>
+如果实例成员变量是引用变量，仅分配引用变量空间即可，即4个字节大小。</p>
+</li>
+<li>
+<p><strong>如果内存规整，使用指针碰撞</strong><br>
+如果内存是规整的，那么虚拟机将采用的是指针碰撞法（BumpThePointer）来为对象分配内存。意思是<em>所有用过的内存在一边，空闲的内存在另外一边，中间放着一个指针作为分界点的指示器，分配内存就仅仅是把指针向空闲那边挪动一段与对象大小相等的距离</em>罢了。如果垃圾收集器选择的是Serial、ParNew这种基于压缩算法的，虚拟机采用这种分配方式。一般使用带有compact（整理）过程的收集器时，使用指针碰撞。</p>
+</li>
+<li>
+<p><strong>如果内存不规整，虚拟机需要维护一个列表，使用空闲列表分配</strong><br>
+如果内存不是规整的，已使用的内存和未使用的内存相互交错，那么虛拟机将采用的是空闲列表法来为对象分配内存。意思是虚拟机维护了一个列表，<em>记录上哪些内存块是可用的，再分配的时候从列表中找到一块足够大的空间划分给对象实例，并更新列表上的内容</em>。这种分配方式成为“空闲列表（Free List） ”。</p>
+</li>
+<li>
+<p>说明：选择哪种分配方式<strong>由Java堆是否规整</strong>决定，而<strong>Java堆是否规整又由所采用的垃圾收集器是否带有压缩整理功能</strong>决定。</p>
+</li>
+</ul>
+<h4 id="初始化分配到的内存">初始化分配到的内存</h4>
+<ol>
+<li>
+<p>属性的默认初始化</p>
+</li>
+<li>
+<p>显式初始化</p>
+</li>
+<li>
+<p>代码块中初始化</p>
+</li>
+<li>
+<p>构造器中初始化</p>
+</li>
+</ol>
+<h4 id="设置对象的对象头">设置对象的对象头</h4>
+<ul>
+<li>
+<p>将对象的所属类（即类的元数据信息）</p>
+</li>
+<li>
+<p>对象的HashCode和对象的GC信息</p>
+</li>
+<li>
+<p>锁信息等</p>
+</li>
+<li>
+<p>具体设置方式取决于JVM实现。</p>
+</li>
+</ul>
+<h4 id="执行init方法进行初始化">执行init方法进行初始化</h4>
+<p>在Java程序的视角看来，初始化才正式开始。初始化成员变量，执行实例化代码块，调用类的构造方法，并把堆内对象的首地址赋值给引用变量</p>
+<p>因此一般来说（由字节码中跟随invokespecial指令所决定），new指令之后会接着就是执行方法，把对象按照程序员的意愿进行初始化，这样一个真正可用的对象才算完成创建出来。</p>
+<pre><code class="language-java">public class Customer extends BaseObj{
 
-#第二种方式
-insert into tb1(col1, col2)
-&lt;iterate conjunction=&quot; union &quot;&gt;
-select #list[].col1#, #list[].col2# from dual
-&lt;/iterate&gt;
+    int id = 1001;
+    String name;
+    Account acct;
+    String address;
 
-#第三种方式 ExecutorType.BATCH
+    {
+        name = &quot;匿名客户&quot;;
+    }
 
+    public Customer() {
+        acct = new Account();
+    }
+    
+    int age = 45;
+
+    {
+        address = &quot;test&quot;;
+    }
+
+}
+
+class Account {}
+
+class BaseObj{}
+
+/*
+ 0 aload_0
+ 1 invokespecial #1 &lt;obj/BaseObj.&lt;init&gt;&gt;
+ 4 aload_0
+ 5 sipush 1001
+ 8 putfield #2 &lt;obj/Customer.id&gt;
+11 aload_0
+12 ldc #3 &lt;匿名客户&gt;
+14 putfield #4 &lt;obj/Customer.name&gt;
+17 aload_0
+18 bipush 45
+20 putfield #5 &lt;obj/Customer.age&gt;
+23 aload_0
+24 ldc #6 &lt;test&gt;
+26 putfield #7 &lt;obj/Customer.address&gt;
+29 aload_0
+30 new #8 &lt;obj/Account&gt;
+33 dup
+34 invokespecial #9 &lt;obj/Account.&lt;init&gt;&gt;
+37 putfield #10 &lt;obj/Customer.acct&gt;
+40 return
 </code></pre>
+<ul>
+<li>
+<p>① 加载类元信息</p>
+</li>
+<li>
+<p>② 为对象分配内存</p>
+</li>
+<li>
+<p>③ 处理并发问题</p>
+</li>
+</ul>
+<ul>
+<li>④ 属性的默认初始化（零值初始化）</li>
+</ul>
+<ul>
+<li>
+<p>⑤ 设置对象头的信息</p>
+</li>
+<li>
+<p>⑥ 给对象的属性赋值的操作</p>
+<ul>
+<li>
+<p>① 属性的默认初始化 - ② 显式初始化 / ③ 代码块中初始化 - ④ 构造器中初始化</p>
+</li>
+<li>
+<p>构造器<code>&lt;init&gt;()</code>最后执行，其他初始化按照顺序</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="对象的内存布局">对象的内存布局</h2>
+<figure data-type="image" tabindex="2"><img src="http://violet404.github.io//post-images/1626505852753.jpg" alt="" loading="lazy"></figure>
+<pre><code class="language-java">class Customer{
+
+    int id = 1001;
+    String name;
+    Account acct;
+
+    {
+        name = &quot;匿名客户&quot;;
+    }
+
+    public Customer() {
+        acct = new Account();
+    }
+}
+
+class Account {}
+
+public class CustomerTest {
+
+    public static void main(String[] args) {
+        Customer cust = new Customer();
+    }
+}
+</code></pre>
+<figure data-type="image" tabindex="3"><img src="http://violet404.github.io//post-images/1626506085286.jpg" alt="" loading="lazy"></figure>
+<h2 id="对象的访问定位">对象的访问定位</h2>
+<p>JVM是如何通过栈帧中的对象引用访问到其内部的对象实例呢？</p>
+<figure data-type="image" tabindex="4"><img src="http://violet404.github.io//post-images/1626506518033.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="5"><img src="http://violet404.github.io//post-images/1626506579821.jpg" alt="" loading="lazy"></figure>
+<h3 id="对象访问的两种方式">对象访问的两种方式</h3>
+<h4 id="句柄访问">句柄访问</h4>
+<figure data-type="image" tabindex="6"><img src="http://violet404.github.io//post-images/1626506606236.jpg" alt="" loading="lazy"></figure>
+<ul>
+<li>
+<p>句柄访问就是说栈的局部变量表中，记录的对象的引用，然后在堆空间中开辟了一块空间，也就是句柄池</p>
+</li>
+<li>
+<p>reference中存储稳定句柄地址，对象被移动（垃圾收集时移动对象很普遍）时只会改变句柄中实例数据指针即可，reference本身不需要被修改</p>
+</li>
+<li>
+<p>效率低，浪费空间</p>
+</li>
+</ul>
+<h4 id="直接指针hotspot采用">直接指针（HotSpot采用）</h4>
+<figure data-type="image" tabindex="7"><img src="http://violet404.github.io//post-images/1626506618451.jpg" alt="" loading="lazy"></figure>
+<ul>
+<li>
+<p>直接指针是局部变量表中的引用，直接指向堆中的实例，在对象实例中有类型指针，指向的是方法区中的对象类型数据</p>
+</li>
+<li>
+<p>效果高，节省空间</p>
+</li>
+</ul>
+<h1 id="直接内存">直接内存</h1>
+<ul>
+<li>不是虚拟机运行时数据区的一部分，也不是《Java虚拟机规范》中定义的内存区域。<br>
+简单理解，<strong>java process memory = java heap + native memory</strong></li>
+</ul>
+<figure data-type="image" tabindex="8"><img src="http://violet404.github.io//post-images/1626508646823.png" alt="" loading="lazy"></figure>
+<ul>
+<li>
+<p>直接内存是在Java堆外的、直接向系统申请的内存区间。</p>
+</li>
+<li>
+<p>来源于NIO，通过存在堆中的DirectByteBuffer操作Native内存</p>
+</li>
+</ul>
+<figure data-type="image" tabindex="9"><img src="http://violet404.github.io//post-images/1626507507671.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="10"><img src="http://violet404.github.io//post-images/1626507548712.png" alt="" loading="lazy"></figure>
+<ul>
+<li>
+<p>通常，访问直接内存的速度会优于Java堆。即<strong>读写性能高</strong>。</p>
+<ul>
+<li>
+<p>出于性能考虑，读写频繁的场合可能会考虑使用直接内存。</p>
+</li>
+<li>
+<p>Java的NIO库允许Java程序使用直接内存，用于数据缓冲区</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="存在的问题">存在的问题</h2>
+<ul>
+<li>可能导致<code>OutOfMemoryError</code>异常 <code>OutOfMemoryError: Direct buffer memory</code></li>
+</ul>
+<pre><code class="language-java">public class BufferTest2 {
+
+    private static final int BUFFER = 1024 * 1024 * 20;//20MB
+
+    public static void main(String[] args) {
+        ArrayList&lt;ByteBuffer&gt; list = new ArrayList&lt;&gt;();
+
+        int count = 0;
+        try {
+            while (true) {
+                ByteBuffer byteBuffer = ByteBuffer.allocateDirect(BUFFER);
+                list.add(byteBuffer);
+                count++;
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        } finally {
+            System.out.println(count);
+        }
+    }
+}
+/*
+174
+Exception in thread &quot;main&quot; java.lang.OutOfMemoryError: Direct buffer memory
+	at java.nio.Bits.reserveMemory(Bits.java:695)
+	at java.nio.DirectByteBuffer.&lt;init&gt;(DirectByteBuffer.java:123)
+	at java.nio.ByteBuffer.allocateDirect(ByteBuffer.java:311)
+	at direct.BufferTest2.main(BufferTest2.java:20)
+</code></pre>
+<ul>
+<li>
+<p>由于直接内存在Java堆外，因此它的大小不会直接受限于-Xmx指定的最大堆大小，但是系统内存是有限的，Java堆和直接内存的总和依然受限于操作系统能给出的最大内存。</p>
+</li>
+<li>
+<p>缺点</p>
+<ul>
+<li>
+<p>分配回收成本较高</p>
+</li>
+<li>
+<p><strong>不受JVM内存回收管理</strong></p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>直接内存大小可以通过MaxDirectMemorySize设置</strong></p>
+</li>
+<li>
+<p><strong>默认与堆的最大值-Xmx参数值一致</strong></p>
+</li>
+</ul>
 
             </div>
             
@@ -396,7 +867,7 @@ select #list[].col1#, #list[].col2# from dual
     </li>
     <li class="post-copyright-link">
       <strong class="language" data-lan="link">本文链接：</strong>
-      <a href="http://violet404.github.io/post/ibatis-pi-liang-bao-cun-ji-yu-oracle/" title="Ibatis 批量保存（基于Oracle）">http://violet404.github.io/post/ibatis-pi-liang-bao-cun-ji-yu-oracle/</a>
+      <a href="http://violet404.github.io/post/5myC2JTLs12/" title="JVM 内存与垃圾回收（五）对象的实例化 &amp; 直接内存">http://violet404.github.io/post/5myC2JTLs12/</a>
     </li>
     <li class="post-copyright-license">
       <strong class="language" data-lan="copyright">版权声明： </strong>
@@ -405,23 +876,15 @@ select #list[].col1#, #list[].col2# from dual
   </ul>
   <div class="tags">
     
-      <a href="http://violet404.github.io/tag/Wg3yAEB2F/"># Ibatis</a>
-    
-      <a href="http://violet404.github.io/tag/Oq4KR_wv3/"># 问题整理</a>
-    
   </div>
   <div class="nav">
     <div class="nav-prev">
       
-        <i class="fa fa-chevron-left"></i>
-        <a class="nav-pc-next" title="Mybatis 结果集数量与实际不符" href="http://violet404.github.io/post/mybatis-jie-guo-ji-shu-liang-yu-shi-ji-bu-fu/">Mybatis 结果集数量与实际不符</a class="nav-pc-next">
-        <a class="nav-mobile-prev" title="Mybatis 结果集数量与实际不符" href="http://violet404.github.io/post/mybatis-jie-guo-ji-shu-liang-yu-shi-ji-bu-fu/">上一篇</a>
-      
     </div>
     <div class="nav-next">
       
-        <a class="nav-pc-next" title="Oracle 替换字符串" href="http://violet404.github.io/post/oracle-ti-huan-zi-fu-chuan/">Oracle 替换字符串</a>
-        <a class="nav-mobile-next" title="Oracle 替换字符串" href="http://violet404.github.io/post/oracle-ti-huan-zi-fu-chuan/">下一篇</a>
+        <a class="nav-pc-next" title="JVM 内存与垃圾回收（八）垃圾回收" href="http://violet404.github.io/post/6Qm1ARH3Y/">JVM 内存与垃圾回收（八）垃圾回收</a>
+        <a class="nav-mobile-next" title="JVM 内存与垃圾回收（八）垃圾回收" href="http://violet404.github.io/post/6Qm1ARH3Y/">下一篇</a>
         <i class="fa fa-chevron-right"></i>
       
     </div>

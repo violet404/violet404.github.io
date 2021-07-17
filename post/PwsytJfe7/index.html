@@ -8,7 +8,7 @@
 <meta name="keywords" content="Gridea静态个人博客">
 <meta name="description" content="业精于勤，荒于嬉">
 <meta name="theme-color" content="#000">
-<title>Ibatis 批量保存（基于Oracle） | Violet</title>
+<title>JVM 内存与垃圾回收（六）执行引擎 | Violet</title>
 <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/violet404/violet404.github.io@latest/favicon.ico?v=1626508878972">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/violet404/violet404.github.io@latest/media/css/pisces.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/violet404/violet404.github.io@latest/media/fonts/font-awesome.css">
@@ -41,8 +41,8 @@
 
 
 
-  <meta name="description" content="Ibatis 批量保存（基于Oracle）" />
-  <meta name="keywords" content="Ibatis,问题整理" />
+  <meta name="description" content="JVM 内存与垃圾回收（六）执行引擎" />
+  <meta name="keywords" content="" />
 </head>
 
 <body>
@@ -323,8 +323,8 @@
           <div class="section bg-color post post-page">
             <section class="post-header">
   <h1 class="post-title">
-    <a class="post-title-link" href="http://violet404.github.io/post/ibatis-pi-liang-bao-cun-ji-yu-oracle/">
-      Ibatis 批量保存（基于Oracle）
+    <a class="post-title-link" href="http://violet404.github.io/post/PwsytJfe7/">
+      JVM 内存与垃圾回收（六）执行引擎
     </a>
   </h1>
   <div class="post-meta">
@@ -332,28 +332,9 @@
     <span class="meta-item pc-show">
       <i class="fa fa-calendar-o"></i>
       <span class="language" data-lan="publish">发布于</span>
-      <span class="publish-time" data-t="2021-04-28 11:07:57">2021-04-28</span>
+      <span class="publish-time" data-t="2021-07-17 13:32:50">2021-07-17</span>
       <span class="post-meta-divider pc-show">|</span>
     </span>
-    
-    <span class="meta-item">
-      <i class="fa fa-folder-o"></i>
-      <span class="pc-show language" data-lan="category-in">分类于</span>
-      
-      
-      <a href="http://violet404.github.io/tag/Wg3yAEB2F/">
-        <span>Ibatis</span>
-      </a>、
-      
-      
-      
-      <a href="http://violet404.github.io/tag/Oq4KR_wv3/">
-        <span>问题整理</span>
-      </a>
-      
-      
-    </span>
-    <span class="post-meta-divider">|</span>
     
     <span class="meta-item">
       <i class="fa fa-clock-o"></i>
@@ -362,28 +343,13 @@
     <span class="meta-item">
       <span class="post-meta-divider">|</span>
       <i class="fa fa-file-word-o"></i>
-      <span>63<span class="pc-show language" data-lan="words">字数</span></span>
+      <span>2<span class="pc-show language" data-lan="words">字数</span></span>
     </span>
     
   </div>
 </section>
             <div class="post-body next-md-body" id="post_body">
-              <pre><code class="language-bash"># 第一种方式
-insert all 
-&lt;iterate conjunction=&quot; &quot;&gt;
-into tb1(col1, col2) values(#list[].col1#, #list[].col2#)
-&lt;/iterate&gt;
-select 1 from dual
-
-#第二种方式
-insert into tb1(col1, col2)
-&lt;iterate conjunction=&quot; union &quot;&gt;
-select #list[].col1#, #list[].col2# from dual
-&lt;/iterate&gt;
-
-#第三种方式 ExecutorType.BATCH
-
-</code></pre>
+              <p>啊啊</p>
 
             </div>
             
@@ -396,7 +362,7 @@ select #list[].col1#, #list[].col2# from dual
     </li>
     <li class="post-copyright-link">
       <strong class="language" data-lan="link">本文链接：</strong>
-      <a href="http://violet404.github.io/post/ibatis-pi-liang-bao-cun-ji-yu-oracle/" title="Ibatis 批量保存（基于Oracle）">http://violet404.github.io/post/ibatis-pi-liang-bao-cun-ji-yu-oracle/</a>
+      <a href="http://violet404.github.io/post/PwsytJfe7/" title="JVM 内存与垃圾回收（六）执行引擎">http://violet404.github.io/post/PwsytJfe7/</a>
     </li>
     <li class="post-copyright-license">
       <strong class="language" data-lan="copyright">版权声明： </strong>
@@ -405,23 +371,19 @@ select #list[].col1#, #list[].col2# from dual
   </ul>
   <div class="tags">
     
-      <a href="http://violet404.github.io/tag/Wg3yAEB2F/"># Ibatis</a>
-    
-      <a href="http://violet404.github.io/tag/Oq4KR_wv3/"># 问题整理</a>
-    
   </div>
   <div class="nav">
     <div class="nav-prev">
       
         <i class="fa fa-chevron-left"></i>
-        <a class="nav-pc-next" title="Mybatis 结果集数量与实际不符" href="http://violet404.github.io/post/mybatis-jie-guo-ji-shu-liang-yu-shi-ji-bu-fu/">Mybatis 结果集数量与实际不符</a class="nav-pc-next">
-        <a class="nav-mobile-prev" title="Mybatis 结果集数量与实际不符" href="http://violet404.github.io/post/mybatis-jie-guo-ji-shu-liang-yu-shi-ji-bu-fu/">上一篇</a>
+        <a class="nav-pc-next" title="JVM 内存与垃圾回收（七）字符串常量" href="http://violet404.github.io/post/sfGQyVhCE/">JVM 内存与垃圾回收（七）字符串常量</a class="nav-pc-next">
+        <a class="nav-mobile-prev" title="JVM 内存与垃圾回收（七）字符串常量" href="http://violet404.github.io/post/sfGQyVhCE/">上一篇</a>
       
     </div>
     <div class="nav-next">
       
-        <a class="nav-pc-next" title="Oracle 替换字符串" href="http://violet404.github.io/post/oracle-ti-huan-zi-fu-chuan/">Oracle 替换字符串</a>
-        <a class="nav-mobile-next" title="Oracle 替换字符串" href="http://violet404.github.io/post/oracle-ti-huan-zi-fu-chuan/">下一篇</a>
+        <a class="nav-pc-next" title="JVM 内存与垃圾回收（四）方法区" href="http://violet404.github.io/post/DI3xGNxed/">JVM 内存与垃圾回收（四）方法区</a>
+        <a class="nav-mobile-next" title="JVM 内存与垃圾回收（四）方法区" href="http://violet404.github.io/post/DI3xGNxed/">下一篇</a>
         <i class="fa fa-chevron-right"></i>
       
     </div>

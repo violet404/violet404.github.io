@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://violet404.github.io/</id>
     <title>Violet</title>
-    <updated>2021-07-17T05:31:41.636Z</updated>
+    <updated>2021-07-17T08:01:56.597Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://violet404.github.io/"/>
     <link rel="self" href="http://violet404.github.io/atom.xml"/>
@@ -11,11 +11,32 @@
     <icon>http://violet404.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, Violet</rights>
     <entry>
-        <title type="html"><![CDATA[JVM 内存与垃圾回收（五）]]></title>
-        <id>http://violet404.github.io/post/5myC2JTLs/</id>
-        <link href="http://violet404.github.io/post/5myC2JTLs/">
+        <title type="html"><![CDATA[JVM 内存与垃圾回收（五）对象的实例化 & 直接内存]]></title>
+        <id>http://violet404.github.io/post/5myC2JTLs12/</id>
+        <link href="http://violet404.github.io/post/5myC2JTLs12/">
         </link>
-        <updated>2021-07-15T14:01:00.000Z</updated>
+        <updated>2021-07-17T14:01:00.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[JVM 内存与垃圾回收（八）垃圾回收]]></title>
+        <id>http://violet404.github.io/post/6Qm1ARH3Y/</id>
+        <link href="http://violet404.github.io/post/6Qm1ARH3Y/">
+        </link>
+        <updated>2021-07-17T05:34:26.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[JVM 内存与垃圾回收（七）字符串常量]]></title>
+        <id>http://violet404.github.io/post/sfGQyVhCE/</id>
+        <link href="http://violet404.github.io/post/sfGQyVhCE/">
+        </link>
+        <updated>2021-07-17T05:34:02.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[JVM 内存与垃圾回收（六）执行引擎]]></title>
+        <id>http://violet404.github.io/post/PwsytJfe7/</id>
+        <link href="http://violet404.github.io/post/PwsytJfe7/">
+        </link>
+        <updated>2021-07-17T05:32:50.000Z</updated>
     </entry>
     <entry>
         <title type="html"><![CDATA[JVM 内存与垃圾回收（四）方法区]]></title>
@@ -104,26 +125,5 @@
         <link href="http://violet404.github.io/post/jsonformatter-shi-jian-fan-hui-bu-dui/">
         </link>
         <updated>2021-04-28T06:28:35.000Z</updated>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[illegal hex characters in escape(%) pattern]]></title>
-        <id>http://violet404.github.io/post/illegal-hex-characters-in-escape-pattern/</id>
-        <link href="http://violet404.github.io/post/illegal-hex-characters-in-escape-pattern/">
-        </link>
-        <updated>2021-04-28T05:31:07.000Z</updated>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Oracle ResultSet.getDate()/getObject()无法获取时间]]></title>
-        <id>http://violet404.github.io/post/oracle-resultsetgetdategetobjectwu-fa-huo-qu-shi-jian/</id>
-        <link href="http://violet404.github.io/post/oracle-resultsetgetdategetobjectwu-fa-huo-qu-shi-jian/">
-        </link>
-        <updated>2021-04-28T05:21:02.000Z</updated>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[jQuery 操作多选框checkbox失效]]></title>
-        <id>http://violet404.github.io/post/jquery-cao-zuo-duo-xuan-kuang-checkbox-shi-xiao/</id>
-        <link href="http://violet404.github.io/post/jquery-cao-zuo-duo-xuan-kuang-checkbox-shi-xiao/">
-        </link>
-        <updated>2021-04-28T05:18:57.000Z</updated>
     </entry>
 </feed>
