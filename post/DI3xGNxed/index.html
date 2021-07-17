@@ -9,7 +9,7 @@
 <meta name="description" content="业精于勤，荒于嬉">
 <meta name="theme-color" content="#000">
 <title>JVM 内存与垃圾回收（四）方法区 | Violet</title>
-<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/violet404/violet404.github.io@latest/favicon.ico?v=1626517649736">
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/violet404/violet404.github.io@latest/favicon.ico?v=1626517859234">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/violet404/violet404.github.io@latest/media/css/pisces.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/violet404/violet404.github.io@latest/media/fonts/font-awesome.css">
 <link
@@ -2839,9 +2839,11 @@ Exception in thread &amp;quot;main&amp;quot; java.lang.OutOfMemoryError: Direct 
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;所谓AOT编译，是与即时编译相对立的一个概念。我们知道，&lt;em&gt;即时编译指的是在程序的运行过程&lt;/em&gt;中，将字节码转换为可在硬件上直接运行的机器码，并部署至托管环境中的过程。而&lt;em&gt;AOT编译指的则是，在程序运行之前，便将字节码转换为机器码的过程。&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;.java -&amp;gt; .class -&amp;gt;(使用jaotc)  &lt;font color=&#34;blue&#34;&gt;-&amp;gt;&lt;/font&gt; .so&lt;/li&gt;
+&lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;.java -&amp;gt; .class -&amp;gt;**(使用jaotc) ** -&amp;gt; .so&lt;/p&gt;
 &lt;p&gt;最大的好处：Java虚拟机加载已经预编译成二进制库，可以直接执行。不必等待及时编译器的预热，减少Java应用给人带来“第一次运行慢” 的不良体验&lt;/p&gt;
 &lt;p&gt;缺点：&lt;/p&gt;
 &lt;ul&gt;
