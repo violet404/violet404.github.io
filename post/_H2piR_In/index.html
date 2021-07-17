@@ -1,0 +1,4952 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="keywords" content="Gridea静态个人博客">
+<meta name="description" content="业精于勤，荒于嬉">
+<meta name="theme-color" content="#000">
+<title>Oracle 游标更新数据 | Violet</title>
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/violet404/violet404.github.io@latest/favicon.ico?v=1626499880803">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/violet404/violet404.github.io@latest/media/css/pisces.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/violet404/violet404.github.io@latest/media/fonts/font-awesome.css">
+<link
+  href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Rosario:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext"
+  rel="stylesheet" type="text/css">
+
+<link href="https://cdn.jsdelivr.net/gh/violet404/violet404.github.io@latest/media/hljs/styles/default.css"
+  rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/violet404/violet404.github.io@latest/styles/main.css">
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script src="https://cdn.jsdelivr.net/gh/violet404/violet404.github.io@latest/media/js/jquery.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/violet404/violet404.github.io@latest/media/hljs/highlight.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.0/velocity.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.0/velocity.ui.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css"
+  integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js"
+  integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js"
+  integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"
+  onload="renderMathInElement(document.body);"></script>
+
+
+
+
+
+
+  <meta name="description" content="Oracle 游标更新数据" />
+  <meta name="keywords" content="Oracle" />
+</head>
+
+<body>
+  <div class="head-top-line"></div>
+  <div class="header-box">
+    
+<div class="pisces">
+  <header class="header  ">
+    <div class="blog-header box-shadow-wrapper bg-color " id="header">
+      <div class="nav-toggle" id="nav_toggle">
+        <div class="toggle-box">
+          <div class="line line-top"></div>
+          <div class="line line-center"></div>
+          <div class="line line-bottom"></div>
+        </div>
+      </div>
+      <div class="site-meta">       
+        <div class="site-title">
+          
+            <a href="/" class="brand">
+              <span>Violet</span>
+            </a>  
+          
+        </div>
+        
+          <p class="subtitle">精于心，简于形</p>
+        
+      </div>
+      <nav class="site-nav" id="site_nav">
+        <ul id="nav_ul">
+          
+            
+            
+              
+            
+            <li class="nav-item ">
+              
+              
+                <a href="/" target="_self">
+                  <i class="fa fa-home"></i> 首页
+                </a>
+              
+            </li>
+          
+            
+            
+              
+            
+            <li class="nav-item ">
+              
+              
+                <a href="/archives/" target="_self">
+                  <i class="fa fa-archive"></i> 归档
+                </a>
+              
+            </li>
+          
+            
+            
+              
+            
+            <li class="nav-item ">
+              
+              
+                <a href="/tags/" target="_self">
+                  <i class="fa fa-tags"></i> 标签
+                </a>
+              
+            </li>
+          
+            
+            
+              
+            
+            <li class="nav-item ">
+              
+              
+                <a href="/post/about/" target="_self">
+                  <i class="fa fa-user"></i> 关于
+                </a>
+              
+            </li>
+          
+          
+            
+              <li class="nav-item ">
+                <a href="/friends/" target="_self">
+                  
+                    <i class="fa fa-address-book"></i> 友情链接
+                  
+                </a>
+              </li>
+            
+          
+          
+            <li id="fa_search" class="nav-item">
+              <a href="javascript:void(0);">
+                <i class="fa fa-search"></i> <span class="language" data-lan="search">搜索</span>
+              </a>
+            </li>
+          
+        </ul>
+      </nav>
+    </div>
+  </header>
+</div>
+
+<script type="text/javascript"> 
+ 
+  let showNav = true;
+
+  let navToggle = document.querySelector('#nav_toggle'),
+  siteNav = document.querySelector('#site_nav');
+  
+  function navClick() {
+    let sideBar = document.querySelector('.sidebar');
+    let navUl = document.querySelector('#nav_ul');
+    navToggle.classList.toggle('nav-toggle-active');
+    siteNav.classList.toggle('nav-menu-active');
+    if (siteNav.classList.contains('nav-menu-active')) {
+      siteNav.style = "height: " + (navUl.children.length * 42) +"px !important";
+    } else {
+      siteNav.style = "";
+    }
+  }
+
+  navToggle.addEventListener('click',navClick);  
+</script>
+  </div>
+  <div class="main-continer">
+    
+    <div
+      class="section-layout pisces ">
+      <div class="section-layout-wrapper">
+        
+
+<div class="sidebar">
+  
+    <div class="sidebar-box box-shadow-wrapper bg-color right-motion" id="sidebar">
+      
+        <div class="post-list-sidebar">
+          <div class="sidebar-title">
+            <span id="tocSideBar" class="sidebar-title-item sidebar-title-active language" data-lan="index">文章目录</span>
+            <span id="metaSideBar" class="sidebar-title-item language" data-lan="preview">站点概览</span>
+          </div>
+        </div>
+      
+      <div class="sidebar-body pisces" id="sidebar_body">
+        
+          
+            
+<div class="sidebar-wrapper box-shadow-wrapper bg-color">
+  <div class="sidebar-item">
+    <img class="site-author-image right-motion" src="https://cdn.jsdelivr.net/gh/violet404/violet404.github.io@latest/images/avatar.png"/>
+    <p class="site-author-name">Violet</p>
+    
+  </div>
+  <div class="sidebar-item side-item-stat right-motion">
+    <div class="sidebar-item-box">
+      <a href="/archives/">
+        
+        <span class="site-item-stat-count">20</span>
+        <span class="site-item-stat-name language" data-lan="article">文章</span>
+      </a>
+    </div>
+    <div class="sidebar-item-box">
+      <a href="">
+        <span class="site-item-stat-count">11</span>
+        <span class="site-item-stat-name language" data-lan="category">分类</span>
+      </a>
+    </div>
+    <div class="sidebar-item-box">
+      <a href="/tags/">
+        <span class="site-item-stat-count">11</span>
+        <span class="site-item-stat-name language" data-lan="tag">标签</span>
+      </a>
+    </div>
+  </div>
+  
+    
+      <div class="sidebar-item">
+        <span class="site-item-rss">
+            <i class="fa fa-rss"></i>
+            <a href="http://violet404.github.io//atom.xml" target="_blank">RSS</a>
+        </span>
+      </div>
+    
+  
+  
+
+
+
+</div>
+          
+        
+      </div>
+    </div>
+  
+</div>
+<script>
+  const SIDEBAR_TITLE_ACTIVE = 'sidebar-title-active';
+  const SIDEBAR_BODY_ACTIVE = 'sidebar-body-active';
+  const SLIDE_UP_IN = 'slide-up-in';
+
+  let sidebar = document.querySelector('#sidebar'),
+  tocSideBar = document.querySelector('#tocSideBar'),
+  metaSideBar = document.querySelector('#metaSideBar'),
+  postToc = document.querySelector('#post_toc'),
+  postSiteMeta = document.querySelector('#post_side_meta'),
+  sidebarTitle = document.querySelector('.sidebar-title'),
+  sidebarBody = document.querySelector('#sidebar_body');
+
+  tocSideBar && tocSideBar.addEventListener('click', (e) => {
+    toggleSidebar(e);
+  });
+
+  metaSideBar && metaSideBar.addEventListener('click', (e) => {
+    toggleSidebar(e);
+  });
+
+  function toggleSidebar(e) {
+    let currentTitle = document.querySelector("."+SIDEBAR_TITLE_ACTIVE);
+    if (currentTitle == e.srcElement) {
+      return ;
+    }
+    let current, showElement, hideElement;
+    if (e.srcElement == metaSideBar) {
+      showElement = postSiteMeta;
+      hideElement = postToc;
+    } else if (e.srcElement == tocSideBar){
+      showElement = postToc;
+      hideElement = postSiteMeta;
+    }
+    currentTitle.classList.remove(SIDEBAR_TITLE_ACTIVE);
+    e.srcElement.classList.add(SIDEBAR_TITLE_ACTIVE);
+
+    jQuery.Velocity(hideElement, 'stop');
+    jQuery.Velocity(hideElement, 'transition.slideUpOut', {
+      display: 'none',
+      duration: 200,
+      complete: function () {
+        jQuery.Velocity(showElement, 'transition.slideDownIn', {
+          duration: 200
+        });
+      }
+    })
+    hideElement.classList.remove(SIDEBAR_BODY_ACTIVE);
+    showElement.classList.add(SIDEBAR_BODY_ACTIVE);
+  }
+
+  postToc && postToc.addEventListener('transitionend', function() {
+    this.classList.remove(SLIDE_UP_IN);
+  });
+
+  if (sidebarBody) {
+    if (sidebarBody.classList.contains('pisces') || sidebarBody.classList.contains('gemini')) {
+      let hasFix = false;
+      let scrollEl = document.querySelector('.main-continer');
+      let limitTop = document.querySelector('#nav_ul').children.length * 42 + 162;
+      window.addEventListener('scroll', function(e) {
+        if (document.scrollingElement.scrollTop >= limitTop) {
+          if (!hasFix) {
+            sidebar.classList.add('sidebar-fixed');
+            hasFix = true;
+          }
+        } else {
+          if (hasFix) {
+            sidebar.classList.remove('sidebar-fixed');
+            hasFix = false;
+          }
+        }
+      });
+    }
+  }
+  
+</script>
+        <div class="section-box box-shadow-wrapper">
+          <div class="section bg-color post post-page">
+            <section class="post-header">
+  <h1 class="post-title">
+    <a class="post-title-link" href="http://violet404.github.io/post/_H2piR_In/">
+      Oracle 游标更新数据
+    </a>
+  </h1>
+  <div class="post-meta">
+    
+    <span class="meta-item pc-show">
+      <i class="fa fa-calendar-o"></i>
+      <span class="language" data-lan="publish">发布于</span>
+      <span class="publish-time" data-t="2021-04-28 17:56:14">2021-04-28</span>
+      <span class="post-meta-divider pc-show">|</span>
+    </span>
+    
+    <span class="meta-item">
+      <i class="fa fa-folder-o"></i>
+      <span class="pc-show language" data-lan="category-in">分类于</span>
+      
+      
+      <a href="http://violet404.github.io/tag/4PqZVjHum/">
+        <span>Oracle</span>
+      </a>
+      
+      
+    </span>
+    <span class="post-meta-divider">|</span>
+    
+    <span class="meta-item">
+      <i class="fa fa-clock-o"></i>
+      <span>1<span class="language" data-lan="minute">分钟</span></span>
+    </span>
+    <span class="meta-item">
+      <span class="post-meta-divider">|</span>
+      <i class="fa fa-file-word-o"></i>
+      <span>103<span class="pc-show language" data-lan="words">字数</span></span>
+    </span>
+    
+  </div>
+</section>
+            <div class="post-body next-md-body" id="post_body">
+              <pre><code class="language-sql">declare
+    cursor cur_tb1 is select * from tb1 for update;
+    v_rec tb1%rowtype;
+begin
+    open cur_tb1;
+    loop
+        fetch cur_tb1 into v_rec;
+        update tb1 set col1 = v_rec.col1 where current of cur_tb1;
+        exit when cur_tb1%notfound;
+    end loop;
+    commit;
+    close cur_tb1;
+end;
+</code></pre>
+<pre><code class="language-sql">declare
+    cursor cur_tb1 is select * from tb1;
+    type typ_tb1 is table of tb1%rowtype;
+    v_rec typ_tb1;
+begin
+    open cur_tb1;
+    loop
+        if mod(cur_tb1%rowcount, 5000) = 0 then
+            dbms_output.putline(cur_tb1%rowcount);
+        end if; 
+        fetch cur_tb1 bullk collect into v_rec limit 2000;
+        for I in 1 ... v_rec.count loop
+            dosth(v_rec(I));
+        end loop;
+        commit;
+        exit when cur_tb1%notfound;
+    end loop;
+    close cur_tb1;
+end;
+</code></pre>
+
+            </div>
+            
+            
+              <div class="post-footer">
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+      <strong class="language" data-lan="author">本文作者：</strong>
+      Violet
+    </li>
+    <li class="post-copyright-link">
+      <strong class="language" data-lan="link">本文链接：</strong>
+      <a href="http://violet404.github.io/post/_H2piR_In/" title="Oracle 游标更新数据">http://violet404.github.io/post/_H2piR_In/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong class="language" data-lan="copyright">版权声明： </strong>
+      本博客所有文章除特别声明外，均采用<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i> BY-NC-SA</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+  <div class="tags">
+    
+      <a href="http://violet404.github.io/tag/4PqZVjHum/"># Oracle</a>
+    
+  </div>
+  <div class="nav">
+    <div class="nav-prev">
+      
+        <i class="fa fa-chevron-left"></i>
+        <a class="nav-pc-next" title="JVM 内存与垃圾回收（一）类加载" href="http://violet404.github.io/post/jvm-1/">JVM 内存与垃圾回收（一）类加载</a class="nav-pc-next">
+        <a class="nav-mobile-prev" title="JVM 内存与垃圾回收（一）类加载" href="http://violet404.github.io/post/jvm-1/">上一篇</a>
+      
+    </div>
+    <div class="nav-next">
+      
+        <a class="nav-pc-next" title="@JsonFormatter 时间返回不对" href="http://violet404.github.io/post/jsonformatter-shi-jian-fan-hui-bu-dui/">@JsonFormatter 时间返回不对</a>
+        <a class="nav-mobile-next" title="@JsonFormatter 时间返回不对" href="http://violet404.github.io/post/jsonformatter-shi-jian-fan-hui-bu-dui/">下一篇</a>
+        <i class="fa fa-chevron-right"></i>
+      
+    </div>
+  </div>
+</div>
+            
+            
+  
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-box">
+  <footer class="footer">
+    <span id="busuanzi_container_site_pv">浏览数 <span id="busuanzi_value_site_pv"></span> 次</span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_uv">访客数 <span id="busuanzi_value_site_uv"></span> 人</span>
+    <div class="copyright">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> ©2019 | Theme By <a
+        href="https://github.com/hsxyhao/gridea-theme-next" target="_blank">HsxyHao</a>
+    </div>
+    <div class="poweredby">
+      
+    </div>
+  </footer>
+  
+  
+  <div class="pisces back-to-top" id="back_to_top">
+    <i class="fa fa-arrow-up"></i>
+    
+    <span class="scrollpercent">
+      <span id="back_to_top_text">0</span>%
+    </span>
+    
+  </div>
+  
+  
+  
+  <div class="bg-img">
+    <img src="https://cdn.jsdelivr.net/gh/violet404/violet404.github.io@latest/media/images/bg.jpg" />
+  </div>
+  
+  
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/violet404/violet404.github.io@latest/media/live2d/css/live2d.css" />
+<div class="box-scale">
+  <div id="landlord" style="left: 5px;bottom: px;"
+    data-key="">
+    <canvas id="live2d" width="500" height="560" class="live2d"></canvas>
+    
+
+      <div class="message" style="opacity:0"></div>
+      <div class="live_talk_input_body">
+        <div class="live_talk_input_name_body">
+          <input name="name" type="text" class="live_talk_name white_input" id="AIuserName" autocomplete="off"
+            placeholder="你的名字" />
+        </div>
+        <div class="live_talk_input_text_body">
+          <input name="talk" type="text" class="live_talk_talk white_input" id="AIuserText" autocomplete="off"
+            placeholder="要和我聊什么呀？" />
+          <button type="button" class="live_talk_send_btn" id="talk_send">发送</button>
+        </div>
+      </div>
+      <input name="live_talk" id="live_talk" value="1" type="hidden" />
+      <div class="live_ico_box">
+        <div class="live_ico_item type_info" id="showInfoBtn"></div>
+        <div class="live_ico_item type_talk" id="showTalkBtn"></div>
+        
+        <div class="live_ico_item type_youdu" id="youduButton"></div>
+        <div class="live_ico_item type_quit" id="hideButton"></div>
+        <input name="live_statu_val" id="live_statu_val" value="0" type="hidden" />
+        <audio src="" style="display:none;" id="live2d_bgm" data-bgm="0" preload="none"></audio>
+        <input id="duType" value="douqilai" type="hidden">
+        
+      </div>
+    
+  </div>
+</div>
+<div id="open_live2d">召唤看板娘</div>
+<script>
+  var message_Path = 'https://cdn.jsdelivr.net/gh/hsxyhao/live2d.github.io@master/';
+  let landlord = document.querySelector('#landlord');
+  var apiKey = landlord.dataset.key;
+</script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/violet404/violet404.github.io@latest/media/live2d/js/live2d.js"></script>
+<script>
+	var home_Path = document.location.protocol + '//' + window.document.location.hostname + ":" + window.document.location.port + '/';
+	var userAgent = window.navigator.userAgent.toLowerCase();
+	var norunAI = ["android", "iphone", "ipod", "ipad", "windows phone", "mqqbrowser", "msie", "trident/7.0"];
+	var norunFlag = false;
+
+	for (var i = 0; i < norunAI.length; i++) {
+		if (userAgent.indexOf(norunAI[i]) > -1) {
+			norunFlag = true;
+			break;
+		}
+	}
+
+	if (!window.WebGLRenderingContext) {
+		norunFlag = true;
+	}
+
+	if (!norunFlag) {
+		var hitFlag = false;
+		var AIFadeFlag = false;
+		var liveTlakTimer = null;
+		var sleepTimer_ = null;
+		var AITalkFlag = false;
+		var talkNum = 0;
+		(function () {
+			function renderTip(template, context) {
+				var tokenReg = /(\\)?\{([^\{\}\\]+)(\\)?\}/g;
+				return template.replace(tokenReg, function (word, slash1, token, slash2) {
+					if (slash1 || slash2) {
+						return word.replace('\\', '');
+					}
+					var variables = token.replace(/\s/g, '').split('.');
+					var currentObject = context;
+					var i, length, variable;
+					for (i = 0, length = variables.length; i < length; ++i) {
+						variable = variables[i];
+						currentObject = currentObject[variable];
+						if (currentObject === undefined || currentObject === null) return '';
+					}
+					return currentObject;
+				});
+			}
+
+			String.prototype.renderTip = function (context) {
+				return renderTip(this, context);
+			};
+
+			var re = /x/;
+			re.toString = function () {
+				showMessage('哈哈，你打开了控制台，是想要看看我的秘密吗？', 5000);
+				return '';
+			};
+
+			$(document).on('copy', function () {
+				showMessage('你都复制了些什么呀，转载要记得加上出处哦~~', 5000);
+			});
+
+			function initTips() {
+				$.ajax({
+					cache: true,
+					url: message_Path + 'message.json',
+					dataType: "json",
+					success: function (result) {
+						$.each(result.mouseover, function (index, tips) {
+							$(tips.selector).mouseover(function () {
+								var text = tips.text;
+								if (Array.isArray(tips.text)) text = tips.text[Math.floor(Math.random() * tips.text.length + 1) - 1];
+								text = text.renderTip({ text: $(this).text() });
+								showMessage(text, 3000);
+								talkValTimer();
+								clearInterval(liveTlakTimer);
+								liveTlakTimer = null;
+							});
+							$(tips.selector).mouseout(function () {
+								showHitokoto();
+								if (liveTlakTimer == null) {
+									liveTlakTimer = window.setInterval(function () {
+										showHitokoto();
+									}, 15000);
+								};
+							});
+						});
+						$.each(result.click, function (index, tips) {
+							$(tips.selector).click(function () {
+								if (hitFlag) {
+									return false
+								}
+								hitFlag = true;
+								setTimeout(function () {
+									hitFlag = false;
+								}, 8000);
+								var text = tips.text;
+								if (Array.isArray(tips.text)) text = tips.text[Math.floor(Math.random() * tips.text.length + 1) - 1];
+								text = text.renderTip({ text: $(this).text() });
+								showMessage(text, 3000);
+							});
+							clearInterval(liveTlakTimer);
+							liveTlakTimer = null;
+							if (liveTlakTimer == null) {
+								liveTlakTimer = window.setInterval(function () {
+									showHitokoto();
+								}, 15000);
+							};
+						});
+					}
+				});
+			}
+			initTips();
+
+			var text;
+			if (document.referrer !== '') {
+				var referrer = document.createElement('a');
+				referrer.href = document.referrer;
+				text = '嗨！来自 <span style="color:#0099cc;">' + referrer.hostname + '</span> 的朋友！';
+				var domain = referrer.hostname.split('.')[1];
+				if (domain == 'baidu') {
+					text = '嗨！ 来自 百度搜索 的朋友！<br>欢迎访问<span style="color:#0099cc;">「 ' + document.title.split(' - ')[0] + ' 」</span>';
+				} else if (domain == 'so') {
+					text = '嗨！ 来自 360搜索 的朋友！<br>欢迎访问<span style="color:#0099cc;">「 ' + document.title.split(' - ')[0] + ' 」</span>';
+				} else if (domain == 'google') {
+					text = '嗨！ 来自 谷歌搜索 的朋友！<br>欢迎访问<span style="color:#0099cc;">「 ' + document.title.split(' - ')[0] + ' 」</span>';
+				}
+			} else {
+				if (window.location.href == home_Path) { //主页URL判断，需要斜杠结尾
+					var now = (new Date()).getHours();
+					if (now > 23 || now <= 5) {
+						text = '你是夜猫子呀？这么晚还不睡觉，明天起的来嘛？';
+					} else if (now > 5 && now <= 7) {
+						text = '早上好！一日之计在于晨，美好的一天就要开始了！';
+					} else if (now > 7 && now <= 11) {
+						text = '上午好！工作顺利嘛，不要久坐，多起来走动走动哦！';
+					} else if (now > 11 && now <= 14) {
+						text = '中午了，工作了一个上午，现在是午餐时间！';
+					} else if (now > 14 && now <= 17) {
+						text = '午后很容易犯困呢，今天的运动目标完成了吗？';
+					} else if (now > 17 && now <= 19) {
+						text = '傍晚了！窗外夕阳的景色很美丽呢，最美不过夕阳红~~';
+					} else if (now > 19 && now <= 21) {
+						text = '晚上好，今天过得怎么样？';
+					} else if (now > 21 && now <= 23) {
+						text = '已经这么晚了呀，早点休息吧，晚安~~';
+					} else {
+						text = '嗨~ 快来逗我玩吧！';
+					}
+				} else {
+					text = '欢迎阅读<span style="color:#0099cc;">「 ' + document.title.split(' - ')[0] + ' 」</span>';
+				}
+			}
+			showMessage(text, 12000);
+		})();
+
+		liveTlakTimer = setInterval(function () {
+			showHitokoto();
+		}, 15000);
+
+		function showHitokoto() {
+			if (sessionStorage.getItem("Sleepy") !== "1") {
+				if (!AITalkFlag) {
+					$.getJSON('https://v1.hitokoto.cn/', function (result) {
+						talkValTimer();
+						showMessage(result.hitokoto, 0);
+					});
+				}
+			} else {
+				hideMessage(0);
+				if (sleepTimer_ == null) {
+					sleepTimer_ = setInterval(function () {
+						checkSleep();
+					}, 200);
+				}
+			}
+		}
+
+		function checkSleep() {
+			var sleepStatu = sessionStorage.getItem("Sleepy");
+			if (sleepStatu !== '1') {
+				talkValTimer();
+				showMessage('你回来啦~', 0);
+				clearInterval(sleepTimer_);
+				sleepTimer_ = null;
+			}
+		}
+
+		function showMessage(text, timeout) {
+			if (Array.isArray(text)) text = text[Math.floor(Math.random() * text.length + 1) - 1];
+			$('.message').stop();
+			$('.message').html(text);
+			$('.message').fadeTo(200, 1);
+			//if (timeout === null) timeout = 5000;
+			//hideMessage(timeout);
+		}
+		function talkValTimer() {
+			$('#live_talk').val('1');
+		}
+
+		function hideMessage(timeout) {
+			//$('.message').stop().css('opacity',1);
+			if (timeout === null) timeout = 5000;
+			$('.message').delay(timeout).fadeTo(200, 0);
+		}
+
+		function initLive2d() {
+			$('#hideButton').on('click', function () {
+				if (AIFadeFlag) {
+					return false;
+				} else {
+					AIFadeFlag = true;
+					localStorage.setItem("live2dhidden", "0");
+					$('#landlord').fadeOut(200);
+					$('#open_live2d').delay(200).fadeIn(200);
+					setTimeout(function () {
+						AIFadeFlag = false;
+					}, 300);
+				}
+			});
+			$('#open_live2d').on('click', function () {
+				if (AIFadeFlag) {
+					return false;
+				} else {
+					AIFadeFlag = true;
+					localStorage.setItem("live2dhidden", "1");
+					$('#open_live2d').fadeOut(200);
+					$('#landlord').delay(200).fadeIn(200);
+					setTimeout(function () {
+						AIFadeFlag = false;
+					}, 300);
+				}
+			});
+			$('#youduButton').on('click', function () {
+				if ($('#youduButton').hasClass('doudong')) {
+					var typeIs = $('#youduButton').attr('data-type');
+					$('#youduButton').removeClass('doudong');
+					$('body').removeClass(typeIs);
+					$('#youduButton').attr('data-type', '');
+				} else {
+					var duType = $('#duType').val();
+					var duArr = duType.split(",");
+					var dataType = duArr[Math.floor(Math.random() * duArr.length)];
+
+					$('#youduButton').addClass('doudong');
+					$('#youduButton').attr('data-type', dataType);
+					$('body').addClass(dataType);
+				}
+			});
+			if (apiKey) {
+				$('#showInfoBtn').on('click', function () {
+					var live_statu = $('#live_statu_val').val();
+					if (live_statu == "0") {
+						return
+					} else {
+						$('#live_statu_val').val("0");
+						$('.live_talk_input_body').fadeOut(500);
+						AITalkFlag = false;
+						showHitokoto();
+						$('#showTalkBtn').show();
+						$('#showInfoBtn').hide();
+					}
+				});
+				$('#showTalkBtn').on('click', function () {
+					var live_statu = $('#live_statu_val').val();
+					if (live_statu == "1") {
+						return
+					} else {
+						$('#live_statu_val').val("1");
+						$('.live_talk_input_body').fadeIn(500);
+						AITalkFlag = true;
+						$('#showTalkBtn').hide();
+						$('#showInfoBtn').show();
+
+					}
+				});
+				$('#talk_send').on('click', function () {
+					var info_ = $('#AIuserText').val();
+					var userid_ = $('#AIuserName').val();
+					if (info_ == "") {
+						showMessage('写点什么吧！', 0);
+						return;
+					}
+					if (userid_ == "") {
+						showMessage('聊之前请告诉我你的名字吧！', 0);
+						return;
+					}
+					showMessage('思考中~', 0);
+					let protocol = window.location.protocol.indexOf("s") > 0 ? "https" : "http";
+					$.ajax({
+						type: "get",
+						url: `${protocol}://www.tuling123.com/openapi/api?key=${apiKey}&info=${info_}`,
+						dataType: "json",
+						success: function (res) {
+							talkValTimer();
+							showMessage(res.text, 0);
+							$('#AIuserText').val("");
+							sessionStorage.setItem("live2duser", userid_);
+						},
+						error: function (e) {
+							talkValTimer();
+							showMessage('似乎有什么错误，请和站长联系！', 0);
+						}
+					});
+				});
+			} else {
+				$('#showInfoBtn').hide();
+				$('#showTalkBtn').hide();
+			}
+			//获取音乐信息初始化
+			var bgmListInfo = $('input[name=live2dBGM]');
+			if (bgmListInfo.length == 0) {
+				$('#musicButton').hide();
+			} else {
+				var bgmPlayNow = parseInt($('#live2d_bgm').attr('data-bgm'));
+				var bgmPlayTime = 0;
+				var live2dBGM_Num = sessionStorage.getItem("live2dBGM_Num");
+				var live2dBGM_PlayTime = sessionStorage.getItem("live2dBGM_PlayTime");
+				if (live2dBGM_Num) {
+					if (live2dBGM_Num <= $('input[name=live2dBGM]').length - 1) {
+						bgmPlayNow = parseInt(live2dBGM_Num);
+					}
+				}
+				if (live2dBGM_PlayTime) {
+					bgmPlayTime = parseInt(live2dBGM_PlayTime);
+				}
+				var live2dBGMSrc = bgmListInfo.eq(bgmPlayNow).val();
+				$('#live2d_bgm').attr('data-bgm', bgmPlayNow);
+				$('#live2d_bgm').attr('src', live2dBGMSrc);
+				$('#live2d_bgm')[0].currentTime = bgmPlayTime;
+				$('#live2d_bgm')[0].volume = 0.5;
+				var live2dBGM_IsPlay = sessionStorage.getItem("live2dBGM_IsPlay");
+				var live2dBGM_WindowClose = sessionStorage.getItem("live2dBGM_WindowClose");
+				if (live2dBGM_IsPlay == '0' && live2dBGM_WindowClose == '0') {
+					$('#live2d_bgm')[0].play();
+					$('#musicButton').addClass('play');
+				}
+				sessionStorage.setItem("live2dBGM_WindowClose", '1');
+				$('#musicButton').on('click', function () {
+					if ($('#musicButton').hasClass('play')) {
+						$('#live2d_bgm')[0].pause();
+						$('#musicButton').removeClass('play');
+						sessionStorage.setItem("live2dBGM_IsPlay", '1');
+					} else {
+						$('#live2d_bgm')[0].play();
+						$('#musicButton').addClass('play');
+						sessionStorage.setItem("live2dBGM_IsPlay", '0');
+					}
+				});
+				window.onbeforeunload = function () {
+					sessionStorage.setItem("live2dBGM_WindowClose", '0');
+					if ($('#musicButton').hasClass('play')) {
+						sessionStorage.setItem("live2dBGM_IsPlay", '0');
+					}
+				}
+				document.getElementById('live2d_bgm').addEventListener("timeupdate", function () {
+					var live2dBgmPlayTimeNow = document.getElementById('live2d_bgm').currentTime;
+					sessionStorage.setItem("live2dBGM_PlayTime", live2dBgmPlayTimeNow);
+				});
+				document.getElementById('live2d_bgm').addEventListener("ended", function () {
+					var listNow = parseInt($('#live2d_bgm').attr('data-bgm'));
+					listNow++;
+					if (listNow > $('input[name=live2dBGM]').length - 1) {
+						listNow = 0;
+					}
+					var listNewSrc = $('input[name=live2dBGM]').eq(listNow).val();
+					sessionStorage.setItem("live2dBGM_Num", listNow);
+					$('#live2d_bgm').attr('src', listNewSrc);
+					$('#live2d_bgm')[0].play();
+					$('#live2d_bgm').attr('data-bgm', listNow);
+				});
+				document.getElementById('live2d_bgm').addEventListener("error", function () {
+					$('#live2d_bgm')[0].pause();
+					$('#musicButton').removeClass('play');
+					showMessage('音乐似乎加载不出来了呢！', 0);
+				});
+			}
+			//获取用户名
+			var live2dUser = sessionStorage.getItem("live2duser");
+			if (live2dUser !== null) {
+				$('#AIuserName').val(live2dUser);
+			}
+			//获取位置
+			var landL = sessionStorage.getItem("historywidth");
+			var landB = sessionStorage.getItem("historyheight");
+			if (landL == null || landB == null) {
+				landL = '5px'
+				landB = '0px'
+			}
+			$('#landlord').css('left', landL + 'px');
+			$('#landlord').css('bottom', landB + 'px');
+			//移动
+			function getEvent() {
+				return window.event || arguments.callee.caller.arguments[0];
+			}
+			var smcc = document.getElementById("landlord");
+			var moveX = 0;
+			var moveY = 0;
+			var moveBottom = 0;
+			var moveLeft = 0;
+			var moveable = false;
+			var docMouseMoveEvent = document.onmousemove;
+			var docMouseUpEvent = document.onmouseup;
+			smcc.onmousedown = function () {
+				var ent = getEvent();
+				moveable = true;
+				moveX = ent.clientX;
+				moveY = ent.clientY;
+				var obj = smcc;
+				moveBottom = parseInt(obj.style.bottom);
+				moveLeft = parseInt(obj.style.left);
+				if (isFirefox = navigator.userAgent.indexOf("Firefox") > 0) {
+					window.getSelection().removeAllRanges();
+				}
+				document.onmousemove = function () {
+					if (moveable) {
+						var ent = getEvent();
+						var x = moveLeft + ent.clientX - moveX;
+						var y = moveBottom + (moveY - ent.clientY);
+						obj.style.left = x + "px";
+						obj.style.bottom = y + "px";
+					}
+				};
+				document.onmouseup = function () {
+					if (moveable) {
+						var historywidth = obj.style.left;
+						var historyheight = obj.style.bottom;
+						historywidth = historywidth.replace('px', '');
+						historyheight = historyheight.replace('px', '');
+						sessionStorage.setItem("historywidth", historywidth);
+						sessionStorage.setItem("historyheight", historyheight);
+						document.onmousemove = docMouseMoveEvent;
+						document.onmouseup = docMouseUpEvent;
+						moveable = false;
+						moveX = 0;
+						moveY = 0;
+						moveBottom = 0;
+						moveLeft = 0;
+					}
+				};
+			};
+		}
+		$(document).ready(function () {
+			var AIimgSrc = [];
+			let chooseLive2d = 'tororo'
+			if (chooseLive2d === 'histoire') {
+				AIimgSrc.push(message_Path + "model/histoire/histoire.1024/texture_00.png");
+				AIimgSrc.push(message_Path + "model/histoire/histoire.1024/texture_01.png");
+				AIimgSrc.push(message_Path + "model/histoire/histoire.1024/texture_02.png");
+				AIimgSrc.push(message_Path + "model/histoire/histoire.1024/texture_03.png");
+			} else if (chooseLive2d === 'rem') {
+				AIimgSrc.push(message_Path + "model/rem/remu2048/texture_00.png");
+			} else if (chooseLive2d === 'aoba') {
+				AIimgSrc.push(message_Path + "model/aoba/textures/texture_00.png");
+			} else if (chooseLive2d === 'hijiki') {
+				AIimgSrc.push(message_Path + "model/hijiki/moc/hijiki.2048/texture_00.png");
+			} else if (chooseLive2d === 'tororo') {
+				AIimgSrc.push(message_Path + "model/tororo/moc/tororo.2048/texture_00.png");
+			}
+			var images = [];
+			var imgLength = AIimgSrc.length;
+			var loadingNum = 0;
+			for (var i = 0; i < imgLength; i++) {
+				images[i] = new Image();
+				images[i].src = AIimgSrc[i];
+				images[i].onload = function () {
+					loadingNum++;
+					if (loadingNum === imgLength) {
+						var live2dhidden = localStorage.getItem("live2dhidden");
+						if (live2dhidden === "0") {
+							setTimeout(function () {
+								$('#open_live2d').fadeIn(200);
+							}, 1300);
+						} else {
+							setTimeout(function () {
+								$('#landlord').fadeIn(200);
+							}, 1300);
+						}
+						let model = '';
+						if (chooseLive2d === 'histoire') {
+							model = message_Path + "model/histoire/model.json";
+						} else if (chooseLive2d === 'rem') {
+							model = message_Path + "model/rem/model.json";
+						} else if (chooseLive2d === 'aoba') {
+							model = message_Path + "model/aoba/model.json";
+						} else if (chooseLive2d === 'hijiki') {
+							model = message_Path + "model/hijiki/hijiki.model.json";
+						} else if (chooseLive2d === 'tororo') {
+							model = message_Path + "model/tororo/tororo.model.json";
+						}
+						setTimeout(function () {
+							loadlive2d("live2d", model);
+						}, 1000);
+						initLive2d();
+						images = null;
+					}
+				}
+			}
+		});
+	}
+</script>
+  
+  
+</div>
+<script>
+
+  let sideBarOpen = 'sidebar-open';
+  let body = document.body;
+  let back2Top = document.querySelector('#back_to_top'),
+    back2TopText = document.querySelector('#back_to_top_text'),
+    drawerBox = document.querySelector('#drawer_box'),
+    rightSideBar = document.querySelector('.sidebar'),
+    viewport = document.querySelector('body');
+
+  function scrollAnimation(currentY, targetY) {
+
+    let needScrollTop = targetY - currentY
+    let _currentY = currentY
+    setTimeout(() => {
+      const dist = Math.ceil(needScrollTop / 10)
+      _currentY += dist
+      window.scrollTo(_currentY, currentY)
+      if (needScrollTop > 10 || needScrollTop < -10) {
+        scrollAnimation(_currentY, targetY)
+      } else {
+        window.scrollTo(_currentY, targetY)
+      }
+    }, 1)
+  }
+
+  back2Top.addEventListener("click", function (e) {
+    scrollAnimation(document.scrollingElement.scrollTop, 0);
+    e.stopPropagation();
+    return false;
+  });
+
+  window.addEventListener('scroll', function (e) {
+    let percent = document.scrollingElement.scrollTop / (document.scrollingElement.scrollHeight - document.scrollingElement.clientHeight) * 100;
+    if (percent > 1 && !back2Top.classList.contains('back-top-active')) {
+      back2Top.classList.add('back-top-active');
+    }
+    if (percent == 0) {
+      back2Top.classList.remove('back-top-active');
+    }
+    if (back2TopText) {
+      back2TopText.textContent = Math.floor(percent);
+    }
+  });
+
+
+  let hasCacu = false;
+  window.addEventListener('resize', function (e) {
+    calcuHeight();
+  });
+
+  function calcuHeight() {
+    // 动态调整站点概览高度
+    if (!hasCacu && back2Top.classList.contains('pisces') || back2Top.classList.contains('gemini')) {
+      let sideBar = document.querySelector('.sidebar');
+      let navUl = document.querySelector('#site_nav');
+      sideBar.style = 'margin-top:' + (navUl.offsetHeight + navUl.offsetTop + 15) + 'px;';
+      hasCacu = true;
+    }
+  }
+  calcuHeight();
+
+  let open = false, MOTION_TIME = 300, RIGHT_MOVE_DIS = '320px';
+
+  if (drawerBox) {
+    let rightMotions = document.querySelectorAll('.right-motion');
+    let right = drawerBox.classList.contains('right');
+
+    let transitionDir = right ? "transition.slideRightIn" : "transition.slideLeftIn";
+
+    let openProp, closeProp;
+    if (right) {
+      openProp = {
+        paddingRight: RIGHT_MOVE_DIS
+      };
+      closeProp = {
+        paddingRight: '0px'
+      };
+    } else {
+      openProp = {
+        paddingLeft: RIGHT_MOVE_DIS
+      };
+      closeProp = {
+        paddingLeft: '0px'
+      };
+    }
+
+    drawerBox.onclick = function () {
+      open = !open;
+      jQuery.Velocity(rightSideBar, 'stop');
+      jQuery.Velocity(viewport, 'stop');
+      jQuery.Velocity(rightMotions, 'stop');
+      if (open) {
+        jQuery.Velocity(rightSideBar, {
+          width: RIGHT_MOVE_DIS
+        }, {
+          duration: MOTION_TIME,
+          begin: function () {
+            jQuery.Velocity(rightMotions, transitionDir, {});
+          }
+        })
+        jQuery.Velocity(viewport, openProp, {
+          duration: MOTION_TIME
+        });
+      } else {
+        jQuery.Velocity(rightSideBar, {
+          width: '0px'
+        }, {
+          duration: MOTION_TIME,
+          begin: function () {
+            jQuery.Velocity(rightMotions, {
+              opacity: 0
+            });
+          }
+        })
+        jQuery.Velocity(viewport, closeProp, {
+          duration: MOTION_TIME
+        });
+      }
+      for (let i = 0; i < drawerBox.children.length; i++) {
+        drawerBox.children[i].classList.toggle('muse-line');
+      }
+      drawerBox.classList.toggle(sideBarOpen);
+    }
+  }
+
+  // 链接跳转
+  let newWindow = 'false'
+  if (newWindow === 'true') {
+    let links = document.querySelectorAll('.post-body a')
+    links.forEach(item => {
+      if (!item.classList.contains('btn')) {
+        item.setAttribute("target", "_blank");
+      }
+    })
+  }
+
+  let faSearch = document.querySelector('#fa_search');
+  faSearch && faSearch.addEventListener('click', function () {
+    document.querySelector('#search_mask').style = ''
+  })
+
+  // 代码高亮
+  hljs.initHighlightingOnLoad();
+  
+  // 离开当前页title变化
+  var leaveTitle = "";
+  var normal_title = document.title;
+  if (leaveTitle) {
+    document.addEventListener('visibilitychange', function () {
+      if (document.visibilityState == 'hidden') {
+        normal_title = document.title;
+        document.title = leaveTitle;
+      } else {
+        document.title = normal_title;
+      }
+    });
+  }
+
+</script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/violet404/violet404.github.io@latest/media/css/jquery.fancybox.css" />
+<script src="https://cdn.jsdelivr.net/gh/violet404/violet404.github.io@latest/media/js/jquery.fancybox.js"></script>
+
+<script>
+  let images = document.querySelectorAll('.section img');
+  images.forEach(image => {
+    var parent = image.parentElement;
+    var next = image.nextElementSibling;
+    parent.removeChild(image);
+    var aelem = document.createElement('a');
+    aelem.href = image.src;
+    aelem.dataset['fancybox'] = 'images';
+    aelem.dataset['rel'] = 'fancybox-button';
+    aelem.classList.add('fancybox');
+    aelem.appendChild(image);
+    parent.insertBefore(aelem, next);
+  })
+</script>
+
+    <div class="reward-mask" style="display: none;">
+  <div class="reward-relative">
+    <span class="close" aria-hidden="true">x</span>
+    <div class="reward-body">
+      <h2>感谢您的支持，我会继续努力的!</h2>
+      <div class="reward-img-box">
+        <div style="position: relative; width: 140px; height: 140px;">
+          
+          
+          
+        </div>
+      </div>
+      <p class="reward-word">扫码打赏，你说多少就多少</p>
+      <p class="reward-tip">打开微信扫一扫，即可进行扫码打赏哦</p>
+    </div>
+    <div class="bottom">
+      
+      
+    </div>
+  </div>
+</div>
+<style>
+  .reward-mask {
+    position: fixed;
+    z-index: 99999;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #00000054;
+  }
+
+  .reward-relative {
+    position: relative;
+    width: 480px;
+    text-align: center;
+    margin: 0 auto;
+    border-radius: 5px;
+    background-color: #fff;
+    top: 50%;
+    margin-top: -205px;
+  }
+
+  .reward-relative .close {
+    position: absolute;
+    right: 10px;
+    font-weight: normal;
+    font-size: 16px;
+    color: #929292;
+  }
+
+  .reward-body {
+    padding: 40px 20px 20px;
+  }
+
+  .bottom {
+    display: flex;
+  }
+
+  .reward-btn {
+    text-align: center;
+  }
+
+  .reward-btn-text {
+    display: inline-block;
+    cursor: pointer;
+    width: 60px;
+    height: 60px;
+    line-height: 60px;
+    border-radius: 50%;
+    background-color: #ff9734;
+    color: #FFF;
+    margin-top: 20px;
+  }
+
+  .pay-text {
+    margin-top: 10px;
+    padding: 10px;
+    flex: 1;
+    transition: all .2s linear;
+  }
+
+  .pay-text:hover {
+    background-color: #a5a5a536;
+  }
+
+  .reward-body h2 {
+    padding-top: 10px;
+    text-align: center;
+    color: #a3a3a3;
+    font-size: 16px;
+    font-weight: normal;
+    margin: 0 0 20px;
+  }
+
+  .reward-body h2:after,
+  .reward-body h2:before {
+    font-family: Arial, Helvetica, sans-serif;
+    background: 0 0;
+    width: 0;
+    height: 0;
+    font-style: normal;
+    color: #eee;
+    font-size: 80px;
+    position: absolute;
+    top: 20px;
+  }
+
+  .reward-body h2:before {
+    content: '\201c';
+    left: 50px;
+  }
+
+  .reward-body h2:after {
+    content: '\201d';
+    right: 80px;
+  }
+
+  .reward-img-box {
+    display: inline-block;
+    padding: 10px;
+    border: 6px solid #ea5f00;
+    margin: 0 auto;
+    border-radius: 3px;
+    position: relative;
+  }
+
+  .reward-img {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+  }
+
+  @media (max-width: 767px) {
+    .reward-relative {
+      height: 100%;
+      top: 0px;
+      margin-top: 0;
+      width: auto;
+    }
+
+    .reward-relative .bottom {
+      flex-direction: column;
+    }
+
+    .reward-relative .pay-text {
+      width: 80%;
+      margin: 5px auto;
+      border: 1px solid silver;
+      padding: 6px;
+      border-radius: 4px;
+    }
+
+    .reward-body h2:after {
+      right: 40px;
+    }
+
+    .reward-body h2:after,
+    .reward-body h2:before {
+      font-size: 60px;
+    }
+
+    .reward-body h2:before {
+      left: 20px;
+    }
+  }
+</style>
+<script>
+  !function () {
+    var mask = document.querySelector('.reward-mask');
+    let close = document.querySelector('.reward-relative .close');
+    let rewardBtn = document.querySelector('.reward-btn');
+
+    let zfb = document.querySelector('#zfb'),
+      wx = document.querySelector('#wx'),
+      zfbBtn = document.querySelector('#zfbBtn'),
+      wxBtn = document.querySelector('#wxBtn');
+
+    if (zfbBtn && wxBtn) {
+      zfbBtn.addEventListener('click', () => {
+        jQuery.Velocity(zfb, 'transition.slideLeftIn', {
+          duration: 400
+        });
+        jQuery.Velocity(wx, 'transition.slideRightOut', {
+          display: 'none',
+          duration: 400
+        });
+      });
+
+      wxBtn.addEventListener('click', () => {
+        jQuery.Velocity(wx, 'transition.slideRightIn', {
+          duration: 400
+        });
+        jQuery.Velocity(zfb, 'transition.slideLeftOut', {
+          display: 'none',
+          duration: 400
+        });
+      });
+    }
+
+    rewardBtn.addEventListener('click', (e) => {
+      jQuery.Velocity(mask, 'transition.slideDownIn', {
+        duration: 400
+      })
+    });
+
+    close.addEventListener('click', (e) => {
+      e.preventDefault();
+      jQuery.Velocity(mask, 'transition.slideUpOut', {
+        duration: 400
+      })
+    })
+  }()
+</script>
+
+  </div>
+</body>
+
+<div class="search-mask" id="search_mask" style="display: none;">
+  <div class="search-box">
+    <div class="search-title">
+      <i class="fa fa-search"></i>
+      <div class="input-box">
+        <input id="search" type="text" class="language" data-lan="search" placeholder="搜索">
+      </div>
+      <i id="close" class="fa fa-times-circle"></i>
+    </div>
+    <div class="stat-box">
+      <span id="stat_count">0</span><span class="language" data-lan="stat">条相关条目，使用了</span><span id="stat_times">0</span><span class="language" data-lan="stat-time">毫秒</span>
+      <hr>
+    </div>
+    <div class="result" id="result">
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="http://violet404.github.io/post/5myC2JTLs/"" data-c="
+          &lt;h1 id=&#34;对象的实例化内存布局与访问定位&#34;&gt;对象的实例化内存布局与访问定位&lt;/h1&gt;
+&lt;h1 id=&#34;直接内存&#34;&gt;直接内存&lt;/h1&gt;
+&lt;h1 id=&#34;执行引擎&#34;&gt;执行引擎&lt;/h1&gt;
+&lt;h1 id=&#34;stringtable&#34;&gt;StringTable&lt;/h1&gt;
+&lt;h1 id=&#34;垃圾回收算法&#34;&gt;垃圾回收算法&lt;/h1&gt;
+&lt;h1 id=&#34;垃圾回收器&#34;&gt;垃圾回收器&lt;/h1&gt;
+">JVM 内存与垃圾回收（五）</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="http://violet404.github.io/post/DI3xGNxed/"" data-c="
+          &lt;h2 id=&#34;栈-堆-方法区的交互关系&#34;&gt;栈、堆、方法区的交互关系&lt;/h2&gt;
+&lt;p&gt;&lt;em&gt;&lt;strong&gt;从线程共享与否的角度看&lt;/strong&gt;&lt;/em&gt; ：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;ThreadLocal ：如何保证多个线程在并发环境下的安全性？典型应用就是数据库连接管理，以及线程会话管理，独立变量副本&lt;/li&gt;
+&lt;/ul&gt;
+&lt;!-- more --&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;1&#34;&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626403638500.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;2&#34;&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626403929979.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;h2 id=&#34;方法区的理解&#34;&gt;方法区的理解&lt;/h2&gt;
+&lt;p&gt;《Java虚拟机规范》中明确说明：“尽管所有的方法区在逻辑上是属于堆的一部分，但一些简单的实现可能不会选择去进行垃圾收集或者进行压缩。”但对于HotSpotJVM而言，&lt;strong&gt;方法区还有一个别名叫做Non-Heap（非堆），目的就是要和堆分开&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;所以，&lt;font color=&#34;red&#34;&gt;&lt;strong&gt;方法区看作是一块独立于Java堆的内存空间&lt;/strong&gt;&lt;/font&gt;。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;方法区（Method Area）与Java堆一样，是各个&lt;strong&gt;线程共享&lt;/strong&gt;的内存区域&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;方法区在JVM启动时就会被创建，并且它的实际的物理内存空间中和Java堆区一样都可以是不连续的&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;方法区的大小，跟堆空间一样，可以选择固定大小或者可拓展&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;-方法区的大小决定了系统可以保存多少个类&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;如果系统定义了太多的类，导致方法区溢出，虚拟机同样会抛出内存溢出错误：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;java.lang.OutOfMemoryError:PermGen space&lt;/code&gt; 1.8之前&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;java.lang,OutOfMemoryError:Metaspace&lt;/code&gt; 1.8及之后&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;出现方法区OOM的场景，比如：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;加载大量的第三方jar包；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Tomcat部署的工程过多；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;大量动态生成反射类；&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;关闭JVM就会释放这个区域的内存&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;hotspot中方法区的演进&#34;&gt;HotSpot中方法区的演进&lt;/h3&gt;
+&lt;p&gt;&lt;em&gt;在jdk7及以前，习惯上把方法区，称为永久代。jdk8开始，使用元空间取代了永久代。&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;JDK 1.8后，&lt;strong&gt;元空间存放在堆外内存（本地内存）&lt;/strong&gt; 中&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;本质上，&lt;em&gt;&lt;strong&gt;方法区和永久代并不等价，仅是对hotspot而言的&lt;/strong&gt;&lt;/em&gt; 。&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;《Java虚拟机规范》对如何实现方法区，不做统一要求&lt;/em&gt;。例如：BEAJRockit / IBM J9 中不存在永久代的概念。&lt;/p&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;3&#34;&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626405330965.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;p&gt;现在来看，当年使用永久代，不是好的idea。导致Java程序更容易oom（超过&lt;code&gt;-XX:MaxPermsize&lt;/code&gt;上限）,永久代使用的是JVM的内存。&lt;/p&gt;
+&lt;p&gt;而到了JDK8，终于完全废弃了永久代的概念，改用与JRockit、J9一样&lt;strong&gt;在本地内存中实现的元空间&lt;/strong&gt;（Metaspace）来代替&lt;/p&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;4&#34;&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626405434474.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;p&gt;元空间的本质和永久代类似，都是对JVM规范中方法区的实现。不过元空间与永久代最大的区别在于：&lt;font color=&#34;red&#34;&gt;&lt;strong&gt;元空间不在虚拟机设置的内存中，而是使用本地内存&lt;/strong&gt;&lt;/font&gt;&lt;/p&gt;
+&lt;p&gt;永久代、元空间二者并不只是名字变了，内部结构也调整了&lt;/p&gt;
+&lt;p&gt;根据《Java虚拟机规范》的规定，如果方法区无法满足新的内存分配需求时，将抛出OOM异常&lt;/p&gt;
+&lt;h2 id=&#34;方法区的大小设置与oom&#34;&gt;方法区的大小设置与OOM&lt;/h2&gt;
+&lt;p&gt;方法区的大小不必是固定的，jvm可以根据应用的需要动态调整。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;jdk7及以前：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;-XX:PermSize&lt;/code&gt;来设置永久代初始分配空间。&lt;em&gt;&lt;strong&gt;默认值是20.75M&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;-XX:MaxPermSize&lt;/code&gt;来设定永久代最大可分配空间。&lt;em&gt;&lt;strong&gt;32位机器默认是64M，64位机器模式是82M&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;当JVM加载的类信息容量超过了这个值，会报异常&lt;code&gt;OutOfMemoryError:PermGen space&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;jdk8及以后：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;元数据区大小可以使用参数&lt;code&gt;-XX:MetaspaceSize&lt;/code&gt;和&lt;code&gt;-XX:MaxMetaspaceSize&lt;/code&gt;指定，替代上述原有的两个参数。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;默认值依赖于平台。Windows下，&lt;code&gt;-XX:MetaspaceSize&lt;/code&gt;是21M，&lt;code&gt;-XX:MaxMetaspaceSize&lt;/code&gt;的值是-1，即没有限制.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;与永久代不同，如果不指定大小，默认情况下，虚拟机会耗尽所有的可用系统内存。 如果元数据区发生溢出，虚拟机一样会拋出异常&lt;code&gt;OutOfMemoryError:Metaspace&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;-XX:MetaspaceSize&lt;/code&gt;：设置初始的元空间大小。对于一个64位的服务器端JVM来说， 其默认的&lt;code&gt;-XX:MetaspaceSize=21MB&lt;/code&gt;.这就是&lt;strong&gt;初始的高水位线&lt;/strong&gt;，&lt;em&gt;一旦触及这个水位线，Full GC将会被触发并卸载没用的类（即这些类对应的类加载器不再存活），然后这个高水位线将会重置。&lt;/em&gt; 新的高水位线的值取决于GC后释放了多少元空间。如果释放的空间不足，那么在不超过&lt;code&gt;MaxMetaspaceSize&lt;/code&gt;时，适当提高该值。如果释放空间过多，则适当降低该值。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;em&gt;如果初始化的高水位线设置过低，上述高水位线调整情况会发生很多次&lt;/em&gt;。通过垃圾回收器的日志可以观察到Full GC多次调用。&lt;strong&gt;为了避免频繁地GC，建议将-XX:MetaspaceSize设置为一个相对较高的值。&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;如何解决这些oom&#34;&gt;如何解决这些OOM&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;要解决OOM异常或heap space的异常，一般的手段是首先通过内存映像分析工具（如Ec1ipse Memory Analyzer）对dump出来的堆转储快照进行分析，重点是确认内存中的对象是否是必要的，也就是要先分清楚到底是出现了&lt;code&gt;内存泄漏（Memory Leak）&lt;/code&gt;还是&lt;code&gt;内存溢出（Memory Overflow）&lt;/code&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;内存泄漏就是 有大量的引用指向某些对象，但是这些对象以后不会使用了，但是因为它们还和GC ROOT有关联，所以导致以后这些对象也不会被回收，这就是&lt;strong&gt;内存泄漏&lt;/strong&gt;的问题&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;em&gt;如果是内存泄漏，可进一步通过工具查看泄漏对象到GC Roots的引用链&lt;/em&gt;。于是就能找到泄漏对象是通过怎样的路径与GCRoots相关联并导致垃圾收集器无法自动回收它们的。掌握了泄漏对象的类型信息，以及GCRoots引用链的信息，就可以比较准确地定位出泄漏代码的位置。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;如果不存在内存泄漏，换句话说就是内存中的对象确实都还必须存活着，那就应当检查虚拟机的堆参数（-Xmx与-Xms），与机器物理内存对比看是否还可以调大，从代码上检查是否存在某些对象生命周期过长、持有状态时间过长的情况，尝试减少程序运行期的内存消耗。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class MetaSpacesOomTest extends ClassLoader {
+
+    public static void main(String[] args) {
+        int j = 0;
+        try {
+            MetaSpacesOomTest test = new MetaSpacesOomTest();
+            for (int i = 0; i &amp;lt; 1000000; i++) {
+                //创建ClassWriter对象，用于生成类的二进制字节码
+                ClassWriter classWriter = new ClassWriter(0);
+                //指明版本号，修饰符，类名，包名，父类，接口
+                classWriter.visit(Opcodes.V1_6, Opcodes.ACC_PUBLIC, &amp;quot;Class&amp;quot; + i, null, &amp;quot;java/lang/Object&amp;quot;, null);
+                byte[] code = classWriter.toByteArray();
+                //类的加载
+                test.defineClass(&amp;quot;Class&amp;quot; + i, code, 0, code.length);
+                j++;
+            }
+        } finally {
+            System.out.println(j);
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;jdk7 环境下编译，配置VM参数&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;-XX:PermSize=10m -XX:MaxPermSize=10m
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;执行，查看输出结果&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;10098
+Exception in thread &amp;quot;main&amp;quot; java.lang.OutOfMemoryError: PermGen space
+	at java.lang.ClassLoader.defineClass(ClassLoader.java:800)
+	at java.lang.ClassLoader.defineClass(ClassLoader.java:643)
+	at metaspace.MetaSpacesOomTest.main(MetaSpacesOomTest.java:24)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;内部结构&#34;&gt;内部结构&lt;/h2&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;5&#34;&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626440189632.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;h3 id=&#34;方法区method-area存储什么&#34;&gt;方法区（Method Area）存储什么？&lt;/h3&gt;
+&lt;p&gt;《深入理解Java虚拟机》书中对方法区存储内容描述如下：它用于存储已被虚拟机加载的&lt;font color=&#34;red&#34;&gt;&lt;strong&gt;类型信息、常量、静态变量、即时编译器编译后的代码缓存&lt;/strong&gt;&lt;/font&gt;等。&lt;/p&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;6&#34;&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626440287783.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;p&gt;&lt;em&gt;随着JDK的变更，虚拟机规范也由变化，上面大的存储内容可能会有变化&lt;/em&gt;&lt;/p&gt;
+&lt;h4 id=&#34;类型信息&#34;&gt;类型信息&lt;/h4&gt;
+&lt;p&gt;对每个加载的类型（&lt;em&gt;类class、接口interface、枚举enum、注解annotation&lt;/em&gt;），JVMM必须在方法区中存储以下类型信息：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;这个类型的完整有效名称（全名=包名.类名）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;这个类型直接父类的完整有效名（对于interface或是java.lang.object，都没有父类）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;这个类型的修饰符（public，abstract，final的某个子集）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;这个类型直接接口的一个有序列表&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;字节码文件在由类加载子系统加载进JVM时，会在方法区的类型信息中存储加载该类的ClassLoader信息，ClassLoader作为Java中的一个类，也会在自己的类型信息记录加载了哪些类，共后续GC使用&lt;/p&gt;
+&lt;h4 id=&#34;域信息&#34;&gt;域信息&lt;/h4&gt;
+&lt;p&gt;JVM必须在方法区中保存类型的所有&lt;strong&gt;域的相关信息&lt;/strong&gt;以及&lt;strong&gt;域的声明顺序&lt;/strong&gt;*。&lt;/p&gt;
+&lt;p&gt;域的相关信息包括：&lt;strong&gt;域名称、域类型、域修饰符（public，private，protected，static，final，volatile，transient的某个子集）&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;方法method信息&#34;&gt;方法（Method）信息&lt;/h3&gt;
+&lt;p&gt;JVM必须保存所有方法的以下信息，同域信息一样&lt;strong&gt;包括声明顺序&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;方法名称&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;方法的返回类型（或void）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;方法参数的数量和类型（按顺序）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;方法的修饰符（public，private，protected，static，final，synchronized，native，abstract的一个子集）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;方法的字节码（bytecodes）、操作数栈、局部变量表及大小（abstract和native方法除外）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;异常表（abstract和native方法除外）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;每个异常处理的开始位置、结束位置、代码处理在程序计数器中的偏移地址、被捕获的异常类的常量池索引&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;non-final的类变量&#34;&gt;non-final的类变量&lt;/h3&gt;
+&lt;p&gt;静态变量和类关联在一起，随着类的加载而加载，他们成为类数据在逻辑上的一部分&lt;/p&gt;
+&lt;p&gt;类变量被类的所有实例共享，即使没有类实例时，你也可以访问它&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class MethodAreaTest {
+    public static void main(String[] args) {
+        Order order = null;
+        order.hello();
+        System.out.println(order.count);
+    }
+}
+
+class Order {
+    public static int count = 1;
+    public static final int number = 2;
+
+
+    public static void hello() {
+        System.out.println(&amp;quot;hello!&amp;quot;);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;全局常量 全局常量就是使用 static final 进行修饰。被声明为final的类变量的处理方法则不同，每个全局常量在编译的时候就会被分配了。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;类变量在编译时会把赋值语句写入&lt;code&gt;&amp;lt;clinit&amp;gt;()&lt;/code&gt;,在初始化阶段才能正确赋值。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt; public static int count;
+    descriptor: I
+    flags: ACC_PUBLIC, ACC_STATIC
+
+  public static final int number;
+    descriptor: I
+    flags: ACC_PUBLIC, ACC_STATIC, ACC_FINAL
+    ConstantValue: int 2
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;运行时常量池-vs-常量池&#34;&gt;运行时常量池 VS 常量池&lt;/h3&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;7&#34;&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626490559226.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;方法区，内部包含了&lt;strong&gt;运行时常量池&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;字节码文件，内部包含了&lt;strong&gt;常量池&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;要弄清楚方法区，需要理解清楚ClassFile，因为加载类的信息都在方法区。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;要弄清楚方法区的运行时常量池，需要理解清楚ClassFile中的常量池。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;常量池&#34;&gt;常量池&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626491120129.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;br&gt;
+一个有效的字节码文件中除了包含类的版本信息、字段、方法以及接口等描述符信息外，还包含一项信息就是&lt;strong&gt;常量池表（Constant Pool Table），包括各种字面量和对类型、域和方法的符号引用&lt;/strong&gt;&lt;/p&gt;
+&lt;h4 id=&#34;为什么需要常量池&#34;&gt;为什么需要常量池&lt;/h4&gt;
+&lt;p&gt;一个java源文件中的类、接口，编译后产生一个字节码文件。而Java中的字节码需要数据支持，通常这种数据会很大以至于不能直接存到字节码里，换另一种方式，可以存到常量池，这个字节码包含了指向常量池的引用。r在动态链接的时候会用到运行时常量池，之前有介绍。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class SimpleClass {
+    public void sayHello() {
+        System.out.println(&amp;quot;hello&amp;quot;);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626491492773.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;br&gt;
+虽然上述代码只有128字节，但是里面却使用了String、System、PrintStream及Object等结构。这里的代码量其实很少了，如果代码多的话，引用的结构将会更多，这里就需要用到常量池了。&lt;/p&gt;
+&lt;h4 id=&#34;常量池中有什么&#34;&gt;常量池中有什么&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;数量值&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;字符串值&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;类引用&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;字段引用&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;方法引用&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;小结&#34;&gt;小结&lt;/h4&gt;
+&lt;p&gt;常量池、可以看做是一张表，虚拟机指令根据这张常量表找到要执行的类名、方法名、参数类型、字面量等类型. 常量池食材，字节码菜谱。&lt;/p&gt;
+&lt;h3 id=&#34;运行时常量池&#34;&gt;运行时常量池&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;运行时常量池（Runtime Constant Pool）是方法区的一部分。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;常量池表（Constant Pool Table）是Class文件的一部分，&lt;font color=&#34;red&#34;&gt;&lt;strong&gt;用于存放编译期生成的各种字面量与符号引用&lt;/strong&gt;&lt;/font&gt;， &lt;font color=&#34;blue&#34;&gt;&lt;em&gt;这部分内容将在类加载后存放到方法区的运行时常量池中&lt;/em&gt; &lt;/font&gt;。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;运行时常量池，在加载类和接口到虚拟机后，就会创建对应的运行时常量池。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;JVM为每个已加载的类型（类或接口）都维护一个常量池。池中的数据项像数组项一样，是通过索引访问的。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;运行时常量池中包含多种不同的常量，包括编译期就已经明确的数值字面量，也包括到运行期解析后才能够获得的方法或者字段引用。此时不再是常量池中的符号地址了，这里换为真实地址。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;运行时常量池，相对于Class文件常量池的另一重要特征是：&lt;font color=&#34;red&#34;&gt;具备动态性&lt;/font&gt;。例如，&lt;code&gt;String#intern()&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;运行时常量池类似于传统编程语言中的符号表（symboltable），但是它所包含的数据却比符号表要更加丰富一些。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;当创建类或接口的运行时常量池时，如果构造运行时常量池所需的内存空间超过了方法区所能提供的最大值，则JVM会抛OutOfMemoryError异常。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;示例&#34;&gt;示例&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class MethodAreaDemo {
+    public static void main(String args[]) {
+        int x = 500;
+        int y = 100;
+        int a = x / y;
+        int b = 50;
+        System.out.println(a+b);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;font color=&#34;red&#34;&gt;&lt;em&gt;&lt;strong&gt;字节码执行过程展示：&lt;/strong&gt;&lt;/em&gt;&lt;/font&gt;&lt;br&gt;
+&lt;img src=&#34;http://violet404.github.io//post-images/1626493337779.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;br&gt;
+&lt;img src=&#34;http://violet404.github.io//post-images/1626493660278.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;br&gt;
+&lt;img src=&#34;http://violet404.github.io//post-images/1626493667932.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;br&gt;
+&lt;img src=&#34;http://violet404.github.io//post-images/1626493675648.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;br&gt;
+&lt;img src=&#34;http://violet404.github.io//post-images/1626493688060.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;br&gt;
+&lt;img src=&#34;http://violet404.github.io//post-images/1626493696210.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;br&gt;
+&lt;img src=&#34;http://violet404.github.io//post-images/1626493704585.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;br&gt;
+&lt;img src=&#34;http://violet404.github.io//post-images/1626493713860.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;br&gt;
+&lt;img src=&#34;http://violet404.github.io//post-images/1626493718951.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;br&gt;
+&lt;img src=&#34;http://violet404.github.io//post-images/1626493816533.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;br&gt;
+&lt;img src=&#34;http://violet404.github.io//post-images/1626493838159.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;br&gt;
+&lt;img src=&#34;http://violet404.github.io//post-images/1626494059735.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;br&gt;
+&lt;img src=&#34;http://violet404.github.io//post-images/1626494064181.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;br&gt;
+&lt;img src=&#34;http://violet404.github.io//post-images/1626494075461.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;br&gt;
+&lt;img src=&#34;http://violet404.github.io//post-images/1626494086627.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;方法区的演进细节&#34;&gt;方法区的演进细节&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;首先明确：只有Hotspot才有永久代。BEA JRockit、IBMJ9等来说，是不存在永久代的概念的。原则上如何实现方法区属于虚拟机实现细节，不受《Java虚拟机规范》管束，并不要求统一&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Hotspot中方法区的变化：&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;JDK1.6及以前&lt;/th&gt;
+&lt;th&gt;有永久代，静态变量存储在永久代上&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;JDK1.7&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;有永久代，但已经逐步 “去永久代”，字符串常量池，静态变量移除，保存在堆中&lt;/strong&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;JDK1.8&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;无永久代，类型信息，字段，方法，常量保存在本地内存的元空间，但字符串常量池、静态变量仍然在堆中。&lt;/strong&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;8&#34;&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626495066417.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;9&#34;&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626495089059.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;10&#34;&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626495116167.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;h3 id=&#34;为什么永久代要被元空间替代&#34;&gt;为什么永久代要被元空间替代？&lt;/h3&gt;
+&lt;p&gt;JRockit是和HotSpot融合后的结果，因为JRockit没有永久代，所以他们不需要配置永久代。&lt;/p&gt;
+&lt;p&gt;随着Java8的到来，HotSpot VM中再也见不到永久代了。但是这并不意味着类的元数据信息也消失了。这些数据被移到了一个与堆不相连的本地内存区域，这个区域叫做元空间（Metaspace）。&lt;/p&gt;
+&lt;p&gt;由于类的元数据分配在本地内存中，元空间的最大可分配空间就是系统可用内存空间，这项改动是很有必要的，原因有：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;为永久代设置空间大小是很难确定的。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;在某些场景下，如果动态加载类过多，容易产生Perm区的oom。比如某个实际Web工程中，因为功能点比较多，在运行过程中，要不断动态加载很多类，经常出现致命错误。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;Exception in thread‘dubbo client x.x connector&#39;java.lang.OutOfMemoryError:PermGen space
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;元空间和永久代之间最大的区别在于：元空间并不在虚拟机中，而是使用本地内存。 因此，默认情况下，元空间的大小仅受本地内存限制。&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;对永久代进行调优是很困难的。主要是为了降低Full GC&lt;br&gt;
+《Java虚拟机规范》对方法区的约束是非常宽松的，提到过可以不要求虚拟机在方法区中实现垃圾收集。事实上也确实有未实现或未能完整实现方法区类型卸载的收集器存在（如JDK11时期的ZGC收集器就不支持类卸载）。 一般来说这个区域的回收效果比较难令人满意，尤其是类型的卸载，条件相当苛刻。但是这部分区域的回收有时又确实是必要的。以前Sun公司的Bug列表中，曾出现过的若干个严重的Bug就是由于低版本的HotSpot虚拟机对此区域未完全回收而导致内存泄漏&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;方法区的垃圾收集主要回收两部分内容：&lt;strong&gt;常量池中废弃的常量和不在使用的类型&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;stringtable-为什么要调整&#34;&gt;StringTable 为什么要调整？&lt;/h3&gt;
+&lt;p&gt;Jdk7中将StringTable放到了堆空间中。因为永久代的回收效率很低，在Full GC的时候才会触发。而Full GC 是老年代的空间不足、永久代不足时才会触发。这就导致了StringTable回收效率不高。而我们开发中会有大量的字符串被创建，回收效率低，导致永久代内存不足。放到堆里，能及时回收内存.&lt;/p&gt;
+&lt;h3 id=&#34;静态变量存在哪&#34;&gt;静态变量存在哪?&lt;/h3&gt;
+&lt;h4 id=&#34;静态引用对应的对象事中都是存放在对空间中的&#34;&gt;静态引用对应的对象事中都是存放在对空间中的&lt;/h4&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class StaticFieldTest {
+
+    private static byte[] arr = new byte[1024 * 1024 * 100];
+
+    public static void main(String[] args) {
+
+        System.out.println(StaticFieldTest.arr);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;添加JVM参数&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;-Xms200M -Xmx200M -XX:PermSize=300M -XX:MaxPermSize=300M -XX:+PrintGCDetails
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;JDK7环境下编译执行&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;[B@3a0aaa10
+Heap
+ PSYoungGen      total 60416K, used 4191K [0x00000000fbd00000, 0x0000000100000000, 0x0000000100000000)
+  eden space 52224K, 8% used [0x00000000fbd00000,0x00000000fc117ee0,0x00000000ff000000)
+  from space 8192K, 0% used [0x00000000ff800000,0x00000000ff800000,0x0000000100000000)
+  to   space 8192K, 0% used [0x00000000ff000000,0x00000000ff000000,0x00000000ff800000)
+ ParOldGen       total 136704K, used 102400K [0x00000000f3780000, 0x00000000fbd00000, 0x00000000fbd00000)
+  object space 136704K, 74% used [0x00000000f3780000,0x00000000f9b80010,0x00000000fbd00000)
+ PSPermGen       total 307200K, used 3242K [0x00000000e0b80000, 0x00000000f3780000, 0x00000000f3780000)
+  object space 307200K, 1% used [0x00000000e0b80000,0x00000000e0eaab50,0x00000000f3780000)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;改变VM参数配置&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;-Xms200M -Xmx200M -XX:MetaspaceSize=300M -XX:MaxMetaspaceSize=300M -XX:+PrintGCDetails
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;切换JDK8环境，编译执行&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;[B@1b6d3586
+Heap
+ PSYoungGen      total 59904K, used 4137K [0x00000000fbd80000, 0x0000000100000000, 0x0000000100000000)
+  eden space 51712K, 8% used [0x00000000fbd80000,0x00000000fc18a618,0x00000000ff000000)
+  from space 8192K, 0% used [0x00000000ff800000,0x00000000ff800000,0x0000000100000000)
+  to   space 8192K, 0% used [0x00000000ff000000,0x00000000ff000000,0x00000000ff800000)
+ ParOldGen       total 136704K, used 102400K [0x00000000f3800000, 0x00000000fbd80000, 0x00000000fbd80000)
+  object space 136704K, 74% used [0x00000000f3800000,0x00000000f9c00010,0x00000000fbd80000)
+ Metaspace       used 3304K, capacity 4496K, committed 4864K, reserved 1056768K
+  class space    used 359K, capacity 388K, committed 512K, reserved 1048576K
+
+Process finished with exit code 0
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;静态引用本身存储位置&#34;&gt;静态引用本身存储位置&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;public class StaticObjTest {
+    static class Test {
+        static ObjectHolder staticObj = new ObjectHolder();
+        ObjectHolder instanceObj = new ObjectHolder();
+
+        void foo() {
+            ObjectHolder localObj = new ObjectHolder();
+            System.out.println(&amp;quot;done&amp;quot;);
+        }
+    }
+
+    private static class ObjectHolder {
+    }
+
+    public static void main(String[] args) {
+        Test test = new StaticObjTest.Test();
+        test.foo();
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;staticObj随着Test的类型信息存放在方法区，instance0bj 随着Test的对象实例存放在Java堆，localobject则是存放在foo（）方法栈帧的局部变量表中。&lt;br&gt;
+&lt;img src=&#34;http://violet404.github.io//post-images/1626498477790.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;测试发现：三个对象的数据在内存中的地址都落在Eden区范围内，所以结论：只要是对象实例必然会在Java堆中分配。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;接着，找到了一个引用该staticObj对象的地方，是在一个java.lang.Class的实例里，并且给出了这个实例的地址，通过Inspector查看该对象实例，可以清楚看到这确实是一个&lt;br&gt;
+java.lang.Class类型的对象实例，里面有一个名为staticObj的实例字段：&lt;br&gt;
+&lt;img src=&#34;http://violet404.github.io//post-images/1626498541173.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;从《Java 虛拟机规范》所定义的概念模型来看，所有 Class 相关的信息都应该存放在方法区之中，但方法区该如何实现，《Java 虚拟机规范》并未做出规定，这就成了一件允许不同虚拟机自己灵活把握的事情。JDK7 及其以后版本的 Hotspot 虚拟机选择把静态变量与类型在 Java 语言一端的映射 Class 对象存放在一起，存储于Java 堆之中，从我们的实验中也明确验证了这一点.（&lt;font color=&#34;red&#34;&gt;&lt;em&gt;&lt;strong&gt;这个实验，由于使用JDK8编译执行，使用JDK11版本的JHSDB工具打开会报错，等后续用相同版本测试&lt;/strong&gt;&lt;/em&gt;&lt;/font&gt;）&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;方法区的垃圾回收&#34;&gt;方法区的垃圾回收&lt;/h2&gt;
+&lt;p&gt;《Java 虚拟机规范》对方法区的约束是非常宽松的，提到过可以不要求虚拟机在方法区中实现垃圾收集。事实上也确实有未实现或未能完整实现方法区类型卸载的收集器存在（如 JDK11 时期的 ZGC 收集器就不支持类卸载）&lt;/p&gt;
+&lt;p&gt;一般来说&lt;font color=&#34;blue&#34;&gt;&lt;em&gt;这个区域的回收效果比较难令人满意，尤其是类型的卸载，条件相当苛刻&lt;/em&gt;&lt;/font&gt;。但是这部分区域的回收有时又确实是必要的。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;方法区的垃圾收集主要回收两部分内容：常量池中废奔的常量和不再使用的类型&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;方法区内常量池之中主要存放的两大类常量：&lt;strong&gt;字面量和符号引用&lt;/strong&gt;。字面量比较接近Java语言层次的常量概念，如文本字符串、被声明为final的常量值等。而符号引用则属于编译原理方面的概念，包括下面三类常量：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;类和接口的全限定名&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;字段的名称和描述符&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;方法的名称和描述符&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;HotSpot虚拟机对常量池的回收策略是很明确的，&lt;strong&gt;只要常量池中的常量没有被任何地方引用，就可以被回收。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;回收废弃常量与回收Java堆中的对象非常类似。（关于常量的回收比较简单，重点是类的回收）&lt;/p&gt;
+&lt;p&gt;判定一个常量是否“废弃”还是相对简单，而要判定一个类型是否属于“不再被使用的类”的条件就比较苛刻了。需要同时满足下面三个条件：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;该类所有的实例都已经被回收&lt;/strong&gt;，也就是Java堆中不存在该类及其任何派生子类的实例。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;加载该类的类加载器已经被回收&lt;/strong&gt;，这个条件除非是经过精心设计的可替换类加载器的场景，如OSGi、JSP的重加载等，否则通常是很难达成的。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;该类对应的java.lang.Class对象没有在任何地方被引用，无法在任何地方通过反射访问该类的方法&lt;/strong&gt;。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Java虚拟机被允许对&lt;em&gt;满足上述三个条件的无用类进行回收，这里说的仅仅是&lt;font color=&#34;red&#34;&gt;“被允许”&lt;/font&gt;，而并不是和对象一样，没有引用了就必然会回收。&lt;/em&gt; 关于是否要对类型进行回收，HotSpot虚拟机提供了&lt;code&gt;-Xnoclassgc&lt;/code&gt;参数进行控制，还可以使用&lt;code&gt;-verbose:class&lt;/code&gt; 以及 &lt;code&gt;-XX:+TraceClassLoading&lt;/code&gt;、&lt;code&gt;-XX:+TraceClassUnLoading&lt;/code&gt;查看类加载和卸载信息&lt;/p&gt;
+&lt;p&gt;在大量使用反射、动态代理、CGLib等字节码框架，动态生成JSP以及OSGi这类频繁自定义类加载器的场景中，&lt;em&gt;通常都需要Java虚拟机具备类型卸载的能力，以保证不会对方法区造成过大的内存压力。&lt;/em&gt;&lt;/p&gt;
+&lt;h2 id=&#34;总结&#34;&gt;总结&lt;/h2&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;11&#34;&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626499542216.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+">JVM 内存与垃圾回收（四）方法区</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="http://violet404.github.io/post/jvm-3/"" data-c="
+          &lt;h2 id=&#34;堆区概述&#34;&gt;堆区概述&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;一个JVM实例只存在一个堆内存，堆也是Java内存管理的核心区域&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Java堆区在JVM启动的时候即被创建，其空间大小也就确定了。&lt;em&gt;&lt;strong&gt;堆内存的大小是可以调节的。&lt;font color=&#34;red&#34;&gt;-Xms 初始堆内存大小 -Xmx 最大堆内存大小&lt;/font&gt;&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;!-- more --&gt; 
+&lt;ul&gt;
+&lt;li&gt;可视化堆内存空间 &lt;code&gt;jvisualvm&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;1&#34;&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626324843221.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;《Java虚拟机规范》规定，堆可以处于物理上不连续的内存空间中，但在逻辑上它应该被视为连续的。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;并不是堆所有的空间都是共享的，可以按线程划分&lt;code&gt;TLAB缓存区&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;The heap is the run-time data area from which memory for all class instances and arrays is allocated. 《Java虚拟机规范》规定，所有的对象实例与数组都应该分配在堆上。但其实并不绝对，某些情况可能在栈上分配&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;栈帧中的运行时常量池保存引用，这个引用指向对象、数组在堆中的位置。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;方法结束后，堆中的对象并不是马上移除，仅仅在GC时才尝试回收这部分空间&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;堆，是GC（Garbage Collection，垃圾收集器）&lt;font color=&#34;red&#34;&gt;&lt;strong&gt;执行垃圾回收的重点区域&lt;/strong&gt;&lt;/font&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;堆内存空间划分&#34;&gt;堆内存空间划分&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;JDK 7 及以前逻辑上划分3部分&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;新生代 &lt;code&gt;Young Generation Space&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;老年代 &lt;code&gt;Tenure Generation Space&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;永久代 &lt;code&gt;Permanent Space&lt;/code&gt;&lt;br&gt;
+&lt;img src=&#34;http://violet404.github.io//post-images/1626334916207.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;JDK 8及以后逻辑划也分为3部分&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;新生代 &lt;code&gt;Young Generation Space&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;老年代 &lt;code&gt;Tenure Generation Space&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;元空间 &lt;code&gt;Meta Space&lt;/code&gt;&lt;br&gt;
+&lt;img src=&#34;http://violet404.github.io//post-images/1626334930675.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;堆空间大小设置与查看&#34;&gt;堆空间大小设置与查看&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Java堆区用于存储Java对象实例，那么堆的大小在JVM启动时就已经设定好了&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;-Xms&lt;/code&gt;、&lt;code&gt;-XX:InitialHeapSize&lt;/code&gt; 堆区初始内存大小&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;-Xmx&lt;/code&gt;、&lt;code&gt;-XX:MaxHeapSize&lt;/code&gt; 堆区最大内存大小&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;font color=&#34;red&#34;&gt;&lt;strong&gt;为了能够在Java垃圾回收机制清理堆区后不需要重新分配计算堆大小，提高性能，&lt;/strong&gt;&lt;/font&gt;&lt;em&gt;&lt;strong&gt;通常会将&lt;code&gt;-Xms&lt;/code&gt;、&lt;code&gt;-Xmx&lt;/code&gt; 两个参数设置为相同的值&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;em&gt;&lt;strong&gt;默认情况下，初始堆区大小 = 物理内存 / 64 ; 最大堆区大小 = 物理内存 / 4&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;//Runtime#totalMemory(),Runtime#maxMemory()获取内存时只会计算1个Survivor区大小
+public class HeapSpaceInitialTest {
+    
+    public void method1() {
+
+        Runtime runtime = Runtime.getRuntime();
+
+        long totalMemory = runtime.totalMemory() / (1024 * 1024);
+        System.out.println(&amp;quot;-Xms : &amp;quot; + totalMemory);
+
+        long maxMemory = runtime.maxMemory() / (1024 * 1024);
+        System.out.println(&amp;quot;-Xmx: &amp;quot; + maxMemory);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;如何查看堆内存的内存分配情况&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;jps&lt;/code&gt; 查看当前系统正在运行的Java进程&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;jstat -gc pid&lt;/code&gt; 查看指定Java进程&lt;code&gt;GC&lt;/code&gt;时的内存分配情况&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;-XX:+PrintGCDetails&lt;/code&gt; Java程序运行结束后打印&lt;code&gt;GC&lt;/code&gt;详情&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;2&#34;&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626327015214.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;h2 id=&#34;oom异常示例与说明&#34;&gt;OOM异常示例与说明&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;// -Xms512M -Xmx512M
+public class OomTest {
+
+    private byte[] bytes;
+    
+    public OomTest(int length) {
+        this.bytes = new byte[length];
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        List&amp;lt;OomTest&amp;gt; list = new ArrayList&amp;lt;&amp;gt;();
+        while (true) {
+            TimeUnit.MILLISECONDS.sleep(20);
+            list.add(new OomTest(new Random().nextInt(1024 * 1024)));
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626331569786.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;br&gt;
+&lt;img src=&#34;http://violet404.github.io//post-images/1626332678274.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;br&gt;
+&lt;img src=&#34;http://violet404.github.io//post-images/1626332684910.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;新生代与老年代&#34;&gt;新生代与老年代&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;存储在JVM的对象按照生命周期分为两种：一种朝生夕死，一种周期较长&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;堆区：新生代与老年代，其中新生代又可以划分为Eden空间、Survivor0空间和Survivor1空间（有时也叫做from区、to区）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;新生代老年代占比 配置参数：&lt;code&gt;-XX:NewRatio&lt;/code&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;默认情况下 &lt;code&gt;-XX:NewRatio=2&lt;/code&gt; , 新生代 ：老年代 = 1 ：2，&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;查看运行中的参数 &lt;code&gt;jinfo -flag NewRatio pid&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;新生代中&lt;code&gt;Eden&lt;/code&gt;与&lt;code&gt;Survivor&lt;/code&gt;比例通过&lt;code&gt;SurvivoRatio&lt;/code&gt;配置&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;默认&lt;code&gt;Eden:Survivor0:Survivor1=8:1:1&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;-XX:-UseAdaptiveSizePolicy&lt;/code&gt; 关闭新生代自适应内存分配策略&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;-XX:+UseAdaptiveSizePolicy&lt;/code&gt; 开启新生代自适应内存分配策略&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;自适应策略默认开启，所以默认情况下&lt;code&gt;SurvivorRatio&lt;/code&gt;可能不是8&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;几乎所有的Java对象都是在&lt;code&gt;Eden&lt;/code&gt;区被new出来的&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;绝大部分的Java对象都在新生代朝生夕死&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;新生代空间大小设置 &lt;code&gt;-Xmn&lt;/code&gt; 一般使用默认值就可以了&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;对象内存分配过程&#34;&gt;对象内存分配过程&lt;/h2&gt;
+&lt;p&gt;我们创建的对象，一般都是存放在Eden区的，当我们&lt;font color=&#34;red&#34;&gt;&lt;strong&gt;Eden区满了后，就会触发GC操作&lt;/strong&gt;&lt;/font&gt;，一般被称为 YGC / Minor GC操作。同时我们给每个对象设置了一个年龄计数器，每经历一次GC就涨一岁。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626340600737.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;br&gt;
+当我们进行一次垃圾收集后，红色的将会被回收，而绿色的还会被占用着，存放在S0(Survivor From)区。同时Eden区继续存放对象，当Eden区再次存满的时候，又会触发一个MinorGC操作，此时GC将会把 Eden和Survivor From中的对象 进行一次收集，把存活的对象放到 Survivor To区，同时让年龄 + 1&lt;br&gt;
+&lt;img src=&#34;http://violet404.github.io//post-images/1626340765166.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;br&gt;
+我们继续不断的进行对象生成 和 垃圾回收，当Survivor中的对象的年龄达到15的时候，将会触发一次 Promotion晋升的操作，也就是将年轻代中的对象 晋升到 老年代中&lt;br&gt;
+&lt;img src=&#34;http://violet404.github.io//post-images/1626340810671.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;代码演示对象分配过程&#34;&gt;代码演示对象分配过程&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class HeapAllocationTest {
+
+    byte[] buffer = new byte[new Random().nextInt(1024 * 200)];
+
+    public static void main(String[] args) throws InterruptedException {
+        ArrayList&amp;lt;HeapAllocationTest&amp;gt; list = new ArrayList&amp;lt;&amp;gt;();
+        while (true) {
+            list.add(new HeapAllocationTest());
+            Thread.sleep(10);
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;设置VM参数&lt;code&gt;-Xms300m -Xmx300m&lt;/code&gt;后运行，打开&lt;code&gt;jvisualvm&lt;/code&gt;&lt;br&gt;
+&lt;img src=&#34;http://violet404.github.io//post-images/1626343209304.gif&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;Exception in thread &amp;quot;main&amp;quot; java.lang.OutOfMemoryError: Java heap space
+	at dump.HeapAllocationTest.&amp;lt;init&amp;gt;(HeapAllocationTest.java:12)
+	at dump.HeapAllocationTest.main(HeapAllocationTest.java:17)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;minor-gcmajorgc-full-gc&#34;&gt;Minor GC，MajorGC、Full GC&lt;/h2&gt;
+&lt;p&gt;JVM在进行GC时，并非每次都对上面三个内存区域一起回收的，大部分时候回收的都是指新生代。针对Hotspot VM的实现，它里面的GC按照回收区域又分为两大种类型：一种是部分收集（&lt;code&gt;Partial GC&lt;/code&gt;），一种是整堆收集（&lt;code&gt;FullGC&lt;/code&gt;）&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;部分收集：不是完整收集整个Java堆的垃圾收集。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;新生代收集（&lt;code&gt;MinorGC/YoungGC&lt;/code&gt;）：只是新生代的垃圾收集&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;老年代收集（&lt;code&gt;MajorGC/OldGC&lt;/code&gt;）：只是老年代的圾收集。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;不过一般老年代垃圾收集都伴随着新生代的垃圾收集。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;很多时候&lt;code&gt;Major GC&lt;/code&gt;会和&lt;code&gt;Fu11GC&lt;/code&gt;混淆使用，需要具体分辨是老年代回收还是整堆回收&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;只有&lt;code&gt;CMSGC&lt;/code&gt;会有单独收集老年代的行为。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;混合收集（&lt;code&gt;MixedGC&lt;/code&gt;）：收集整个新生代以及部分老年代的垃圾收集。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;整堆收集（&lt;code&gt;FullGC&lt;/code&gt;）：收集整个Java堆和方法区的垃圾收集。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;在垃圾回收的过程中，出现&lt;code&gt;STW(stop the word)&lt;/code&gt;，暂停其它用户的线程，等垃圾回收结束，用户线程才恢复运行，而 &lt;strong&gt;&lt;code&gt;Major GC&lt;/code&gt; 和 &lt;code&gt;Full GC&lt;/code&gt;出现STW的时间，远大于Minor GC&lt;/strong&gt;。&lt;/p&gt;
+&lt;h3 id=&#34;minor-gc&#34;&gt;Minor GC&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;当年轻代空间（&lt;code&gt;Eden&lt;/code&gt;区）不足时，就会触发&lt;code&gt;MinorGC&lt;/code&gt;，&lt;code&gt;Survivor&lt;/code&gt;满不会引发&lt;code&gt;GC&lt;/code&gt;&lt;/strong&gt;。（每次Minor GC会清理年轻代的内存。）&lt;/p&gt;
+&lt;p&gt;因为Java对象大多都具备 朝生夕灭 的特性，所以Minor GC非常频繁，一般回收速度也比较快。&lt;br&gt;
+&lt;img src=&#34;http://violet404.github.io//post-images/1626345769145.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/p&gt;
+&lt;h3 id=&#34;major-gc&#34;&gt;Major GC&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;在老年代空间不足时，会先尝试触发&lt;code&gt;MinorGC&lt;/code&gt;。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;出现了&lt;code&gt;MajorGC&lt;/code&gt;，经常会伴随至少一次的&lt;code&gt;Minor GC&lt;/code&gt;（但非绝对的，在&lt;code&gt;Paralle1 Scavenge&lt;/code&gt;收集器的收集策略里就有直接进行MajorGC的策略选择过程）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;Major GC&lt;/code&gt;的速度一般会比&lt;code&gt;MinorGC&lt;/code&gt;慢10倍以上，&lt;code&gt;STW&lt;/code&gt;的时间更长。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;Major GC&lt;/code&gt;后，内存还不足，就报&lt;code&gt;OOM&lt;/code&gt;了&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;full-gc&#34;&gt;Full GC&lt;/h3&gt;
+&lt;p&gt;触发&lt;code&gt;FullGC&lt;/code&gt;执行的情况有如下五种：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;调用&lt;code&gt;System.gc()&lt;/code&gt;时，建议执行&lt;code&gt;FullGC&lt;/code&gt;，但是不必然执行&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;老年代空间不足&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;方法区空间不足&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;通过&lt;code&gt;Minor GC&lt;/code&gt;后进入老年代的平均大小大于老年代的可用内存&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;由&lt;code&gt;Eden&lt;/code&gt;区、&lt;code&gt;Survivor Spacee0(From Space)&lt;/code&gt;区向&lt;code&gt;Survivor Space1(To Space)&lt;/code&gt;区复制时，对象大小大于To Space可用内存，则把该对象转存到老年代，且老年代的可用内存小于该对象大小&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;说明：&lt;font color=&#34;red&#34;&gt;&lt;strong&gt;&lt;code&gt;Full GC&lt;/code&gt; 是开发或调优中尽量要避免的&lt;/strong&gt;&lt;/font&gt;。这样&lt;code&gt;STW&lt;/code&gt;暂时时间会短一些&lt;/p&gt;
+&lt;h2 id=&#34;gc-举例及日志分析&#34;&gt;GC 举例及日志分析&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class GCTest {
+
+    public static void main(String[] args) {
+        int i = 0;
+        try {
+            List&amp;lt;String&amp;gt; list = new ArrayList&amp;lt;&amp;gt;();
+            String a = &amp;quot;test&amp;quot;;
+            while (true) {
+                list.add(a);
+                a = a + a;
+                i++;
+            }
+        } catch (Exception e) {
+            e.getStackTrace();
+            System.out.println(&amp;quot;遍历次数&amp;quot; + i);
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;设置VM参数，并运行程序&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;-Xms10m -Xmx10m -XX:+PrintGCDetails
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;[GC (Allocation Failure) [PSYoungGen: 2038K-&amp;gt;496K(2560K)] 2038K-&amp;gt;884K(9728K), 0.0013052 secs] [Times: user=0.08 sys=0.02, real=0.00 secs] 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;[GC (Allocation Failure) [PSYoungGen&lt;/code&gt; 空间分配不足触发YGC&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;[PSYoungGen: 2038K-&amp;gt;496K(2560K)]&lt;/code&gt; YGC前后新生代空间变化，新生代共&lt;code&gt;2560K&lt;/code&gt;，回收前&lt;code&gt;2038K&lt;/code&gt;,YGC后&lt;code&gt;496K&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;2038K-&amp;gt;884K(9728K),&lt;/code&gt;整堆在YGC前后变化，整堆共&lt;code&gt;9728K&lt;/code&gt;,YGC之后空间占用由&lt;code&gt;2038K&lt;/code&gt;下降到&lt;code&gt;884K&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;0.0013052 secs&lt;/code&gt; YGC耗时&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;[Times: user=0.08 sys=0.02, real=0.00 secs]&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;[Full GC (Ergonomics) [PSYoungGen: 1634K-&amp;gt;0K(2560K)] [ParOldGen: 6508K-&amp;gt;4715K(7168K)] 8142K-&amp;gt;4715K(9728K), [Metaspace: 3298K-&amp;gt;3298K(1056768K)], 0.0060219 secs] [Times: user=0.13 sys=0.00, real=0.01 secs] 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;[Full GC (Ergonomics)&lt;/code&gt; Ergonomics触发FGC&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;[PSYoungGen: 1634K-&amp;gt;0K(2560K)]&lt;/code&gt; 新生代空间占用在FGC前后变化&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;[ParOldGen: 6508K-&amp;gt;4715K(7168K)]&lt;/code&gt; 老年代空间占用在FGC前后变化&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;[Metaspace: 3298K-&amp;gt;3298K(1056768K)]&lt;/code&gt; 元空间空间占用在FGC前后变化&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;堆空间分代思想&#34;&gt;堆空间分代思想&lt;/h2&gt;
+&lt;h3 id=&#34;为什么堆分代&#34;&gt;为什么堆分代&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;分代的唯一理由就是&lt;strong&gt;优化GC性能&lt;/strong&gt;。如果没有分代，那所有的对象都在一块，GC的时候要找到哪些对象没用，这样就会对堆的所有区域进行扫描。而很多对象都是朝生夕死的，如果分代的话，把新创建的对象放到某一地方，当GC的时候先把这块存储“朝生夕死”对象的区域进行回收，这样就会腾出很大的空间出来。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;内存分配策略&#34;&gt;内存分配策略&lt;/h3&gt;
+&lt;p&gt;如果对象在Eden出生并经过第一次Minor GC后仍然存活，并且能被Survivor容纳的话，将被移动到survivor空间中，并将对象年龄设为1。对象在survivor区中每熬过一次MinorGC，年龄就增加1岁，当它的年龄增加到一定程度（默认为15岁，其实每个JVM、每个GC都有所不同）时，就会被晋升到老年代&lt;/p&gt;
+&lt;p&gt;对象晋升老年代的年龄阀值，可以通过选项&lt;code&gt;-XX:MaxTenuringThreshold&lt;/code&gt;来设置&lt;/p&gt;
+&lt;p&gt;针对不同年龄段的对象分配原则如下所示：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;优先分配到Eden&lt;/strong&gt;&lt;br&gt;
+开发中比较长的字符串或者数组，会直接存在老年代，但是因为新创建的对象 都是 朝生夕死的，所以这个大对象可能也很快被回收，但是因为老年代触发Major GC的次数比 Minor GC要更少，因此可能回收起来就会比较慢&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;大对象直接分配到老年代&lt;/strong&gt;&lt;br&gt;
+尽量避免程序中出现过多的大对象&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;长期存活的对象分配到老年代&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;动态对象年龄判断&lt;/strong&gt;&lt;br&gt;
+如果Survivor区中相同年龄的所有对象大小的总和大于Survivor空间的一半，年龄大于或等于该年龄的对象可以直接进入老年代，无须等到MaxTenuringThreshold 中要求的年龄。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;空间分配担保： &lt;code&gt;-XX:HandlePromotionFailure&lt;/code&gt; 经过Minor GC后，所有的对象都存活，因为Survivor比较小，所以就需要将Survivor无法容纳的对象，存放到老年代中。&lt;/p&gt;
+&lt;h2 id=&#34;堆空间为每个线程分配的tlab&#34;&gt;堆空间为每个线程分配的TLAB&lt;/h2&gt;
+&lt;h3 id=&#34;堆空间都是共享的么&#34;&gt;堆空间都是共享的么？&lt;/h3&gt;
+&lt;p&gt;不一定，因为还有&lt;code&gt;TLAB&lt;/code&gt;这个概念，在堆中划分出一块区域，为每个线程所独占&lt;/p&gt;
+&lt;h3 id=&#34;为什么有tlab&#34;&gt;为什么有TLAB？&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;堆区是线程共享区域，任何线程都可以访问到堆区中的共享数据&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;由于对象实例的创建在JVM中非常频繁，因此在并发环境下从堆区中划分内存空间是线程不安全的&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;为避免多个线程操作同一地址，需要使用加锁等机制，进而影响分配速度。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;什么是tlab&#34;&gt;什么是TLAB&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;从内存模型而不是垃圾收集的角度，对Eden区域继续进行划分，&lt;strong&gt;JVM为每个线程分配了一个私有缓存区域，它包含在Eden空间内。&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;多线程同时分配内存时，使用TLAB可以&lt;em&gt;避免一系列的非线程安全问&lt;/em&gt;题，同时还能够提升内存分配的吞吐量，因此我们可以将这种内存分配方式称之为&lt;strong&gt;快速分配策略&lt;/strong&gt;。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;目前OpenJDK衍生出来的JVM都提供了TLAB的设计。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;尽管&lt;em&gt;不是所有的对象实例都能够在TLAB中成功分配内存&lt;/em&gt;，但&lt;strong&gt;JVM确实是将TLAB作为内存分配的首选&lt;/strong&gt;。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;在程序中，开发人员可以通过选项&lt;code&gt;-XX:UseTLAB&lt;/code&gt;设置是否开启TLAB空间。，默认情况下开启&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;默认情况下，TLAB空间的内存非常小，&lt;strong&gt;仅占有整个Eden空间的1%&lt;/strong&gt;，当然我们可以通过选项&lt;code&gt;-XX:TLABWasteTargetPercent&lt;/code&gt;设置TLAB空间所占用Eden空间的百分比大小。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;一旦对象在TLAB空间分配内存失败时，JVM就会尝试着通过&lt;em&gt;使用加锁机制&lt;/em&gt;确保数据操作的原子性，从而直接在Eden空间中分配内存。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;tlab分配过程&#34;&gt;TLAB分配过程&lt;/h3&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;3&#34;&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626362496896.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;h2 id=&#34;堆空间的参数设置&#34;&gt;堆空间的参数设置&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;-XX:+PrintFlagsInitial&lt;/code&gt;：查看所有的参数的默认初始值&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;-XX:+PrintFlagsFinal&lt;/code&gt;：查看所有的参数的最终值（可能会存在修改，不再是初始值）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;-Xms&lt;/code&gt;：初始堆空间内存（&lt;strong&gt;默认为物理内存的1/64&lt;/strong&gt;）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;-Xmx&lt;/code&gt;：最大堆空间内存（&lt;strong&gt;默认为物理内存的1/4&lt;/strong&gt;）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;-Xmn&lt;/code&gt;：设置新生代的大小。（初始值及最大值）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;-XX:NewRatio&lt;/code&gt;：配置新生代与老年代在堆结构的占比&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;-XX:SurvivorRatio&lt;/code&gt;：设置新生代中Eden和S0/S1空间的比例&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;-XX:MaxTenuringThreshold&lt;/code&gt;：设置新生代垃圾的最大年龄&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;-XX:+PrintGCDetails&lt;/code&gt;：输出详细的GC处理日志 打印gc简要信息：①&lt;code&gt;-XX:+PrintGC&lt;/code&gt; ② &lt;code&gt;- verbose:gc&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;-XX:HandlePromotionFalilure&lt;/code&gt;：是否设置空间分配担保&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;在发生&lt;code&gt;Minor GC&lt;/code&gt;之前，虚拟机会检查老年代最大可用的连续空间是否大于新生代所有对象的总空间。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;如果大于，则此次&lt;code&gt;Minor GC&lt;/code&gt;是安全的&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;如果小于，则虚拟机会查看&lt;code&gt;-XX:HandlePromotionFailure&lt;/code&gt;设置值是否允担保失败。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;如果&lt;code&gt;HandlePromotionFailure=true&lt;/code&gt;，那么会继续检查老年代最大可用连续空间是否大于历次晋升到老年代的对象的平均大小。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;如果大于，则尝试进行一次Minor GC，但这次Minor GC依然是有风险的；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;如果小于，则改为进行一次FullGC。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;如果&lt;code&gt;HandlePromotionFailure=false&lt;/code&gt;，则改为进行一次FullGC。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;在JDK6 Update24之后，&lt;code&gt;HandlePromotionFailure&lt;/code&gt;参数不会再影响到虚拟机的空间分配担保策略，观察OpenJDK中的源码变化，虽然源码中还定义了&lt;code&gt;HandlePromotionFailure&lt;/code&gt;参数，但是在代码中已经不会再使用它。JDK6 Update 24之后的规则变为&lt;strong&gt;只要老年代的连续空间大于新生代对象总大小或者历次晋升的平均大小就会进行Minor GC，否则将进行FullGC&lt;/strong&gt;。&lt;/p&gt;
+&lt;h2 id=&#34;逃逸分析&#34;&gt;逃逸分析&lt;/h2&gt;
+&lt;p&gt;在《深入理解Java虚拟机》中关于Java堆内存有这样一段描述：&lt;/p&gt;
+&lt;p&gt;随着JIT编译期的发展与&lt;strong&gt;逃逸分析技术&lt;/strong&gt;逐渐成熟，&lt;strong&gt;栈上分配、标量替换优化技术&lt;/strong&gt;将会导致一些微妙的变化，&lt;strong&gt;所有的对象都分配到堆上也渐渐变得不那么“绝对”了。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;在Java虚拟机中，对象是在Java堆中分配内存的，这是一个普遍的常识。但是，有一种特殊情况，那就是如果经过逃逸分析（&lt;code&gt;Escape Analysis&lt;/code&gt;）后发现，**一个对象并没有逃逸出方法的话，那么就可能被优化成栈上分配。这样就无需在堆上分配内存，也无须进行垃圾回收了。**这也是最常见的堆外存储技术。&lt;/p&gt;
+&lt;p&gt;此外，前面提到的基于OpenJDk深度定制的&lt;code&gt;TaoBaoVM&lt;/code&gt;，其中创新的GCIH（&lt;code&gt;GC invisible heap&lt;/code&gt;）技术实现&lt;code&gt;off-heap&lt;/code&gt;，&lt;em&gt;将生命周期较长的Java对象从heap中移至heap外，并且GC不能管理GCIH内部的Java对象，以此达到降低GC的回收频率和提升GC的回收效率的目的&lt;/em&gt;。&lt;/p&gt;
+&lt;p&gt;如何将堆上的对象分配到栈，需要使用&lt;strong&gt;逃逸分析&lt;/strong&gt;手段。&lt;/p&gt;
+&lt;p&gt;这是一种可以&lt;em&gt;有效减少Java程序中同步负载和内存堆分配压力的跨函数全局数据流分析算法&lt;/em&gt;。通过逃逸分析，Java Hotspot编译器能够分析出一个新的对象的引用的使用范围从而决定是否要将这个对象分配到堆上。&lt;strong&gt;逃逸分析的基本行为就是分析对象动态作用域&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;当一个对象在方法中被定义后，对象只在方法内部使用，则认为没有发生逃逸。&lt;/em&gt;&lt;br&gt;
+&lt;em&gt;当一个对象在方法中被定义后，它被外部方法所引用，则认为发生逃逸。&lt;/em&gt; 例如作为调用参数传递到其他地方中。&lt;/p&gt;
+&lt;h3 id=&#34;逃逸分析举例&#34;&gt;逃逸分析举例&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class EscapeAnylysisTest{
+
+    public void method() {
+        V v = new V();
+
+        v = null;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;没有发生逃逸的对象，则可以分配到栈上，随着方法执行的结束，栈空间就被移除。每个栈里面包含了很多栈帧，也就是发生逃逸分析&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class EscapeAnylysisTest{
+
+    public StringBuffer test() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(&amp;quot;Hello&amp;quot;);
+        buffer.append(&amp;quot;World&amp;quot;);
+        return buffer;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;如果想StringBuffer buffer不发生逃逸，改成下面的方式&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class EscapeAnylysisTest{
+
+    public String test() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(&amp;quot;Hello&amp;quot;);
+        buffer.append(&amp;quot;World&amp;quot;);
+        return buffer.toString();
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class EscapeAnalysisTest {
+
+    public EscapeAnalysisTest obj;
+
+    /**
+     * 方法返回EscapeAnalysis对象，发生逃逸
+     * @return
+     */
+    public EscapeAnalysisTest getInstance() {
+        return obj == null ? new EscapeAnalysisTest():obj;
+    }
+
+    /**
+     * 为成员属性赋值，发生逃逸
+     */
+    public void setObj() {
+        this.obj = new EscapeAnalysisTest();
+    }
+
+    /**
+     * 对象的作用于仅在当前方法中有效，没有发生逃逸
+     */
+    public void useEscapeAnalysis() {
+        EscapeAnalysisTest e = new EscapeAnalysisTest();
+    }
+
+    /**
+     * 引用成员变量的值，发生逃逸
+     */
+    public void useEscapeAnalysis2() {
+        EscapeAnalysisTest e = getInstance();
+        // getInstance().XXX  发生逃逸
+    }
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;参数设置&#34;&gt;参数设置&lt;/h3&gt;
+&lt;p&gt;在JDK 1.7 版本之后，HotSpot中默认就已经开启了逃逸分析&lt;/p&gt;
+&lt;p&gt;如果使用的是较早的版本，开发人员则可以通过：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;选项&lt;code&gt;-XX:+DoEscapeAnalysis&lt;/code&gt;显式开启逃逸分析&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;通过选项&lt;code&gt;-XX:+PrintEscapeAnalysis&lt;/code&gt;查看逃逸分析的筛选结果&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;结论&#34;&gt;结论&lt;/h3&gt;
+&lt;p&gt;开发中能使用局部变量的，就不要在方法外定义。&lt;strong&gt;就近原则声明使用&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;逃逸分析代码优化&#34;&gt;逃逸分析：代码优化&lt;/h3&gt;
+&lt;p&gt;使用逃逸分析，编译器可以对代码做如下优化：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;font color=&#34;red&#34;&gt;&lt;strong&gt;栈上分配&lt;/strong&gt;&lt;/font&gt;：将&lt;strong&gt;堆分配转化为栈分配&lt;/strong&gt;。如果一个对象在子程序中被分配，要使指向该对象的指针永远不会发生逃逸，对象可能是栈上分配的候选，而不是堆上分配&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;font color=&#34;red&#34;&gt;&lt;strong&gt;同步省略&lt;/strong&gt;&lt;/font&gt;：如果一个对象被发现只有一个线程被访问到，那么对于这个对象的操作可以&lt;strong&gt;不考虑同步&lt;/strong&gt;。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;font color=&#34;red&#34;&gt;&lt;strong&gt;分离对象或标量替换&lt;/strong&gt;&lt;/font&gt;：有的对象可能不需要作为一个连续的内存结构存在也可以被访问到，那么对象的部分（或全部）可以不存储在内存，而是&lt;strong&gt;存储在CPU寄存器&lt;/strong&gt;中。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;代码优化栈上分配&#34;&gt;代码优化:栈上分配&lt;/h3&gt;
+&lt;p&gt;JIT编译器在编译期间根据逃逸分析的结果，发现如果一个对象并没有逃逸出方法的话，就可能被优化成栈上分配。分配完成后，继续在调用栈内执行，最后线程结束，栈空间被回收，局部变量对象也被回收。这样就无须进行垃圾回收了。&lt;/p&gt;
+&lt;p&gt;常见的栈上分配的场景&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;发生逃逸的情况分别是给成员变量赋值、方法返回值、实例引用传递。&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;举例&#34;&gt;举例&lt;/h4&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class StackAllocationTest {
+
+    public static void main(String[] args) throws InterruptedException {
+        long start = System.currentTimeMillis();
+
+        for (int i = 10000000; i &amp;gt; 0; i--) {
+            alloc();
+        }
+        System.out.println(&amp;quot;花费的时间为 &amp;quot; + (System.currentTimeMillis() - start) + &amp;quot; ms&amp;quot;);
+
+        TimeUnit.SECONDS.sleep(200);
+    }
+
+    private static void alloc() {
+        User user = new User();
+    }
+}
+
+class User {
+
+    String name;
+    String age;
+    String gender;
+    String phone;
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;设置JVM参数，关闭逃逸分析&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;-Xmx1G -Xms1G -XX:-DoEscapeAnalysis -XX:+PrintGCDetails
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;输出结果,&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;[GC (Allocation Failure) [PSYoungGen: 262144K-&amp;gt;840K(305664K)] 262144K-&amp;gt;848K(1005056K), 0.0012288 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC (Allocation Failure) [PSYoungGen: 262984K-&amp;gt;824K(305664K)] 262992K-&amp;gt;832K(1005056K), 0.0008386 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC (Allocation Failure) [PSYoungGen: 262968K-&amp;gt;792K(305664K)] 262976K-&amp;gt;800K(1005056K), 0.0008594 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC (Allocation Failure) [PSYoungGen: 262936K-&amp;gt;824K(305664K)] 262944K-&amp;gt;832K(1005056K), 0.0008731 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC (Allocation Failure) [PSYoungGen: 262968K-&amp;gt;824K(305664K)] 262976K-&amp;gt;832K(1005056K), 0.0010651 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC (Allocation Failure) [PSYoungGen: 262968K-&amp;gt;856K(348160K)] 262976K-&amp;gt;864K(1047552K), 0.0009729 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC (Allocation Failure) [PSYoungGen: 347992K-&amp;gt;0K(347648K)] 348000K-&amp;gt;672K(1047040K), 0.0008727 secs] [Times: user=0.02 sys=0.03, real=0.00 secs] 
+[GC (Allocation Failure) [PSYoungGen: 347136K-&amp;gt;0K(347648K)] 347808K-&amp;gt;672K(1047040K), 0.0005943 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC (Allocation Failure) [PSYoungGen: 346112K-&amp;gt;0K(347648K)] 346784K-&amp;gt;672K(1047040K), 0.0005772 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC (Allocation Failure) [PSYoungGen: 346112K-&amp;gt;0K(347648K)] 346784K-&amp;gt;672K(1047040K), 0.0005797 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+花费的时间为：468 ms
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;查看内存使用，可以发现大量的User对象存在堆中&lt;br&gt;
+&lt;img src=&#34;http://violet404.github.io//post-images/1626400160688.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/p&gt;
+&lt;p&gt;开启逃逸分析&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;-Xmx1G -Xms1G -XX:+DoEscapeAnalysis -XX:+PrintGCDetails
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;输出结果，未触发GC&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;花费的时间为：7 ms
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;查看内存使用，可以看出堆中只有少量的User对象，说明User未发生逃逸，大部分User对象存储在栈中，随着栈的销毁而消失&lt;br&gt;
+&lt;img src=&#34;http://violet404.github.io//post-images/1626400400417.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/p&gt;
+&lt;h3 id=&#34;代码优化同步省略&#34;&gt;代码优化:同步省略&lt;/h3&gt;
+&lt;p&gt;线程同步的代价是相当高的，同步的后果是降低并发性和性能。&lt;/p&gt;
+&lt;p&gt;在动态编译同步块的时候，&lt;strong&gt;JIT编译器&lt;/strong&gt;可以借助逃逸分析来&lt;em&gt;判断同步块所使用的锁对象是否只能够被一个线程访问而没有被发布到其他线程&lt;/em&gt;。如果没有，那么&lt;em&gt;JIT编译器在编译这个同步块的时候就会取消对这部分代码的同步&lt;/em&gt;。这样就能大大提高并发性和性能。这个取消同步的过程就叫同步省略，也叫&lt;strong&gt;锁消除&lt;/strong&gt;。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public void method1() {
+        Object sync = new Object();
+        synchronized (sync) {
+            System.out.println(sync);
+        }
+    }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;程序对sync对象加锁，但是sync对象的生命周期只在method1()方法中，并不会被其他线程所访问到，所以在JIT编译阶段就会被优化掉，优化成：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public void method1() {
+    Object sync = new Object();
+    System.out.println(sync);
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;查看字节码文件，发现字节码指令仍然含有&lt;code&gt;monitorenter&lt;/code&gt;、&lt;code&gt;monitorexit&lt;/code&gt;锁相关指令，同步省略的优化是在&lt;strong&gt;运行时JIT编译器&lt;/strong&gt;进行的优化&lt;br&gt;
+&lt;img src=&#34;http://violet404.github.io//post-images/1626401105013.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/p&gt;
+&lt;h3 id=&#34;代码优化分离对象和标量替换&#34;&gt;代码优化:分离对象和标量替换&lt;/h3&gt;
+&lt;p&gt;**标量（scalar）**是指一个无法再分解成更小的数据的数据。Java中的原始数据类型就是标量。&lt;/p&gt;
+&lt;p&gt;相对的，那些还可以分解的数据叫做&lt;strong&gt;聚合量（Aggregate）&lt;/strong&gt;，Java中的对象就是聚合量，因为他可以分解成其他聚合量和标量。&lt;/p&gt;
+&lt;p&gt;在&lt;strong&gt;JIT阶段&lt;/strong&gt;，如果经过逃逸分析，发现一个对象不会被外界访问的话，那么经过JIT优化，就会把这个对象拆解成若干个其中包含的若干个成员变量来代替。这个过程就是标量替换。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public static void main(String args[]) {
+    alloc();
+}
+
+private static void alloc() {
+    Point point = new Point(1,2);
+    System.out.println(&amp;quot;point.x&amp;quot; + point.x + &amp;quot;;point.y&amp;quot; + point.y);
+}
+
+class Point {
+    private int x;
+    private int y;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;以上代码，经过标量替换后，就会变成&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;private static void alloc() {
+    int x = 1;
+    int y = 2;
+    System.out.println(&amp;quot;point.x = &amp;quot; + x + &amp;quot;; point.y=&amp;quot; + y);
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;可以看到，Point这个聚合量经过逃逸分析后，发现他并没有逃逸，就被替换成两个标量了。&lt;/p&gt;
+&lt;p&gt;那么标量替换有什么好处呢？&lt;/p&gt;
+&lt;p&gt;就是可以大大减少堆内存的占用。因为一旦不需要创建对象了，那么就不再需要分配堆内存了。 标量替换为栈上分配提供了很好的基础。&lt;/p&gt;
+&lt;h3 id=&#34;代码优化之标量替换&#34;&gt;代码优化之标量替换&lt;/h3&gt;
+&lt;p&gt;代码测试&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class ScalarReplaceTest {
+
+    public static class User {
+        public int id;
+        public String name;
+    }
+
+    public static void alloc() {
+        User u = new User();
+        u.id = 5;
+        u.name = &amp;quot;www.atguigu.com&amp;quot;;
+    }
+
+    public static void main(String[] args) {
+        long start = System.currentTimeMillis();
+        for (int i = 0; i &amp;lt; 10000000; i++) {
+            alloc();
+        }
+        long end = System.currentTimeMillis();
+        System.out.println(&amp;quot;花费的时间为： &amp;quot; + (end - start) + &amp;quot; ms&amp;quot;);
+    }
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;设置JVM参数，开启逃逸分析，但是关闭标量替换&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;-server -Xmx100m -Xms100m -XX:+DoEscapeAnalysis -XX:+PrintGC -XX:+EliminateAllocations
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;参数&lt;code&gt;-server&lt;/code&gt;：启动Server模式，因为在Server模式下，才可以启用逃逸分析。在64bit机器，JDK默认开启server模式,&lt;code&gt;java -version&lt;/code&gt; -&amp;gt; &lt;code&gt;Java HotSpot(TM) 64-Bit Server VM (build 25.271-b09, mixed mode)&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;参数&lt;code&gt;-XX:+DoEscapeAnalysis&lt;/code&gt;：启用逃逸分析&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;参数&lt;code&gt;-Xmx10m&lt;/code&gt;：指定了堆空间最大为10MB&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;参数&lt;code&gt;-XX:+PrintGC&lt;/code&gt;：将打印Gc日志&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;参数&lt;code&gt;-XX:+EliminateAllocations&lt;/code&gt;：开启了标量替换（默认打开），允许将对象打散分配在栈上，比如对象拥有id和name两个字段，那么这两个字段将会被视为两个独立的局部变量进行分配&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;执行程序，查看输出结果&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;[GC (Allocation Failure)  25600K-&amp;gt;816K(98304K), 0.0018708 secs]
+[GC (Allocation Failure)  26416K-&amp;gt;816K(98304K), 0.0010807 secs]
+[GC (Allocation Failure)  26416K-&amp;gt;960K(98304K), 0.0009284 secs]
+[GC (Allocation Failure)  26560K-&amp;gt;848K(98304K), 0.0015168 secs]
+[GC (Allocation Failure)  26448K-&amp;gt;768K(98304K), 0.0014975 secs]
+[GC (Allocation Failure)  26368K-&amp;gt;752K(101376K), 0.0016458 secs]
+[GC (Allocation Failure)  32496K-&amp;gt;688K(100864K), 0.0009747 secs]
+[GC (Allocation Failure)  32432K-&amp;gt;688K(100864K), 0.0006027 secs]
+花费的时间为： 71 ms
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;同时开启逃逸分析与标量替换，再次执行，由输出结果可看出，标量替换提高了执行效率，且没有触发GC&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;花费的时间为： 6 ms
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;逃逸分析的不足&#34;&gt;逃逸分析的不足&lt;/h3&gt;
+&lt;p&gt;关于逃逸分析的论文在1999年就已经发表了，但直到JDK1.6才有实现，而且这项技术到如今也并不是十分成熟。&lt;/p&gt;
+&lt;p&gt;其根本原因就是 &lt;strong&gt;无法保证逃逸分析的性能消耗一定能高于他的消耗&lt;/strong&gt; 。虽然经过逃逸分析可以做标量替换、栈上分配、和锁消除。但是 &lt;em&gt;&lt;strong&gt;逃逸分析自身也是需要进行一系列复杂的分析的，这其实也是一个相对耗时的过程&lt;/strong&gt;&lt;/em&gt; 。 一个极端的例子，就是经过逃逸分析之后，发现没有一个对象是不逃逸的。那这个逃逸分析的过程就白白浪费掉了。&lt;/p&gt;
+&lt;p&gt;虽然这项技术并不十分成熟，但是它也 &lt;em&gt;&lt;strong&gt;是即时编译器优化技术中一个十分重要的手段&lt;/strong&gt;&lt;/em&gt; 。注意到有一些观点，认为通过逃逸分析，JVM会在栈上分配那些不会逃逸的对象，这在理论上是可行的，但是取决于JVM设计者的选择。据我所知，&lt;code&gt;Oracle Hotspot JVM&lt;/code&gt;中并未这么做，这一点在逃逸分析相关的文档里已经说明，所以&lt;strong&gt;可以明确所有的对象实例都是创建在堆上&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;目前很多书籍还是基于JDK7以前的版本，JDK已经发生了很大变化，intern字符串的缓存和静态变量曾经都被分配在永久代上，而永久代已经被元数据区取代。但是，intern字符串缓存和静态变量并不是被转移到元数据区，而是直接在堆上分配，所以这一点同样符合前面一点的结论：&lt;font color=&#34;red&#34;&gt;&lt;strong&gt;对象实例都是分配在堆上&lt;/strong&gt;&lt;/font&gt;。&lt;/p&gt;
+&lt;h3 id=&#34;小结&#34;&gt;小结&lt;/h3&gt;
+&lt;p&gt;年轻代是对象的诞生、成长、消亡的区域，一个对象在这里产生、应用，最后被垃圾回收器收集、结束生命。&lt;/p&gt;
+&lt;p&gt;老年代放置长生命周期的对象，通常都是从survivor区域筛选拷贝过来的Java对象。当然，也有特殊情况，我们知道普通的对象会被分配在TLAB上；如果对象较大，JVM会试图直接分配在Eden其他位置上；如果对象太大，完全无法在新生代找到足够长的连续空闲空间，JVM就会直接分配到老年代。当GC只发生在年轻代中，回收年轻代对象的行为被称为MinorGc。&lt;/p&gt;
+&lt;p&gt;当GC发生在老年代时则被称为MajorGc或者FullGC。一般的，MinorGc的发生频率要比MajorGC高很多，即老年代中垃圾回收发生的频率将大大低于年轻代。&lt;/p&gt;
+">JVM 内存与垃圾回收（三）堆</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="http://violet404.github.io/post/jvm-2/"" data-c="
+          &lt;h1 id=&#34;运行时数据区概述及线程&#34;&gt;运行时数据区概述及线程&lt;/h1&gt;
+&lt;p&gt;JVM定义了若干程序运行期间使用的数据区，其中一些随虚拟机的创建而创建，随虚拟机推出而销毁；另外一些则随线程的开始结束而创建与销毁。&lt;/p&gt;
+&lt;!-- more --&gt;
+&lt;p&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626172536218.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;br&gt;
+&lt;img src=&#34;http://violet404.github.io//post-images/1626160473166.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/p&gt;
+&lt;h1 id=&#34;程序计数器&#34;&gt;程序计数器&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;作用 存储指向下一条指令的地址，即即将执行的指令代码，由执行引擎读取下一条指令。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;一块很小的内存空间，运行速度最快的空间&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;em&gt;&lt;strong&gt;与线程的生命周期保持一致&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;任何时间一个线程都会只有一个方法在执行=&amp;gt;当前方法。程序计数器会存储当前线程正在执行的方法的JVM指令地址，如果当前线程的当前方法为&lt;code&gt;native&lt;/code&gt;方法，则程序计数器为空（&lt;code&gt;undefined&lt;/code&gt;）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;JVM 区域中唯一一个不会OOM的区域&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class PcCounterRegisterTest {
+
+    public static void main(String[] args) {
+        int a = 10;
+        int b= 2;
+        int d = 1, e = 5;
+        int c = a + b - 5;
+        System.out.println(c);
+        System.out.println(&amp;quot;Hello World!&amp;quot;);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;1&#34;&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626162896094.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;ul&gt;
+&lt;li&gt;JVM的多线程是通过线程轮流切换并分配处理器执行时间的方式实现的，在任一确定的时刻，一个处理器（对于多核处理器来说一个内核）都只会执行一条线程中的指令。因此，为了线程切换后能够恢复到正确的执行位置，每个线程都需要由一个独立的程序计数器，各个线程之间计数器互不影响，独立存储。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;虚拟机栈&#34;&gt;虚拟机栈&lt;/h1&gt;
+&lt;h2 id=&#34;概述&#34;&gt;概述&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;em&gt;&lt;strong&gt;栈的生命周期与线程一致&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;作用：保存方法的局部变量（8种基本数据类型、对象的引用地址）、部分结果，并参与方法的调用与返回&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;快速有效的分配方式，仅次于程序计数器&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;不存在垃圾回收的问题，但是会存在OOM&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;JVM规范允许Java虚拟机栈动态的（&lt;code&gt;OutOfMemoryError&lt;/code&gt;，尝试扩展时无法申请足够的内存或者创建&lt;br&gt;
+新线程时没有足够的内存创建新线程对应的虚拟机栈）或者固定不变的（&lt;code&gt;StackOverflowError&lt;/code&gt;，线程请求分配的栈容量达到Java虚拟机允许的最大容量）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;设置最大栈大小 &lt;code&gt;-Xss&lt;/code&gt; 例如: -Xss256K -Xss256M&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;栈的存储单位&#34;&gt;栈的存储单位&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;每个线程由自己的栈内存，&lt;em&gt;&lt;strong&gt;栈中的数据以栈帧为基本存储单位&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;线程种执行的每一个方法都对应一个栈帧， 存储方法执行过程种的各种数据信息；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;java方法的执行与结束对应栈帧的入栈出栈&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;JVM对栈的操作只有两种： &lt;em&gt;&lt;strong&gt;压栈、出栈； 遵循&lt;code&gt;FILO&lt;/code&gt;的规则&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;当前栈帧 当前方法 当前类；执行引擎执行的操作指令都是对当前栈帧进行操作&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;方法的技术方式：１、正常return结束；２、抛出异常。无论哪种方式结束，都会使当前栈帧出栈&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;栈帧的内部结构&#34;&gt;栈帧的内部结构&lt;/h2&gt;
+&lt;h3 id=&#34;局部变量表-local-variable&#34;&gt;局部变量表 Local Variable&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;定义为一个 &lt;em&gt;&lt;strong&gt;&lt;font color=&#34;red&#34;&gt;数字数组&lt;/font&gt;,主要用于存储方法参数和定义在方法体内的局部变量&lt;/strong&gt;&lt;/em&gt; ，数据类型包括基本数据类型、对象引用以及&lt;code&gt;returnAddress&lt;/code&gt;类型。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;em&gt;&lt;strong&gt;容量大小在编译阶段就能确定&lt;/strong&gt;&lt;/em&gt; 保存在方法的code属性的&lt;code&gt;maximum_local_variables&lt;/code&gt;数据项，方法运行期间不会改变局部变量表的大小&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;栈的大小--&amp;gt;栈帧的个数---&amp;gt;方法嵌套调用的次数&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;局部变量表随栈帧的出栈而销毁&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;字节码方法内部结构剖析&lt;br&gt;
+参数&lt;code&gt;args&lt;/code&gt;在&lt;code&gt;main&lt;/code&gt;方法内都生效-&amp;gt;源码16~19 -&amp;gt; 字节码 0 ~18 -&amp;gt;生效位置0,长度19；其他参数类似&lt;br&gt;
+&lt;img src=&#34;http://violet404.github.io//post-images/1626281631376.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;关于&lt;code&gt;slot&lt;/code&gt;的理解&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;局部变量表最基本存储单位&lt;code&gt;slot&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;32位以内的类型占用1个&lt;code&gt;slot&lt;/code&gt;(包括&lt;code&gt;returnAddress&lt;/code&gt;类型),64位类型占用两个&lt;code&gt;slot&lt;/code&gt;(&lt;code&gt;long&lt;/code&gt;，&lt;code&gt;double&lt;/code&gt;)&lt;/strong&gt; &lt;code&gt;byte&lt;/code&gt;/&lt;code&gt;short&lt;/code&gt;/&lt;code&gt;char&lt;/code&gt; 在存储时转成&lt;code&gt;int&lt;/code&gt;，&lt;code&gt;boolean&lt;/code&gt;也被转成&lt;code&gt;int&lt;/code&gt;，&lt;code&gt;false&lt;/code&gt;？0：&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;当一个方法被调用时，它的方法参数与方法体内定义的局部变量都会&lt;font color=&#34;red&#34;&gt;&lt;strong&gt;按照顺序被复制&lt;/strong&gt;&lt;/font&gt;到局部变量表的每一个slot上&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;JVM 为局部变量表的&lt;code&gt;slot&lt;/code&gt;分配索引，通过索引可以当问对应的局部变量；如果需要访问变量表种64bit的变量值，只需要使用第一个&lt;code&gt;slot&lt;/code&gt;索引&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;如果当前栈帧时&lt;strong&gt;构造方法或者实例方法&lt;/strong&gt;创建的，那么该 &lt;strong&gt;对象应用&lt;code&gt;this&lt;/code&gt;将会放在index为0的&lt;code&gt;slot&lt;/code&gt;&lt;/strong&gt; 处，其余参数按照顺序依次排列&lt;br&gt;
+&lt;img src=&#34;http://violet404.github.io//post-images/1626283738793.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;栈帧中的局部变量表的&lt;code&gt;slot&lt;/code&gt;时可以重用的&lt;/strong&gt;，如果一个局部变量过了其作用域，那么在其作用域之后声明局部变量有可能会复用过期的槽位，达到&lt;strong&gt;节省资源&lt;/strong&gt;的目的&lt;br&gt;
+&lt;img src=&#34;http://violet404.github.io//post-images/1626285416606.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;font color=&#34;red&#34;&gt;&lt;em&gt;&lt;strong&gt;局部变量表中的变量时重要的垃圾回收根节点，只要被局部变量表中变量直接或间接引用的对象都不会回收&lt;/strong&gt;&lt;/em&gt;&lt;/font&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;操作数栈-operand-stack&#34;&gt;操作数栈 Operand Stack&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;数组（顺序存储）实现，同时满足FILO的规则&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;操作数栈在方法执行过程中，根据字节码指令，往栈中写入数据或读取数据，即入栈与出栈&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;保存计算过程的中间结果，同时作为计算过程中变量的临时存储空间&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;方法开始执行，相应的栈帧随之创建，这个操作数栈时空的（但是对应的数组是有长度的）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;有明确的栈深用于存储数值，其所需的栈深在编译阶段就已经确定了，方法的code的&lt;code&gt;max_stack&lt;/code&gt;属性&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;栈中任一个元素都可以时java的数据类型&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;32bit的类型占1个栈深&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;64bit的类型占2个栈深&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;操作数栈只能通过入栈出栈完成数据访问，不能通过数组索引进行数据访问&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class OperandStackTest {
+    public void method1() {
+        byte i = 15;
+        int j = 8;
+        int k = i + j;
+    }
+}
+
+// javap -v OperandStackTest.class
+&lt;/code&gt;&lt;/pre&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;2&#34;&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626291407651.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;ul&gt;
+&lt;li&gt;栈顶缓存技术&lt;br&gt;
+基于栈式架构虚拟机指令集少，指令数更多，更多的指令分派次数与内存读写次数。&lt;br&gt;
+Hotspot &lt;em&gt;将栈顶元素全部缓存到物理cpu的寄存器中，以降低对内存的读写次数，提升引擎的执行效率&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;动态链接-dynamic-linking-font-colorred指向运行时常量池的方法引用font&#34;&gt;动态链接 Dynamic Linking （&lt;font color=&#34;red&#34;&gt;指向运行时常量池的方法引用&lt;/font&gt;）&lt;/h3&gt;
+&lt;p&gt;栈帧内部包含一个指向运行时常量池中该栈帧所属方法的引用---&amp;gt;支持当前方法实现动态链接&lt;br&gt;
+&lt;em&gt;编译阶段，所有变量、方法啊引用都作为符号引用存储在常量池中&lt;/em&gt; ，比如，一个方法调用另一个方法--&amp;gt;常量池中指向方法的符号引用。动态链接就是&lt;font color=&#34;red&#34;&gt;&lt;em&gt;&lt;strong&gt;为了将这些符号引用转换为调用方法的直接引用&lt;/strong&gt;&lt;/em&gt;&lt;/font&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;动态链接与类加载阶段的解析Linking有啥区别？是解析后存储在动态链接区域？&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;动态链接与多态性有关吗？&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;方法返回地址-return-address-方法正常退出或异常退出的定义&#34;&gt;方法返回地址 Return Address 方法正常退出或异常退出的定义&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;存放该方法的pc寄存器的值&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;方法结束：正常执行完成、出现未处理的异常&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;方法结束后都会返回方法被调用的位置&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;正常退出时，调用者的pc计数器的值作为返回地址，即调用该方法的指令的下一条指令的地址&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;异常退出，返回地址通过异常表确定&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;方法开始执行后，有两种方法可以退出这个方法&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;执行引擎遇到方法返回的字节码指令，会有返回值传递到上层方法调用者，&lt;strong&gt;正常完成出口&lt;/strong&gt; 返回指令需要根据返回返回值的类型确定&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;ireturn&lt;/code&gt; 返回值类型是&lt;code&gt;boolean&lt;/code&gt; &lt;code&gt;byte&lt;/code&gt; &lt;code&gt;char&lt;/code&gt; &lt;code&gt;short&lt;/code&gt; &lt;code&gt;int&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;lreturn&lt;/code&gt; 返回值类型&lt;code&gt;long&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;freturn&lt;/code&gt; 返回值类型&lt;code&gt;float&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;dreturn&lt;/code&gt; 返回值类型&lt;code&gt;double&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;areturn&lt;/code&gt; 返回值类型为引用类型&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;return&lt;/code&gt; 无返回值void、实例初始化方法&lt;code&gt;&amp;lt;init&amp;gt;()&lt;/code&gt;，类和接口的初始化方法&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;方法执行过程遇到异常，且本方法的异常表中没有匹配到对应的异常处理器，导致方法退出，**&lt;br&gt;
+异常完成出口**&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;一些附加信息&#34;&gt;一些附加信息&lt;/h3&gt;
+&lt;h3 id=&#34;方法的调用&#34;&gt;方法的调用&lt;/h3&gt;
+&lt;p&gt;符号引用转换为直接引用与方法的绑定机制有关&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;静态链接（早期绑定） 调用目标方法编译阶段确定且运行时不变&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;动态链接（晚期绑定） 调用目标方法运行时才能确定&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;abstract class Animal {
+    public abstract void eat();
+}
+interface Huntable {
+    void hunt();
+}
+class Dig extends Animal implements Huntable {
+
+    public void eat() {System.out.println(&amp;quot;狗吃骨头&amp;quot;);}
+
+    public void hunt() {System.out.println(&amp;quot;狗拿耗子多管闲事&amp;quot;);}
+}
+class Cat extends Animal implements Huntable {
+
+    public Cat() {super();} // 早期绑定
+
+    private String name;
+
+    // 早期绑定
+    public Cat(String name) {this(); this.name = name;}
+
+    public void eat() {System.out.println(&amp;quot;猫吃鱼&amp;quot;);}
+
+    public void hunt() {System.out.println(&amp;quot;猫抓耗子天经地义&amp;quot;);}
+}
+public class AnimalTest {
+   
+   // 晚期绑定
+   public void showAnimal(Animal) {Animal.eat();} 
+
+    // 晚期绑定
+   public void showHunt(Huntable h) {h.hunt();}
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;标识为&lt;code&gt;final&lt;/code&gt;的方法，不能被重写，在编译就能确定，早期绑定&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;方法在编译器就确定具体的调用版本，且运行时是不可变的称之为&lt;strong&gt;非虚方法&lt;/strong&gt;。静态方法、私有方法、&lt;code&gt;final&lt;/code&gt;方法、实例构造器方法、父类方法。其他方法称为&lt;strong&gt;虚方法&lt;/strong&gt;。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;多态：《Java编程思想》，方法的重写才能算作多态性的体现。同一个类方法之间的重载不能算作多态性&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;方法重写的本质&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;操作数栈顶第一个元素所执行的对象类型C&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;通过类型C在常量池找到名称相符的方法，进行权限校验&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;通过，返回这个方法的直接引用&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;不通过，&lt;code&gt;IllegalAccessError&lt;/code&gt;异常&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;找不到相符的方法，按照继承关系自下而上在C的父类进行上一步的查找与校验&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;如果事中找不到相符的方法，抛出&lt;code&gt;AbstractMethodError&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;为&lt;font color=&#34;blue&#34;&gt;提高性能&lt;/font&gt;，JVM在类的方法建立虚方法表（类加载的连接阶段（解析）生成）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;方法调用指令&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;font color=&#34;blue&#34;&gt;invokestatic&lt;/font&gt; 调用静态方法，解析阶段确定唯一不变的方法版本&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;font color=&#34;blue&#34;&gt;invokespecial&lt;/font&gt; 调用&lt;code&gt;&amp;lt;init&amp;gt;&lt;/code&gt;、私有及父类方法，解析阶段确定唯一不变的方法版本&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;invokevirtual 调用虚方法，调用final修饰的方法&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;invokeinterface 调用接口方法&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;invokedynamic 动态解析出需要调用大的方法，然后执行。动态语言支持、&lt;code&gt;Lambda&lt;/code&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;动态类型的语言 类型检查在运行时，&lt;code&gt;Javascript&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;静态类型的语言 类型检查在编译时，&lt;code&gt;Java&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;本地方法接口&#34;&gt;本地方法接口&lt;/h1&gt;
+&lt;p&gt;一个&lt;code&gt;native method&lt;/code&gt; 就是一个Java调用非Java代码的接口&lt;/p&gt;
+&lt;h1 id=&#34;本地方法栈&#34;&gt;本地方法栈&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;管理本地方法的调用&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;线程私有&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;C语言实现&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;与虚拟机栈一样可以设置为固定大小或者动态扩展&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+">JVM 内存与垃圾回收（二）程序计数器&栈</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="http://violet404.github.io/post/jvm-1/"" data-c="
+          &lt;h1 id=&#34;jvm与java体系结构&#34;&gt;JVM与Java体系结构&lt;/h1&gt;
+&lt;h2 id=&#34;跨平台性&#34;&gt;跨平台性&lt;/h2&gt;
+&lt;p&gt;Java 是一门跨平台的语言，JVM则跨语言的平台，JSR-292 JVM可以运行非Java语言编写的程序;Java平台的多语言混合编程将成主流方向，使用特定领域的语言解决特定领域的问题&lt;/p&gt;
+&lt;!-- more --&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;1&#34;&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626273142484.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;h2 id=&#34;虚拟机&#34;&gt;虚拟机&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;系统虚拟机 对物理计算机的仿真 VMware&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;程序虚拟机 为执行单个计算机程序而设计 JVM&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Java技术的核心就是JVM&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;jvm-整体结构-hotspot&#34;&gt;JVM 整体结构 HotSpot&lt;/h2&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;2&#34;&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626272081353.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;h2 id=&#34;jvm-架构模型&#34;&gt;JVM 架构模型&lt;/h2&gt;
+&lt;p&gt;Java 编译器输入的指令流是一种基于栈的指令集架构，除此之外还有一种基于寄存器的指令集架构&lt;br&gt;
+这两种指令集架构的区别&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;基于栈式机构的特点&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;设计 &lt;em&gt;&lt;strong&gt;实现简单&lt;/strong&gt;&lt;/em&gt;，适用于资源受限的系统&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;避开寄存器的分配难题，使用零地址指令（8位字节对齐）方式分配&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;指令流中大部分指令是零地址，执行过程依赖与操作数栈，&lt;em&gt;&lt;strong&gt;指令集更小（不代表指令少）&lt;/strong&gt;&lt;/em&gt;，编译器易实现&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;不需要硬件支持，移植性好，易实现 &lt;em&gt;&lt;strong&gt;跨平台&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;基于寄存器架构的特点&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;典型的应用是X86二进制指令集&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;依赖硬件，移植性差&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;性能优秀，&lt;em&gt;&lt;strong&gt;执行高效&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;花费更少的指令完成操作&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;大部分指令以一地址指令、二地址指令和三地址指令为主，16位双字节对齐&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&#34;类加载子系统&#34;&gt;类加载子系统&lt;/h1&gt;
+&lt;h2 id=&#34;类加载子系统的作用&#34;&gt;类加载子系统的作用：&lt;/h2&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;3&#34;&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626151607809.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;负责从文件系统或者网络中加载class文件，class开头有特定的文件标识&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;只负责加载class文件，至于能否运行又执行引擎决定&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;加载的类信息存放在方法区内存空间，除类的信息之外，还包括运行时的常量池的信息，&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;类的加载过程&#34;&gt;类的加载过程&lt;/h2&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;4&#34;&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626173300019.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;h3 id=&#34;加载&#34;&gt;加载&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;通过一个类的全类名获取定义此类的二进制流&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;将这个字节流代表的静态存储结构转化位方法去运行时数据结构&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;在内存中生成一个代表此类的&lt;code&gt;java.lang.Class&lt;/code&gt;对象，作为方法区该类的各种数据的访问入口&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;类的加载器并不需要等到某个类被“首次主动使用”时再加载它&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;JVM规范允许类加载器在预料将要被使用时就预先加载它，如果在预先加载的过程中遇到.class文件缺失或存在错误，类加载器必须在程序首次主动使用该类时才报告错误(LinkError错误)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;如果这个类一直没有被程序主动使用，那么类加载器就不会报告错误。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;加载.class文件的方式&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;从本地系统中直接加载&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;通过网络下载.class文件&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;从zip，jar等归档文件中加载.class文件&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;从专有数据库中提取 .class文件&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;将Java源文件动态编译为.class文件&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;验证&#34;&gt;验证&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;em&gt;&lt;strong&gt;确保class文件符合虚拟机规范&lt;/strong&gt;&lt;/em&gt;，不会危害虚拟机自身安全&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;文件格式验证、元数据验证、字节码验证、符号引用验证&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;准备&#34;&gt;准备&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;em&gt;&lt;strong&gt;为&lt;font color=&#34;red&#34;&gt;类变量(静态变量)&lt;/font&gt;分配内存并设置&lt;font color=&#34;red&#34;&gt;初始值&lt;/font&gt;&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;不包括常量、实例变量，其中实例变量在类实例化时随对象分配在堆中，类变量在编译阶段就会分配，而在准备阶段时就会显式的初始化（那种不确定的常量的情形待验证！）&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;解析&#34;&gt;解析&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;em&gt;&lt;strong&gt;&lt;font color=&#34;red&#34;&gt;将常量池的符号引用转换位直接引用&lt;/font&gt;&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;符号引用：一组符号来描述引用的目标，符号引用的字面量形式在java虚拟机规范的Class文件格式&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;直接引用：直接指向目标的指针、相对偏移量或者一个间接定位到目标的句柄&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;解析操作主要针对类、接口、字段、类方法、接口方法等，对应常量池中的CONSTANT_class_info、CONSTANT_Fieldref_info、CONSTANT_Methodref_info等&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;初始化&#34;&gt;初始化&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;初始化就是执行类构造器方法&lt;code&gt;&amp;lt;clinit&amp;gt;()&lt;/code&gt;的过程&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;不需要定义，由javac自动收集类中 &lt;em&gt;&lt;strong&gt;所有类变量的赋值动作和静态代码块语句合并而来&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;&amp;lt;clinit&amp;gt;()&lt;/code&gt;对于类或者接口不是必须的，如果一个类没有静态代码块，也没有对变量的赋值操作，编译器将不会为该类生成&lt;code&gt;&amp;lt;clinit&amp;gt;()&lt;/code&gt;方法&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;em&gt;&lt;strong&gt;构造器方法的指令按照语句在源文件出现的顺序执行&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;静态代码块只能访问定义在代码块之前的类变量；定义在后台的类变量，前面的代码块可以赋值，但是不能访问；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;&amp;lt;clinit&amp;gt;()&lt;/code&gt;不等同与类的构造器&lt;code&gt;&amp;lt;init&amp;gt;()&lt;/code&gt;，任何一个类生命以后，至少会存在一个构造器函数（虚拟机视角为&lt;code&gt;&amp;lt;init&amp;gt;()&lt;/code&gt;）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;JVM会在执行子类&lt;code&gt;&amp;lt;clinit&amp;gt;()&lt;/code&gt;方法之前执行父类的&lt;code&gt;&amp;lt;clinit&amp;gt;()&lt;/code&gt;方法&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;JVM保证&lt;code&gt;&amp;lt;clinit&amp;gt;()&lt;/code&gt;在多线程场景下的同步执行&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;类的使用&#34;&gt;类的使用&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;所有的Java虚拟机实现必须在每个类或者接口被Java程序 &lt;em&gt;&lt;strong&gt;&lt;font color=&#34;red&#34;&gt;“首次主动使用”&lt;/font&gt;&lt;/strong&gt;&lt;/em&gt; 时才初始化他们。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;创建类的实例&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;访问某个类、接口的静态变量，或对静态变量赋值&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;调用类的静态方法&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;反射&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;初始化一个类的子类&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;JVM启动时标记为启动类的类&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;jdk7 开始提供的动态语言支持 &lt;code&gt;java.lang.invoke.MethodHandle&lt;/code&gt;实例的解析结果&lt;code&gt;REF_getStatic&lt;/code&gt;、&lt;code&gt;REF_putStatic&lt;/code&gt;、&lt;code&gt;REF_invokeStatic&lt;/code&gt;句柄对应的类如果没有初始化，则初始化&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;除上述7中情况外，其他使用Java类的方式均为 &lt;em&gt;&lt;strong&gt;&lt;font color=&#34;red&#34;&gt;被动使用，不会导致类的初始化&lt;/font&gt;&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;类被动使用示例&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;/*
+-XX:+TraceClassLoading 用于追踪类的加载信息并打印出来
+-XX:+&amp;lt;option&amp;gt; 表示开启option选项
+-XX:-&amp;lt;option&amp;gt; 表示关闭option选项
+-XX:&amp;lt;option&amp;gt;=&amp;lt;value&amp;gt;,表示将option的选项的值设置为value
+*/
+class SuperClass {
+
+    static {
+        System.out.println(&amp;quot;SuperClass initialization&amp;quot;);
+    }
+
+    public static String value = &amp;quot;Super&amp;quot;;
+}
+
+class SubClass extends SuperClass {
+
+    static {
+        System.out.println(&amp;quot;SubClass initialization&amp;quot;);
+    }
+}
+
+class ConstantClass {
+
+    static {
+        System.out.println(&amp;quot;ConstantClass initialization&amp;quot;);
+    }
+    public static final String HELLO_WORLD = &amp;quot;Hello Constant&amp;quot;;
+}
+
+class ConstantClass1 {
+
+    static {
+        System.out.println(&amp;quot;ConstantClass1 initialization&amp;quot;);
+    }
+    public static final String UUID_STR = UUID.randomUUID().toString();
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;em&gt;&lt;strong&gt;对于静态字段，只有直接定义该变量的类才会初始化&lt;/strong&gt;&lt;/em&gt;；通过子类引用父类定义的静态变量，指挥触发父类的初始化，而不会导致子类初始化（仅指初始化阶段）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class NotInitializationTest {
+
+    public static void main(String[] args) {
+        // SuperClass initialization 
+        // Hello Super
+        System.out.println(&amp;quot;Hello &amp;quot; + SubClass.value); 
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;&lt;em&gt;&lt;strong&gt;通过数组定义来引用类，不会触发此类的初始化&lt;/strong&gt;&lt;/em&gt; 对于数组实例来说，其类型是由JVM在运行期间动态生成的，表示为&lt;code&gt;[LSuperClass&lt;/code&gt;形式。动态生成的类型（类似于动态代理），其父类型就是Object。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;对于数组来说，JavaDoc经常讲构成数组的元素称为Component，实际上就是将数组降低一个维度后的类型。&lt;/p&gt;
+&lt;p&gt;助记词：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;- **anewarray** : 表示创建一个引用类型的(如类、接口、数组)数组，并将其引用值压入栈顶
+
+- **newarray** : 表示创建一个指定的原始类型（如int、float、char等）的数组，并将其压入栈顶
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class NotInitializationTest {
+
+    public static void main(String[] args) {
+        SuperClass[] sca = new SuperClass[10];
+        System.out.println(sca.getClass()); // class [LSuperClass;
+        System.out.println(sca.getClass().getSuperclass());  // class java.lang.Object
+        SuperClass [][] sca1 =  new SuperClass[1][1];
+        System.out.println(sca1.getClass()); // class [[LSuperClass;
+        System.out.println(sca1.getClass().getSuperclass()); // class java.lang.Object
+
+        System.out.println(&amp;quot;==============&amp;quot;);
+        int [] ints = new int[1];
+        System.out.println(ints.getClass()); // class [I
+        System.out.println(ints.getClass().getSuperclass()); 
+
+        byte [] bytes = new byte[1];
+        System.out.println(bytes.getClass()); // class [B
+        System.out.println(bytes.getClass().getSuperclass());
+
+        short [] shorts = new short[1];
+        System.out.println(shorts.getClass()); // class [S
+        System.out.println(shorts.getClass().getSuperclass());
+
+        boolean [] booleans =new boolean[1];
+        System.out.println(booleans.getClass()); // class [Z
+        System.out.println(booleans.getClass().getSuperclass()); 
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;&lt;em&gt;&lt;strong&gt;针对在编译阶段就能确定常量值的常量&lt;/strong&gt;&lt;/em&gt;  ,在编译阶段就会存入调用类的常量池，本质上没有直接引用定义常量的类，所以 &lt;em&gt;&lt;strong&gt;不会触发定义常量类的初始化&lt;/strong&gt;&lt;/em&gt; ；  &lt;em&gt;&lt;strong&gt;当一个常量的值并非编译期可以确定的&lt;/strong&gt;&lt;/em&gt;，那么其值就不会被放到调用类的常量池中，这时的程序运行时，会导致 &lt;em&gt;&lt;strong&gt;主动使用这个常量所在的类&lt;/strong&gt;&lt;/em&gt; ，显然 &lt;em&gt;&lt;strong&gt;会导致这个类被初始化&lt;/strong&gt;&lt;/em&gt; 。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;/**
+ConstantClass.HELLO_WORLD所表示的常量存入NotInitializationTest常量池中, 
+之后ConstantClass与NotInitializationTest将再无关系，甚至，可以将ConstantClass删除
+
+但是UUID是多少只有在运行期间才会被确定，所以会触发ConstantClass1的初始化
+*/
+public class NotInitializationTest {
+
+    public static void main(String[] args) {
+        System.out.println(ConstantClass.HELLO_WORLD); 
+        System.out.println(ConstantClass1.UUID_STR); 
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ol start=&#34;4&#34;&gt;
+&lt;li&gt;&lt;em&gt;&lt;strong&gt;一个接口初始化时并不要求父接口全部完成初始化，只有真正使用父接口时才会触发初始化&lt;/strong&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;interface SuperInterface {
+
+    Thread iSuperThread = new Thread() {
+        {
+            System.out.println(&amp;quot;SuperInterface init&amp;quot;);
+        }
+    };
+
+    int SUPER_CONSTANT = 111111;
+
+    int SUPER_DYNAMIC = new Random().nextInt(5);
+}
+
+interface SubInterface extends SuperInterface {
+
+    Thread iSubThread = new Thread() {
+        {
+            System.out.println(&amp;quot;SubInterface init&amp;quot;);
+        }
+    };
+    int SUB_CONSTANT = 222222;
+
+    int SUB_DYNAMIC = new Random().nextInt(4);
+}
+
+class ImplementClass implements SubInterface {
+
+    public static String IMPLEMENT_CONSTANT = &amp;quot;ImplementClass&amp;quot;;
+    
+    public static String IMPLEMENT_DYNAMIC = UUID.randomUUID().toString();
+    
+    static {
+
+        System.out.println(&amp;quot;ImplementClass init&amp;quot;);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;4.1 接口的在编译阶段即可确定常量值的常量使用与类常量情况一致&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;// 接口与实现类的编译文件删掉后正常=&amp;gt;相关常量已经写入InterfaceNotInitializationTest常量池中
+public class InterfaceNotInitializationTest {
+
+    public static void main(String[] args) {
+
+        System.out.println(SubInterface.SUPER_CONSTANT);
+        System.out.println(ImplementClass.SUPER_CONSTANT);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;4.2 通过子接口调用接口父接口编译阶段不能确定值的常量, 父接口会触发初始化，子接口&lt;strong&gt;应该&lt;/strong&gt;不会；即使通过实现类调用，也只会触发定义这个常量所在接口的初始化&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class InterfaceInitializationTest {
+
+    public static void method1() {
+        // SuperInterface init
+        // 没有打印出子接口初始化的信息，但是删除子接口后会报错
+        System.out.println(SubInterface.SUPER_DYNAMIC);
+    }
+
+    public static void method2() {
+        // SuperInterface init
+        // 没有打印出子接口初始化的信息，删除子接口后正常
+        System.out.println(ImplementClass.SUPER_DYNAMIC);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;4.3 调用实现类的两种常量=&amp;gt;实现类初始化并不会导致所实现的接口完成初始化&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class InterfaceInitializationTest {
+
+    public static void method1() {
+        System.out.println(ImplementClass.IMPLEMENT_CONSTANT);
+    }
+
+    public static void method2() {
+        System.out.println(ImplementClass.IMPLEMENT_DYNAMIC);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;类加载器&#34;&gt;类加载器&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626152456313.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;br&gt;
+这四者为包含关系，&lt;strong&gt;不是继承关系&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class ClassLoaderTest {
+
+    public static void main(String[] args) {
+        // 获取系统类加载器
+        ClassLoader systemClassLoader = ClassLoader.getSystemClassLoader();
+        System.out.println(systemClassLoader);
+
+        // 获取扩展类加载器，系统类加载的上层
+        ClassLoader extensionClassLoader = systemClassLoader.getParent();
+        System.out.println(extensionClassLoader);
+
+        // 扩展类加载器的上层并不是BootStrap ClassLoader，而是Null
+        ClassLoader bootStrapClassLoader = extensionClassLoader.getParent();
+        System.out.println(bootStrapClassLoader);
+
+        // 对于用户自定义的类（Test），默认使用系统类加载器
+        ClassLoader classLoader = Test.class.getClassLoader();
+        System.out.println(classLoader);
+
+        // Java 核心类库都是由引导类加载器进行加载
+        ClassLoader classLoader1 = String.class.getClassLoader();
+        System.out.println(classLoader1); // null
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;按照虚拟机规范，分为两类: 引导类加载器、自定义类加载器&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;引导类加载器:&lt;code&gt;BootStrap ClassLoader&lt;/code&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;C/C++ 语言实现&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;加载Java核心类库&lt;/strong&gt;，提供JVM自身需要的类&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;JAVA_HOME/jre/lib/rt.jar&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;JAVA_HOME/jre/lib/resources.jar&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;sun.boot.class.path&lt;/code&gt;路径下的内容&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;不是继承于ClassLoader&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;加载 扩展类加载器与系统类加载器&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;处于安全考虑，只加载包名java、javax、sun等开头的类&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;自定义加载器：Java语言实现 派生于&lt;code&gt;ClassLoader&lt;/code&gt;的类加载器&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;扩展类加载器&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;父 类加载器为启动类加载器&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;从&lt;code&gt;java.ext.dirs&lt;/code&gt;系统属性所指定的目录加载类库、或JDK安装路径下&lt;code&gt;jre/lib/ext&lt;/code&gt;目录下加载类库，如果用户创建的jar放在该目录下，也将由扩展类加载器进行加载&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;应用/程序/系统类加载器&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;父 类加载器为扩展类加载器&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;负责加载&lt;code&gt;classpath&lt;/code&gt;或者系统属性&lt;code&gt;java.class.path&lt;/code&gt;指定路径下的类库&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;程序中默认的类加载器&lt;/strong&gt;，&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;通过&lt;code&gt;ClassLoader#getSystemClassLoader()&lt;/code&gt;方法获取该类加载器&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;用户自定义类加载器&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;场景&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;隔离加载类&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;修改类的加载方式&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;扩展加载源&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;防止代码泄露&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;实现步骤&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;继承抽象类&lt;code&gt;ClassLoader&lt;/code&gt;，1.2之前重写&lt;code&gt;loadClass()&lt;/code&gt;方法，1.2之后建议建议将加载逻辑写在&lt;code&gt;findClass()&lt;/code&gt;方法&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;如果没有过于复杂的需求建议直接实现&lt;code&gt;URLClassLoader&lt;/code&gt;类，避免自己编写&lt;code&gt;findClass()&lt;/code&gt;方法及获取字节码流，使自定义类加载器更加简洁&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;classloader&#34;&gt;ClassLoader&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;若有一个类加载器能够成功加载某个类，那么这个类加载器成为该类的定义类加载器&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;任何一个类都有一个定义这个类的&lt;code&gt;ClassLoader&lt;/code&gt;的引用&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;所有能成功返回某个Class对象引用的类加载器（包括定义类加载器）都被称为该类的初始类加载器&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;对于数组的类加载器来说，通过&lt;code&gt;Class.getClassLoader()&lt;/code&gt; 返回的和数组元素的类型类加载器是一样的，如果数组的元素是原生类型的，那么这个数组是没有类加载器的。&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;获取当前类的类加载器&lt;code&gt;claszz.getClassLoader()&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;获取当前线程上下文的类加载器&lt;code&gt;Thread.currentThread().getContextClassLoader()&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;获取系统类加载器&lt;code&gt;ClassLoader.getSystemClassLoader()&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;获取调用者的类加载器&lt;code&gt;DriverManager.getCallerClassLoader()&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;自定义类加载器，&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;下面的代码执行发现自定义的类加载器并未生效，因为&lt;code&gt;CustomizationClassLoader&lt;/code&gt;使用系统类加载器作为该类加载器的父 类加载器，而&lt;code&gt;ClassLoaderTest&lt;/code&gt;属于classpath下，系统类加载器可以加载classpath下的类，所以&lt;code&gt;CustomizationClassLoader&lt;/code&gt;未生效；将&lt;code&gt;ClassLoaderTest.class&lt;/code&gt;移动至&lt;code&gt;D:/&lt;/code&gt;同时将项目中生成的&lt;code&gt;ClassLoaderTest&lt;/code&gt;删除，并把&lt;code&gt;CustomizationClassLoader.filePathPrefix&lt;/code&gt; 更新为&lt;code&gt;D:/&lt;/code&gt;，重新实行代码，发现先&lt;code&gt;CustomizationClassLoader&lt;/code&gt;生效&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class CustomizationClassLoader extends ClassLoader {
+
+    private String classLoaderName;
+
+    private final String fileExtension = &amp;quot;.class&amp;quot;;
+
+    @setter
+    private String filePathPrefix = &amp;quot;out/production/CodeWar/&amp;quot;;
+
+    public CustomizationClassLoader(String classLoaderName) {
+        this.classLoaderName = classLoaderName;
+    }
+
+    public CustomizationClassLoader(ClassLoader classLoader, String classLoaderName) {
+        super(classLoader);
+        this.classLoaderName = classLoaderName;
+    }
+
+    @Override
+    protected Class&amp;lt;?&amp;gt; findClass(String name) throws ClassNotFoundException {
+        byte[] data = loadClassData(name);
+        return defineClass(name, data, 0, data.length);
+    }
+
+    private byte[] loadClassData(String name) {
+        byte[] data = null;
+
+        try (InputStream inputStream = new FileInputStream(filePathPrefix
+                + name.replace(&amp;quot;.&amp;quot;, &amp;quot;/&amp;quot;) + fileExtension);
+             ByteArrayOutputStream baos = new ByteArrayOutputStream();) {
+            int ch = 0;
+            while (-1 != (ch = inputStream.read())) {
+                baos.write(ch);
+            }
+            data = baos.toByteArray();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return data;
+    }
+
+    public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+
+        CustomizationClassLoader classLoader =
+                new CustomizationClassLoader(CustomizationClassLoader.class.getClassLoader(), &amp;quot;CustomizationClassLoader&amp;quot;);
+
+        Class&amp;lt;?&amp;gt; test = classLoader.loadClass(&amp;quot;ClassLoaderTest&amp;quot;);
+
+        System.out.println(test.newInstance());
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;命名空间&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class CustomizationClassLoaderTest {
+    
+    public static void main(String[] args) {
+
+        CustomizationClassLoader classLoader = 
+                new CustomizationClassLoader(&amp;quot;CustomizationClassLoader&amp;quot;);
+        classLoader.setFilePathPrefix(&amp;quot;D:/&amp;quot;);
+        Class&amp;lt;?&amp;gt; test = classLoader.loadClass(&amp;quot;ClassLoaderTest&amp;quot;);
+        System.out.println(&amp;quot;class: &amp;quot;test.hashCode());
+        System.out.println(&amp;quot;classLoader: &amp;quot;test.getClassLoader());
+
+        CustomizationClassLoader classLoader1 = 
+                new CustomizationClassLoader(&amp;quot;CustomizationClassLoader1&amp;quot;);
+        classLoader1.setFilePathPrefix(&amp;quot;D:/&amp;quot;);
+        Class&amp;lt;?&amp;gt; test1 = classLoader1.loadClass(&amp;quot;ClassLoaderTest&amp;quot;);
+        System.out.println(&amp;quot;class: &amp;quot;test1.hashCode());
+        System.out.println(&amp;quot;classLoader: &amp;quot;test1.getClassLoader());
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;ClassLoaderTest被加载了两次，因为Class对象的hashCode不同，&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;JVM中表示两个类为同一个类的必要条件&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;类的全限定名相同&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;加载该类的类加载器（ClassLoader的实例对象）相同&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;每一个类加载器都有自己的命名空间，命名空间由该类加载器及所有父类加载器所加载类&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;em&gt;&lt;strong&gt;在同一个命名空间下，不会出现全限定名完全相同的两个类&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;em&gt;&lt;strong&gt;不同的命名空间中，可能会出现全限定名完全相同的两个类&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class CustomizationClassLoaderTest {
+    
+    public static void main(String[] args) {
+
+        CustomizationClassLoader classLoader = 
+                new CustomizationClassLoader(&amp;quot;CustomizationClassLoader&amp;quot;);
+        classLoader.setFilePathPrefix(&amp;quot;D:/&amp;quot;);
+        Class&amp;lt;?&amp;gt; test = classLoader.loadClass(&amp;quot;ClassLoaderTest&amp;quot;);
+        System.out.println(&amp;quot;class: &amp;quot;test.hashCode());
+        System.out.println(&amp;quot;classLoader: &amp;quot;test.getClassLoader());
+
+        CustomizationClassLoader classLoader1 = 
+                new CustomizationClassLoader(classLoader,&amp;quot;CustomizationClassLoader1&amp;quot;);
+        classLoader1.setFilePathPrefix(&amp;quot;D:/&amp;quot;);
+        Class&amp;lt;?&amp;gt; test1 = classLoader1.loadClass(&amp;quot;ClassLoaderTest&amp;quot;);
+        System.out.println(&amp;quot;class: &amp;quot;test1.hashCode());
+        System.out.println(&amp;quot;classLoader: &amp;quot;test1.getClassLoader());
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ol start=&#34;4&#34;&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;em&gt;&lt;strong&gt;一个类何时结束生命周期，取决于代表它的Class对象合适结束生命周期&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Java虚拟机自带的加载器加载的类不会在整个jvm的生命周期中被卸载，而自定义加载器加载的类可以被卸载 &lt;em&gt;&lt;strong&gt;-XX:+TraceClassUnloading&lt;/strong&gt;&lt;/em&gt; 需要代码中显示的将ClassLoader及ClassLoader加载的类置空&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;em&gt;&lt;strong&gt;子加载器所加载的类能够访问到父加载器所加载的类&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;em&gt;&lt;strong&gt;父加载器所加载的类无法访问到子类加载器所加载的类&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;class Test1 {
+
+    public Test1() {
+        System.out.println(&amp;quot;Test1 loaded by &amp;quot; + Test1.class.getClassLoader());
+    }
+}
+
+class Test2 {
+
+    public Test2() {
+        System.out.println(&amp;quot;Test2 loaded by &amp;quot; + Test2.class.getClassLoader());
+        new Test1();
+    }
+}
+
+public class CustomizationClassLoaderTest {
+    
+    public static void method1() {
+
+        CustomizationClassLoader classLoader = 
+                new CustomizationClassLoader(&amp;quot;CustomizationClassLoader&amp;quot;);
+        classLoader.setFilePathPrefix(&amp;quot;D:/&amp;quot;);
+        Class&amp;lt;?&amp;gt; test = classLoader.loadClass(&amp;quot;Test2&amp;quot;);
+        System.out.println(&amp;quot;class: &amp;quot;test.hashCode());
+        test.newInstance();
+    }
+
+    // 将工程下Test2、Test1移动到D:/，删除工程目录下同名文件
+    public static void method2() {
+
+        CustomizationClassLoader classLoader = 
+                new CustomizationClassLoader(&amp;quot;CustomizationClassLoader&amp;quot;);
+        classLoader.setFilePathPrefix(&amp;quot;D:/&amp;quot;);
+        Class&amp;lt;?&amp;gt; test = classLoader.loadClass(&amp;quot;Test2&amp;quot;);
+        System.out.println(&amp;quot;class: &amp;quot;test.hashCode());
+        test.newInstance();
+    }
+
+    // 工程 Test2 ，D Test2 Test1 =&amp;gt;报错 
+    // Test2 由系统类加载器加载，实例化时主动使用Test1，由Test2加载器尝试加载Test1，报错 
+    public static void method3() {
+
+        CustomizationClassLoader classLoader = 
+                new CustomizationClassLoader(&amp;quot;CustomizationClassLoader&amp;quot;);
+        classLoader.setFilePathPrefix(&amp;quot;D:/&amp;quot;);
+        Class&amp;lt;?&amp;gt; test = classLoader.loadClass(&amp;quot;Test2&amp;quot;);
+        System.out.println(&amp;quot;class: &amp;quot;test.hashCode());
+        test.newInstance();
+    }
+
+    // 工程 Test1 ，D Test2 Test1 =&amp;gt;正常
+    // Test2 由CustomizationClassLoader加载，
+    // Test2 实例化时CustomizationClassLoader尝试加载Test1，双亲委托由系统类加载器加载
+    public static void method3() {
+
+        CustomizationClassLoader classLoader = 
+                new CustomizationClassLoader(&amp;quot;CustomizationClassLoader&amp;quot;);
+        classLoader.setFilePathPrefix(&amp;quot;D:/&amp;quot;);
+        Class&amp;lt;?&amp;gt; test = classLoader.loadClass(&amp;quot;Test2&amp;quot;);
+        System.out.println(&amp;quot;class: &amp;quot;test.hashCode());
+        test.newInstance();
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;class Test1 {
+
+    public Test1() {
+        System.out.println(&amp;quot;Test1 loaded by &amp;quot; + Test1.class.getClassLoader());
+        System.out.println(&amp;quot;from Test1 : &amp;quot; + Test2.class);
+    }
+}
+
+public class CustomizationClassLoaderTest {
+
+    // D Test1 Test2 工程 Test1 
+    // Test2 CustomizationClassLoader Test1 AppClassLoader
+    // 父 类加载器看不到子 类加载器加载的类=&amp;gt;Test1实例化时获取不到Test2的Class对象，报错
+    public static void method3() {
+
+        CustomizationClassLoader classLoader = 
+                new CustomizationClassLoader(&amp;quot;CustomizationClassLoader&amp;quot;);
+        classLoader.setFilePathPrefix(&amp;quot;D:/&amp;quot;);
+        Class&amp;lt;?&amp;gt; test = classLoader.loadClass(&amp;quot;Test2&amp;quot;);
+        System.out.println(&amp;quot;class: &amp;quot;test.hashCode());
+        test.newInstance();
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;
+class Test1 {
+
+    public Test1() {
+        System.out.println(&amp;quot;Test1 loaded by &amp;quot; + Test1.class.getClassLoader());
+    }
+}
+
+class Test2 {
+
+    public Test2() {
+        System.out.println(&amp;quot;Test2 loaded by &amp;quot; + Test2.class.getClassLoader());
+        new Test1();
+        System.out.println(&amp;quot;from Test2 : &amp;quot; + Test1.class);
+    }
+}
+
+public class CustomizationClassLoaderTest {
+
+    // D Test1 Test2 工程 Test1 
+    // Test2 CustomizationClassLoader Test1 AppClassLoader
+    // 子 类加载器可以看到父 类加载器加载的类=&amp;gt;Test2实例化时可以获取到Test1的Class对象
+    public static void method3() {
+
+        CustomizationClassLoader classLoader = 
+                new CustomizationClassLoader(&amp;quot;CustomizationClassLoader&amp;quot;);
+        classLoader.setFilePathPrefix(&amp;quot;D:/&amp;quot;);
+        Class&amp;lt;?&amp;gt; test = classLoader.loadClass(&amp;quot;Test2&amp;quot;);
+        System.out.println(&amp;quot;class: &amp;quot;test.hashCode());
+        test.newInstance();
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;双亲委派机制&#34;&gt;双亲委派机制&lt;/h2&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;5&#34;&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626156053649.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;原理&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;如果一个类加载器收到类加载请求，并不会自己先去加载，而是将这个请求委托给父 类加载器执行&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;如果父 类加载器还存在其父 类加载器，则进一步向上委托，依次请求最终到达顶层启动类加载器&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;如果父 类加载器可以完成类加载请求，则成功返回，否则将由其子 类加载器尝试加载&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;优势、为什么&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;避免重复加载&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;保护程序安全，防止核心类库被随意篡改 沙箱安全机制&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;对类加载器的引用&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;双亲委派机制的破坏&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;之前实现自定义类加载器继承ClassLoader重写&lt;code&gt;loadClass&lt;/code&gt;方法，JVM进行类加载的时候会调用私有的&lt;code&gt;loadClassInternal&lt;/code&gt;()方法，这个方法唯一逻辑就是调用自己的&lt;code&gt;loadClass&lt;/code&gt;方法，所以需要在&lt;code&gt;loadClass&lt;/code&gt;方法中显示的执行双亲委派逻辑=&amp;gt;1.2之后建议重写&lt;code&gt;findClass&lt;/code&gt;方法&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;JDK&lt;/code&gt; &lt;code&gt;JNDI&lt;/code&gt;加载厂商代码&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;OSGi&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;jvm自带加载加载路径&#34;&gt;JVM自带加载加载路径&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class Test {
+    
+    public static void main(String[] args) {
+        //系统类加载器加载路径
+        System.out.println(System.getProperty(&amp;quot;sun.boot.class.path&amp;quot;));
+        //扩展类加载器加载路径
+        System.out.println(System.getProperty(&amp;quot;java.ext.dirs&amp;quot;));
+        //应用类加载器加载过程
+        System.out.println(System.getProperty(&amp;quot;java.class.path&amp;quot;));
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+">JVM 内存与垃圾回收（一）类加载</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="http://violet404.github.io/post/_H2piR_In/"" data-c="
+          &lt;pre&gt;&lt;code class=&#34;language-sql&#34;&gt;declare
+    cursor cur_tb1 is select * from tb1 for update;
+    v_rec tb1%rowtype;
+begin
+    open cur_tb1;
+    loop
+        fetch cur_tb1 into v_rec;
+        update tb1 set col1 = v_rec.col1 where current of cur_tb1;
+        exit when cur_tb1%notfound;
+    end loop;
+    commit;
+    close cur_tb1;
+end;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sql&#34;&gt;declare
+    cursor cur_tb1 is select * from tb1;
+    type typ_tb1 is table of tb1%rowtype;
+    v_rec typ_tb1;
+begin
+    open cur_tb1;
+    loop
+        if mod(cur_tb1%rowcount, 5000) = 0 then
+            dbms_output.putline(cur_tb1%rowcount);
+        end if; 
+        fetch cur_tb1 bullk collect into v_rec limit 2000;
+        for I in 1 ... v_rec.count loop
+            dosth(v_rec(I));
+        end loop;
+        commit;
+        exit when cur_tb1%notfound;
+    end loop;
+    close cur_tb1;
+end;
+&lt;/code&gt;&lt;/pre&gt;
+">Oracle 游标更新数据</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="http://violet404.github.io/post/jsonformatter-shi-jian-fan-hui-bu-dui/"" data-c="
+          &lt;p&gt;默认返回的时间时区为格林威治时间，Greenwich Time，可以指定时区为东八区，timeZone=&amp;quot;GMT+8&amp;quot;&lt;/p&gt;
+">@JsonFormatter 时间返回不对</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="http://violet404.github.io/post/illegal-hex-characters-in-escape-pattern/"" data-c="
+          &lt;p&gt;#####原因&lt;br&gt;
+在进行URLDecode时，进行decode的字符串含有%（非通过encode产生的）&lt;/p&gt;
+&lt;h5 id=&#34;解决方案&#34;&gt;解决方案&lt;/h5&gt;
+&lt;p&gt;更新数据，将半角%转化为全角的％&lt;br&gt;
+&lt;code&gt;update tb set col1 = regexp_replace(col1, chr(37), chr(15711365)) where instr(col1, chr(37)) != 0&lt;/code&gt;&lt;/p&gt;
+">illegal hex characters in escape(%) pattern</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="http://violet404.github.io/post/oracle-resultsetgetdategetobjectwu-fa-huo-qu-shi-jian/"" data-c="
+          &lt;ol&gt;
+&lt;li&gt;检查驱动Oracle的JDBC的驱动版本，10g版本的驱动会出现上面的情况&lt;/li&gt;
+&lt;li&gt;解决方式1：可以将驱动版本升级或降级，11或9版本的oracle对应的驱动可以正常获取时间&lt;/li&gt;
+&lt;li&gt;解决方式2：使用getString()的方式获取，即可获取完整的日志数据&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;升级驱动版本可能会出现如下异常信息&lt;br&gt;
+&lt;code&gt;NoSuchMethodError：oracle.i18n.text.convert.CharacterConvertOGS.getInstance(I)Loracle/i18n/text/convert/CharacterConverter&lt;/code&gt;&lt;br&gt;
+检查项目中是否同时含有nls_charset与orai18n的jar包，高版本的Oracle驱动与nls_charset冲突（高版本的驱动+orai18n,低版本的驱动+nls_charset）&lt;/p&gt;
+">Oracle ResultSet.getDate()/getObject()无法获取时间</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="http://violet404.github.io/post/jquery-cao-zuo-duo-xuan-kuang-checkbox-shi-xiao/"" data-c="
+          &lt;p&gt;现象如题，改attr赋值为prop方式&lt;/p&gt;
+">jQuery 操作多选框checkbox失效</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="http://violet404.github.io/post/oracle-xing-zhuan-lie/"" data-c="
+          &lt;ol&gt;
+&lt;li&gt;&lt;code&gt;wm-concat&lt;/code&gt; oracle12c已废弃该函数,使用方式&lt;code&gt;wm-concat(&amp;lt;合并列&amp;gt;)&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;listagg&lt;/code&gt; 11.2 新特性，返回varchar2类型，所以上限4000，如果拼接字符过长，则报错ORA-01489&lt;br&gt;
+参数：要合并的列，拼接字符&lt;br&gt;
+使用方法：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sql&#34;&gt;    listagg(&amp;lt;合并列&amp;gt;, &amp;lt;拼接字符&amp;gt;) within group(order by &amp;lt;排序列&amp;gt;) over(partition by 分组列)
+    listagg(&amp;lt;合并列&amp;gt;, &amp;lt;拼接字符&amp;gt;) within group(order by &amp;lt;排序列&amp;gt;) + group by
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;&lt;code&gt;xmlagg&lt;/code&gt; 在使用&lt;code&gt;listagg&lt;/code&gt;报错ORA-01489字符串超长时，可改为&lt;code&gt;xmlagg&lt;/code&gt;方式，返回Clob&lt;br&gt;
+使用方法：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code class=&#34;language-sql&#34;&gt;    xmlagg(xmlparse(content &amp;lt;合并&amp;gt; wellformed) order by &amp;lt;排序列&amp;gt;).getclobval() #待验证
+    xmlagg(xmlelement(e, &amp;lt;合并字段&amp;gt;，&amp;lt;合并连接符&amp;gt;).extract(&#39;\\text()&#39;)).getclobval()
+&lt;/code&gt;&lt;/pre&gt;
+">Oracle 行转列</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="http://violet404.github.io/post/uncaught-rangeerrormaximum-call-stack-size-exceeded/"" data-c="
+          &lt;ol&gt;
+&lt;li&gt;Js函数递归调用次数过多&lt;/li&gt;
+&lt;li&gt;引入了冲突的Js库，两个库对JS原始对象的相同方法进行了不同的重写&lt;/li&gt;
+&lt;li&gt;Ajax请求参数错误，检查参数是否存在未定义的变量，且该变量与页面中的某个元素的id值相同&lt;/li&gt;
+&lt;/ol&gt;
+">Uncaught RangeError：Maximum call stack size exceeded</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="http://violet404.github.io/post/easyui-chuang-kou-chong-fu-jia-zai-chuang-kou-yuan-su-qu-zhi-hun-luan/"" data-c="
+          &lt;ol&gt;
+&lt;li&gt;EasyUI框架window类窗口使用方式&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# 第一种方式
+&amp;lt;div id=&amp;quot;win&amp;quot;&amp;gt;&amp;lt;/div&amp;gt; 
+$(&#39;#win&#39;).window({})
+#第二中方式
+&amp;lt;div id=&amp;quot;win&amp;quot; class=&amp;quot;easyui-window&amp;quot; data-options=&amp;quot;closed:true&amp;quot;&amp;gt;&amp;lt;/div&amp;gt; 
+$(&#39;#win&#39;).window({}).window(&#39;open&#39;)
+
+# 如果混用两种方式，则会导致重复加载的问题
+&amp;lt;div id=&amp;quot;win&amp;quot;&amp;gt;&amp;lt;/div&amp;gt;
+$(&#39;#win&#39;).window({}).window(&#39;open&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;在父页面A弹出子页面B时，子页面B又弹出子页面C的情况，如果C页面对应的div定义在B页面，则C页面取值可能会混乱。EasyUI窗口类组件在调用close方式时，页面上的dom元素并不是直接销毁，而是隐藏。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;#页面A弹出子页面B
+&amp;lt;div id=&amp;quot;winB&amp;quot;&amp;gt;&amp;lt;/div&amp;gt;
+$(&#39;#winB&#39;).window({})
+
+#页面B弹窗子页面C 错误方式
+&amp;lt;div id=&amp;quot;winC&amp;quot;&amp;gt;&amp;lt;/div&amp;gt;
+$(&#39;#winC&#39;).window({})
+
+#页面B弹窗子页面C 正确方式
+$(&#39;&amp;lt;div id=&amp;quot;winC&amp;quot;&amp;gt;&amp;lt;/div&amp;gt;&#39;).window({
+  onBeforeClose: function() {
+    $(&#39;#winC&#39;).window(&#39;destroy&#39;);
+  }
+})
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;为避免窗口元素取值错误，定位时建议加上限定范围&lt;/li&gt;
+&lt;/ol&gt;
+">EasyUI 窗口重复加载、窗口元素取值混乱</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="http://violet404.github.io/post/mybatis-jie-guo-ji-shu-liang-yu-shi-ji-bu-fu/"" data-c="
+          &lt;h5 id=&#34;问题描述&#34;&gt;问题描述&lt;/h5&gt;
+&lt;p&gt;sql在数据库中执行显示有18条记录，Mapper返回List类型结果集，同时debug显示list.size()为18，但是只能取到8条，遍历导致NPE&lt;/p&gt;
+&lt;h5 id=&#34;排查方向&#34;&gt;排查方向&lt;/h5&gt;
+&lt;ol&gt;
+&lt;li&gt;resultType或者resultMap中的属性影射是否匹配&lt;/li&gt;
+&lt;li&gt;是否配置有callSetterOnNulls=true&lt;br&gt;
+默认情况下，在用map接受返回结果的情况下，mybatis会忽略结果为null的字段，如果对应的所有属性全部为null，则该条记录就会缺失。&lt;br&gt;
+可以通过配置callSettersOnNulls=true，达到即使结果为null依然可以获取到.&lt;br&gt;
+但是下面两种特殊情况需要注意：&lt;br&gt;
+2.1. 查询结果0条记录，会接收到一个所有key对应值为null的map，而不是一个值为null的map。&lt;br&gt;
+2.2. 如果查询一个字段，结果为null，此时会返回一个值为null的map，而不是包含key对应值为null的map。&lt;/li&gt;
+&lt;/ol&gt;
+">Mybatis 结果集数量与实际不符</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="http://violet404.github.io/post/ibatis-pi-liang-bao-cun-ji-yu-oracle/"" data-c="
+          &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# 第一种方式
+insert all 
+&amp;lt;iterate conjunction=&amp;quot; &amp;quot;&amp;gt;
+into tb1(col1, col2) values(#list[].col1#, #list[].col2#)
+&amp;lt;/iterate&amp;gt;
+select 1 from dual
+
+#第二种方式
+insert into tb1(col1, col2)
+&amp;lt;iterate conjunction=&amp;quot; union &amp;quot;&amp;gt;
+select #list[].col1#, #list[].col2# from dual
+&amp;lt;/iterate&amp;gt;
+
+#第三种方式 ExecutorType.BATCH
+
+&lt;/code&gt;&lt;/pre&gt;
+">Ibatis 批量保存（基于Oracle）</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="http://violet404.github.io/post/oracle-ti-huan-zi-fu-chuan/"" data-c="
+          &lt;h5 id=&#34;函数说明&#34;&gt;函数说明&lt;/h5&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;regexp_replace(source_char, pattern, replace_string,position,occurrencr,match_parameter)
+
+# source_char 搜索的值
+
+# pattern 正则表达式
+
+# replace_string 替换字符串,反向引用子表达式\n
+
+# position 开始检索的字符的位置，默认为1
+
+# occurrence 替换的位置，0 替换所有的匹配项，如果为n(正整数)，替换第n个匹配项
+
+# match_parameter 匹配的行为 
+# i 指定不区分大小写的匹配
+# c 区分大小写的匹配
+# n 允许句点&#39;.&#39;与换行符，默认将源字符串视为单行
+# x 忽略空格字符，默认情况，空白字符与自身匹配
+# 如果指定多个矛盾值，将按照最后一个值，如ic，区分大小写
+
+#match_parameter 不指定，将默认为下面的操作：
+# 1. 区分大小写 2. 句点与换行符不匹配 3. 单行
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h5 id=&#34;示例&#34;&gt;示例&lt;/h5&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;select regexp_replace(&#39;0123456789&#39;, &#39;01234&#39;, &#39;oabc&#39;) from dual; # 0abc56789
+
+select regexp_replace(&#39;0123456789&#39;, &#39;[0-9]&#39;, &#39;*#&#39;) from dual; # *#*#*#*#*#*#*#*#*#*#
+
+select regexp_replace(&#39;01234567abcfsg89&#39;, &#39;[a-z]&#39;) from dual; # 0123456789
+
+select regexp_replace(&#39;+86 15153090946&#39;,&#39;(\+[0-9]{2})( )([0-9]{3})([0-9]{4})([0-9]{4})&#39;, &#39;(\1)\3-\4-\5&#39;) from dual; # (+86)151-5309-0946
+
+select regexp_replace(&#39;012as56&#39;,&#39;(.)&#39;,&#39;\1 &#39;) from dual; #0 1 2 a s 5 6
+
+select regexp_replace(&#39;0asca98&#39;, &#39;[0-9a-zA-Z]&#39;, &#39;*&#39;, 4) from dual; # 0as****
+
+select regexp_replace(&#39;0asc98&#39;, &#39;[0-9a-zA-Z]&#39;, &#39;*&#39;, 4, 3) from dual; # 0asc9*
+
+select regexp_replace(&#39;0asC98&#39;,&#39;[A-Z]&#39;, &#39;*&#39;, 1, 0, &#39;i&#39;) from dual; #0***98
+
+select regexp_replace(&#39;a
+b
+c
+d
+e
+f&#39;, &#39;([a-z])(.)&#39;,&#39;\1&#39;, 1, 0, &#39;n&#39;) from dual; # abcdef
+
+select regexp_replace(&#39;aa a a bb b b&#39;,&#39;a a&#39;, &#39;0&#39;) from dual;  # a0 a bb b b
+
+select regexp_replace(&#39;aa a a bb b b&#39;, &#39;a a&#39;, &#39;0&#39;, 1, 0, &#39;x&#39;) from dual; # 0 a a BB b b
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h5 id=&#34;正则表达式&#34;&gt;正则表达式&lt;/h5&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;符号&lt;/th&gt;
+&lt;th&gt;释义&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;\&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;*&lt;/td&gt;
+&lt;td&gt;匹配0个或多个&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;+&lt;/td&gt;
+&lt;td&gt;匹配1个或多个&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;?&lt;/td&gt;
+&lt;td&gt;匹配0个或1个&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;|&lt;/td&gt;
+&lt;td&gt;或运算，所有均可视为单独的子表达式&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;^&lt;/td&gt;
+&lt;td&gt;默认情况下匹配字符串的结尾，多行模式匹配字符串每一行的行尾&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;$&lt;/td&gt;
+&lt;td&gt;默认情况下匹配字符串的开头，多行模式匹配每一行的行头&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;.&lt;/td&gt;
+&lt;td&gt;字符集支持的任意字符，NULL除外&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;[]&lt;/td&gt;
+&lt;td&gt;指定匹配列表&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;()&lt;/td&gt;
+&lt;td&gt;对表达式分组，视为单个子表达式&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;{m}&lt;/td&gt;
+&lt;td&gt;匹配m次&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;{m,}&lt;/td&gt;
+&lt;td&gt;匹配至少m次&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;{m,n}&lt;/td&gt;
+&lt;td&gt;匹配至少m次，但不超过n次&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;\n&lt;/td&gt;
+&lt;td&gt;反向引用表达式&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;[::]&lt;/td&gt;
+&lt;td&gt;指定字符类&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h5 id=&#34;字符类&#34;&gt;字符类&lt;/h5&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;[:XXXX:]&lt;/th&gt;
+&lt;th&gt;含义&lt;/th&gt;
+&lt;th&gt;范围&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;[:space:]&lt;/td&gt;
+&lt;td&gt;包括换行、空格、tab在内的空白字符&lt;/td&gt;
+&lt;td&gt;tab 空格&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;[:blank:]&lt;/td&gt;
+&lt;td&gt;空格与tab&lt;/td&gt;
+&lt;td&gt;tab 空格&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;[:alpha:]&lt;/td&gt;
+&lt;td&gt;字母&lt;/td&gt;
+&lt;td&gt;a-z A-Z&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;[:alnum:]&lt;/td&gt;
+&lt;td&gt;字母与数字&lt;/td&gt;
+&lt;td&gt;a-z A-Z 0-9&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;[:digit:]&lt;/td&gt;
+&lt;td&gt;十进制数字&lt;/td&gt;
+&lt;td&gt;0-9&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;[:xdigit:]&lt;/td&gt;
+&lt;td&gt;十六进制数&lt;/td&gt;
+&lt;td&gt;0-9 a-f A-F&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;[:lower:]&lt;/td&gt;
+&lt;td&gt;小写字母&lt;/td&gt;
+&lt;td&gt;a-z&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;[:upper:]&lt;/td&gt;
+&lt;td&gt;大写字母&lt;/td&gt;
+&lt;td&gt;A-Z&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;[:cntrl:]&lt;/td&gt;
+&lt;td&gt;控制字符&lt;/td&gt;
+&lt;td&gt;ctrl、backspace等&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;[:punct:]&lt;/td&gt;
+&lt;td&gt;标点符号&lt;/td&gt;
+&lt;td&gt;,.?&#39; 不确定中英文、半角全角&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+">Oracle 替换字符串</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="http://violet404.github.io/post/git/"" data-c="
+          &lt;h5 id=&#34;修改上一次提交信息&#34;&gt;修改上一次提交信息&lt;/h5&gt;
+&lt;p&gt;&lt;code&gt;git commit --amend -m &amp;lt;new_message&amp;gt;&lt;/code&gt;&lt;/p&gt;
+&lt;h5 id=&#34;修改历史提交信息&#34;&gt;修改历史提交信息&lt;/h5&gt;
+&lt;p&gt;&lt;code&gt;git rebase -i &amp;lt;commitId&amp;gt;&lt;/code&gt; （commitId，HEAD] 范围，将需要修改的提交 pick 改为 reward，保存即可&lt;/p&gt;
+&lt;h5 id=&#34;crlf-报错&#34;&gt;CRLF 报错&lt;/h5&gt;
+&lt;p&gt;&lt;code&gt;git config --global core.autocrlf false&lt;/code&gt;&lt;/p&gt;
+&lt;h5 id=&#34;远程分支删除后本地依然能够看到该分支&#34;&gt;远程分支删除后，本地依然能够看到该分支&lt;/h5&gt;
+&lt;p&gt;&lt;code&gt;git remote prune origin&lt;/code&gt; origin 为远程仓库名称&lt;/p&gt;
+&lt;h5 id=&#34;比较分支差异&#34;&gt;比较分支差异&lt;/h5&gt;
+&lt;ol&gt;
+&lt;li&gt;查看dev分支存在而master分支不存在的提交&lt;code&gt;git log dev ^master&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;查看master比dev多提交了哪些&lt;code&gt;git log dev..master&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;比较dev与master分支的差异&lt;code&gt;git log dev...master&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;显示所有差异文件的详细&lt;code&gt;git diff dev master&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;比较两个分支具体文件的差异&lt;code&gt;git diff dev master &amp;lt;具体文件路径&amp;gt;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;显示两分支差异部分&lt;code&gt;git diff dev master --stat&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;上述情况，显示每个提交所在的分支,例如&lt;code&gt;git log -left-right dev...master&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h5 id=&#34;重命名本地分支与远程分支&#34;&gt;重命名本地分支与远程分支&lt;/h5&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# 重命名本地分支
+git branch -m oldBranch newBranch (or git branch --move oldBranch newBranch)
+# 删除远程旧分支
+git push origin :oldBranch
+# 推送本地新分支
+git push origin newBranch
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h5 id=&#34;同一命名空间下无法派生同名项目以旧项目某一分支派生新项目&#34;&gt;同一命名空间下无法派生同名项目（以旧项目某一分支派生新项目）&lt;/h5&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# 从旧项目克隆项目到本地
+git clone &amp;lt;旧项目地址&amp;gt; -b &amp;lt;目标分支Branch1&amp;gt;
+# 检查远程项目关联
+git remote -v 
+# 移除远程项目关联
+git remote remove &amp;lt;origin 远程仓库名称，根据上一步填写&amp;gt;
+# 重命名分支名称
+git branch -m &amp;lt;Branch1&amp;gt; master
+# 远程仓库创建新项目，记录地址URL2
+# 关联当前项目与新创建的远程仓库
+git remote add origin &amp;lt;URL2&amp;gt;
+# 建立本地分支与远程分支的关联
+git push --set-upstream origin master
+# 推送本地项目至远程仓库
+git push
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h5 id=&#34;忽略某个文件的提交&#34;&gt;忽略某个文件的提交&lt;/h5&gt;
+&lt;ol&gt;
+&lt;li&gt;保留在版本库当中&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# 忽略指定文件变更
+git update-index --assume-unchanged &amp;lt;文件全路径&amp;gt;
+# 取消上述命令
+git update-index --no-assume-unchanged &amp;lt;文件全路径&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;从版本库中删除&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;git rm -r --cached 
+#or
+git rm --cached &amp;lt;文件全路径&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h5 id=&#34;回退版本&#34;&gt;回退版本&lt;/h5&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;#本地回退
+git reset --hard &amp;lt;commitId&amp;gt;
+#推送到远程仓库 origin 远程仓库名 master 远程仓库分支
+git push -u origin master -f
+&lt;/code&gt;&lt;/pre&gt;
+">Git</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="http://violet404.github.io/post/mq-xiao-xi-dui-lie-1/"" data-c="
+          &lt;h5 id=&#34;为什么用使用场景&#34;&gt;为什么用？=&amp;gt;使用场景&lt;/h5&gt;
+&lt;ol&gt;
+&lt;li&gt;场景-&amp;gt;技术挑战-&amp;gt;不用与使用的对比&lt;/li&gt;
+&lt;li&gt;解耦  pub/sub模型，机构、汇率等统一更新处理&lt;/li&gt;
+&lt;li&gt;异步  提高高延时操作的处理效率&lt;/li&gt;
+&lt;li&gt;削峰&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h5 id=&#34;为什么使用当前的mq框架选型kafka&#34;&gt;为什么使用当前的MQ框架？=&amp;gt;选型，&lt;strong&gt;Kafka&lt;/strong&gt;&lt;/h5&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;特性&lt;/th&gt;
+&lt;th&gt;ActiveMQ&lt;/th&gt;
+&lt;th&gt;RabbitMQ&lt;/th&gt;
+&lt;th&gt;RocketMQ&lt;/th&gt;
+&lt;th&gt;Kafka&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;单机吞吐量&lt;/td&gt;
+&lt;td&gt;万级，吞吐量比RocketMQ和Kafka要低了一个数量级&lt;/td&gt;
+&lt;td&gt;万级，吞吐量比RocketMQ和Kafka要低了一个数量级&lt;/td&gt;
+&lt;td&gt;10万级，RocketMQ也是可以支撑高吞吐的一种MQ&lt;/td&gt;
+&lt;td&gt;10万级别，这是kafka最大的优点，就是吞吐量高。一般配合大数据类的系统来进行实时数据计算、日志采集等场景&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;topic数量对吞吐量的影响&lt;/td&gt;
+&lt;td&gt;-&lt;/td&gt;
+&lt;td&gt;-&lt;/td&gt;
+&lt;td&gt;topic可以达到几百，几千个的级别，吞吐量会有较小幅度的下降。这是RocketMQ的一大优势，在同等机器下，可以支撑大量的topic。&lt;/td&gt;
+&lt;td&gt;topic从几十个到几百个的时候，吞吐量会大幅度下降。所以在同等机器下，kafka尽量保证topic数量不要过多。如果要支撑大规模topic，需要增加更多的机器资源&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;时效性&lt;/td&gt;
+&lt;td&gt;ms级&lt;/td&gt;
+&lt;td&gt;微秒级，这是rabbitmq的一大特点，延迟是最低的&lt;/td&gt;
+&lt;td&gt;ms级&lt;/td&gt;
+&lt;td&gt;延迟在ms级以内&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;可用性&lt;/td&gt;
+&lt;td&gt;高，基于主从架构实现高可用性&lt;/td&gt;
+&lt;td&gt;高，基于主从架构实现高可用性&lt;/td&gt;
+&lt;td&gt;非常高，分布式架构&lt;/td&gt;
+&lt;td&gt;非常高，kafka是分布式的，一个数据多个副本，少数机器宕机，不会丢失数据，不会导致不可用&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;消息可靠性&lt;/td&gt;
+&lt;td&gt;有较低的概率丢失数据&lt;/td&gt;
+&lt;td&gt;-&lt;/td&gt;
+&lt;td&gt;经过参数优化配置，可以做到0丢失&lt;/td&gt;
+&lt;td&gt;经过参数优化配置，可以做到0丢失&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;功能支持&lt;/td&gt;
+&lt;td&gt;MQ领域的功能极其完备&lt;/td&gt;
+&lt;td&gt;基于erlang开发，所以并发能力很强，性能极其好，延时很低&lt;/td&gt;
+&lt;td&gt;MQ功能较为完善，还是分布式的，扩展性好&lt;/td&gt;
+&lt;td&gt;功能较为简单，主要支持简单的MQ功能，在大数据领域的实时计算以及日志采集被大规模使用，是事实上的标准&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;优劣势总结&lt;/td&gt;
+&lt;td&gt;非常成熟，功能强大，在业内大量的公司以及项目中都有应用。偶尔会有较低概率丢失消息。而且现在社区以及国内应用都越来越少，官方社区现在对ActiveMQ 5.x维护越来越少，几个月才发布一个版本。而且确实主要是基于解耦和异步来用的，较少在大规模吞吐的场景中使用&lt;/td&gt;
+&lt;td&gt;erlang语言开发，性能极其好，延时很低；吞吐量到万级，MQ功能比较完备。而且开源提供的管理界面非常棒，用起来很好用。社区相对比较活跃，几乎每个月都发布几个版本分。在国内一些互联网公司近几年用rabbitmq也比较多一些。但是问题也是显而易见的，RabbitMQ确实吞吐量会低一些，这是因为他做的实现机制比较重。而且erlang开发，国内有几个公司有实力做erlang源码级别的研究和定制？如果说你没这个实力的话，确实偶尔会有一些问题，你很难去看懂源码，你公司对这个东西的掌控很弱，基本职能依赖于开源社区的快速维护和修复bug。而且rabbitmq集群动态扩展会很麻烦，不过这个我觉得还好。其实主要是erlang语言本身带来的问题。很难读源码，很难定制和掌控。&lt;/td&gt;
+&lt;td&gt;接口简单易用，而且毕竟在阿里大规模应用过，有阿里品牌保障。日处理消息上百亿之多，可以做到大规模吞吐，性能也非常好，分布式扩展也很方便，社区维护还可以，可靠性和可用性都是ok的，还可以支撑大规模的topic数量，支持复杂MQ业务场景。而且一个很大的优势在于，阿里出品都是java系的，我们可以自己阅读源码，定制自己公司的MQ，可以掌控。社区活跃度相对较为一般，不过也还可以，文档相对来说简单一些，然后接口这块不是按照标准JMS规范走的有些系统要迁移需要修改大量代码。还有就是阿里出台的技术，你得做好这个技术万一被抛弃，社区黄掉的风险，那如果你们公司有技术实力我觉得用RocketMQ挺好的。&lt;/td&gt;
+&lt;td&gt;kafka的特点其实很明显，就是仅仅提供较少的核心功能，但是提供超高的吞吐量，ms级的延迟，极高的可用性以及可靠性，而且分布式可以任意扩展.同时kafka最好是支撑较少的topic数量即可，保证其超高吞吐量.而且kafka唯一的一点劣势是有可能消息重复消费，那么对数据准确性会造成极其轻微的影响，在大数据领域中以及日志采集中，这点轻微影响可以忽略.这个特性天然适合大数据实时计算以及日志收集&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h5 id=&#34;引入mq的优缺点&#34;&gt;引入MQ的优缺点&lt;/h5&gt;
+&lt;ol&gt;
+&lt;li&gt;系统可用性降低（高可用）&lt;/li&gt;
+&lt;li&gt;系统复杂性提高（重复数据、数据丢失、重复消费等）&lt;/li&gt;
+&lt;li&gt;存在一致性问题（分布式锁）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h5 id=&#34;怎么保证高可用kafka&#34;&gt;怎么保证高可用？&lt;strong&gt;Kafka&lt;/strong&gt;&lt;/h5&gt;
+">MQ消息队列(1)</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="http://violet404.github.io/post/fen-bu-shi-suo/"" data-c="
+          &lt;p&gt;锁&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;jvm层面的枷锁，单机版&lt;/li&gt;
+&lt;li&gt;分布式微服务拆分后，为避免冲突与数据故障而加入的一种锁  分布式锁&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;实现方案&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;mysql&lt;/li&gt;
+&lt;li&gt;zookeeper&lt;/li&gt;
+&lt;li&gt;redis&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;一般常用redis&lt;br&gt;
+redis --&amp;gt; redlock ===&amp;gt;redisson lock unlock&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;                                   service1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;请求 --》nginx                                         写入排队 redis&lt;br&gt;
+service2&lt;/p&gt;
+">分布式锁</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="http://violet404.github.io/post/redis/"" data-c="
+          &lt;p&gt;查看redis版本&lt;br&gt;
+1.&lt;code&gt;redis-server -v&lt;/code&gt;（linux）&lt;br&gt;
+2.&lt;code&gt;info&lt;/code&gt; （进入redis后）&lt;/p&gt;
+&lt;p&gt;redis命令不区分大小写，key区分大小写&lt;br&gt;
+redis 帮助命令 help @&amp;lt;类型名词&amp;gt;&lt;/p&gt;
+&lt;p&gt;5大数据类型&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;string
+&lt;ol&gt;
+&lt;li&gt;常用
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;set key value&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;get key&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;同时设置、获取多个键值
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;mset key value [key value ...]&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;mget key [key ...]&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;数值增减
+&lt;ol&gt;
+&lt;li&gt;递增 &lt;code&gt;incr key&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;增加指定的整数 &lt;code&gt;incrby key increment&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;递减 &lt;code&gt;decr key&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;递减指定 &lt;code&gt;decrby key decrement&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;获取字符串长度 &lt;code&gt;strlen key&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;分布式锁
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;setnx key value&lt;/code&gt; 如果不存在则创建&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;set key value [EX seconds] [PX milliseconds] [NX | XX]&lt;/code&gt;
+&lt;ol&gt;
+&lt;li&gt;EX 指定秒过期&lt;/li&gt;
+&lt;li&gt;PX 指定毫秒过期&lt;/li&gt;
+&lt;li&gt;NX 当key不存在时创建key，效果等价于setnx&lt;/li&gt;
+&lt;li&gt;XX 当key存在时覆盖key&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;应用场景 商品、文章的点踩incr、decr&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;list
+&lt;ol&gt;
+&lt;li&gt;有序有重复，双向链表&lt;/li&gt;
+&lt;li&gt;左侧添加元素 &lt;code&gt;lpush key value [value ...]&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;rpush key value [value...]&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;查看列表 &lt;code&gt;lrange key start stop&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;获取列表元素个数 &lt;code&gt;llen key&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;应用场景 文章订阅公众号&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;hash
+&lt;ol&gt;
+&lt;li&gt;对应java中的&lt;code&gt;Map&amp;lt;string, Map&amp;lt;Object, Object&amp;gt;&amp;gt;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;一次设置一个字段 &lt;code&gt;hset key field value&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;一次获取一个字段 &lt;code&gt;hset key field&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;一次设置多个字段 &lt;code&gt;hmset key field value [field value ...]&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;一次获取获取多个字段值 &lt;code&gt;hmset key field [field ...]&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;获取所有字段值 &lt;code&gt;hgetall key&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;获取某个key内的全部数量 &lt;code&gt;hlen&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;删除一个 &lt;code&gt;key hdel&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;属性自增 &lt;code&gt;hincrby&lt;/code&gt; 同string&lt;/li&gt;
+&lt;li&gt;应用场景 购物车（中小厂）、订餐等汇集场景&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;set 无序无重复
+&lt;ol&gt;
+&lt;li&gt;添加 &lt;code&gt;sadd key member [member]&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;删除 &lt;code&gt;srem key member [member]&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;获取所有元素 &lt;code&gt;smembers key&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;判断元素是否在集合中 &lt;code&gt;sismember key member&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;获取元素个数 &lt;code&gt;scard key&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;从集合中随机弹出一个元素，不删除 &lt;code&gt;srandmember key [数字]&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;从集合随机弹出，并删除 &lt;code&gt;spop key [数字]&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;集合运算
+&lt;ol&gt;
+&lt;li&gt;差集A-B 属于A但不属于B &lt;code&gt;sdiff key [key ...]&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;交集 &lt;code&gt;sinter key [key ...]&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;并集 &lt;code&gt;sunion key [key ...]&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;应用场景
+&lt;ol&gt;
+&lt;li&gt;抽奖小程序&lt;/li&gt;
+&lt;li&gt;点赞&lt;/li&gt;
+&lt;li&gt;共同关注的人、共同的爱好&lt;/li&gt;
+&lt;li&gt;可能认识的人&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;zset（sorted set）
+&lt;ol&gt;
+&lt;li&gt;向有序集合中添加一个元素与其分数 &lt;code&gt;zadd key score member [score member ...]&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;按照分数从小到大返回索引区分的元素 &lt;code&gt;zrange key start stop [withscores]&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;获取元素的分数 &lt;code&gt;zscore key member&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;删除元素 &lt;code&gt;zrem key member [member ...]&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;获取指定分数范围的元素 &lt;code&gt;zrangebyscore key min max [withscore][limit offset count]&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;增加某个元素的分数 &lt;code&gt;zincrby key increment member&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;获取元素的数量 &lt;code&gt;zcard key&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;获取指定分数范围内元素的数量 &lt;code&gt;zcount key min max&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;按照排序删除元素&lt;code&gt;zremrangebyrank key start stop&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;获取元素排名 &lt;code&gt;zrank key member /zrevrank key member&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;场景 排行榜&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;bitmap 位图&lt;/li&gt;
+&lt;li&gt;HyperLogLogs&lt;/li&gt;
+&lt;li&gt;GEO 地理信息&lt;/li&gt;
+&lt;li&gt;Stream&lt;/li&gt;
+&lt;/ol&gt;
+">Redis常用类型与应用场景</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="http://violet404.github.io/post/about/"" data-c="
+          &lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;chengzx_dev@foxmail.com&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;chengzx.dev@gmail.com&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+">关于</a>
+      </div>
+      
+    </div>
+    <div class="page">
+      <div id="page_ul"></div>
+    </div>
+  </div>
+</div>
+<script>
+  !function () {
+    let searchMask = document.querySelector('#search_mask');
+    let result = document.querySelector('#result');
+    let items = document.querySelectorAll('.item');
+    let searchBox = document.querySelector('#search');
+    let statCount = document.querySelector('#stat_count');
+    let statTimes = document.querySelector('#stat_times');
+    let pageUl = document.querySelector('#page_ul');
+    let close = document.querySelector('#close');
+    
+    close.addEventListener('click', function() {
+      searchMask.style = 'display: none;'
+    })
+
+    let finds = [];
+    let contents = [];
+    let pageSize = 10;
+    items.forEach(item => {
+      let a = item.querySelector('a');
+      contents.push({
+        title: a.innerText,
+        details: a.dataset.c,
+        link: a.href
+      })
+      item.remove();
+    })
+
+    function insertStr(soure, start, count) {
+      let newStr = soure.substr(start, count);
+      return soure.slice(0, start) + '<em>' + newStr + '</em>' + soure.slice(start + count);
+    }
+
+    pageUl.addEventListener('click', function(event) {
+      let target = event.target;
+      if (target.__proto__ === HTMLSpanElement.prototype) {
+        appendResults(parseInt(target.dataset.i));
+      }
+    })
+
+    function appendResults(index) {
+      let htmlResult = '';
+      let start = index || 0;
+      let end = Math.min(start + pageSize, finds.length);
+      for (let i = start; i < end; i++) {
+        const current = finds[i];
+        let html = current.title;
+        let sum = 0;
+        let positions = current.positions;
+        positions.forEach(position => {
+          html = insertStr(html, position.start + sum, position.count);
+          sum += 9;
+        })
+        htmlResult += `<div class="item"><a class="result-title" href="${current.link}">${html}</a></div>`;
+      }
+      result.innerHTML = htmlResult;
+      pageUl.innerHTML = '';
+      let count = finds.length / pageSize;
+      let lis = '';
+      if (start !== 0) {
+        lis += `<span class="fa fa-angle-left" data-i='${start - 1}'></span>`;
+      }
+      for (let i = 0; i < count; i++) {
+        lis += `<span class='${i === start?'current':''}' data-i='${i}'>${i+1}</span>`;     
+      }
+      if (start+1 < count) {
+        lis += `<span class="fa fa-angle-right" data-i='${start+1}'></span>`;  
+      }
+      pageUl.innerHTML = lis;
+    }
+
+    function search(delay) {
+      let timer = null
+      return function () {
+        clearTimeout(timer)
+        timer = setTimeout(() => {
+          let start = Date.now();
+          let segments = searchBox.value.split(' ').filter(c => c != '');
+          if (segments.length <= 0) {
+            return;
+          }
+          finds = [];
+          let htmlResult = '';
+          contents.forEach(content => {
+            let title = content.title;
+            let positions = [];
+            let find = false;
+            segments.forEach((segment) => {
+              if (content.title.includes(segment)) {
+                find = true;
+                positions.push({
+                  start: content.title.indexOf(segment),
+                  count: segment.length
+                })
+              } else if (content.details.includes(segment)) {
+                find = true;
+              }
+            });
+            if (find) {
+              finds.push({
+                title: content.title,
+                link: content.link,
+                positions
+              });
+            }
+          })
+          appendResults(0);
+          statCount.textContent = finds.length;
+          statTimes.textContent = Date.now() - start;
+        }, delay)
+      }
+    }
+    searchBox.addEventListener('input', search(200));
+  }()
+</script>
+
+<input hidden id="copy" />
+<script>
+  !function () {
+    let times = document.querySelectorAll('.publish-time');
+    for (let i = 0; i < times.length; i++) {
+      let date = times[i].dataset.t;
+      let time = Math.floor((new Date().getTime() - new Date(date).getTime()) / 1000);
+      if (time < 60) {
+        str = time + '秒之前';
+      } else if (time < 3600) {
+        str = Math.floor(time / 60) + '分钟之前';
+      } else if (time >= 3600 && time < 86400) {
+        str = Math.floor(time / 3600) + '小时之前';
+      } else if (time >= 86400 && time < 259200) {
+        str = Math.floor(time / 86400) + '天之前';
+      } else {
+        str = times[i].textContent;
+      }
+      times[i].textContent = str;
+    }
+  }();
+</script>
+
+<script>
+  let language = '';
+  if (language !== '') {
+    let map = new Map();
+    if (language === 'en') {
+      map.set('search', 'Search');
+      map.set('category', 'Categories');
+      map.set('article', 'Articles');
+      map.set('tag', 'Tags');
+      map.set('top', 'Top');
+      map.set('publish', 'published');
+      map.set('minute', ' minutes');
+      map.set('read-more', 'Read More');
+      map.set('view', 'View');
+      map.set('words', ' words');
+      map.set('category-in', 'category in');
+      map.set('preview', 'Meta');
+      map.set('index', 'Toc');
+      map.set('no-archives', "You haven't created yet");
+      map.set('archives', " articles in total");
+      map.set('cloud-tags', " tags in total");
+      map.set('copyright', "Copyright: ");
+      map.set('author', "Author: ");
+      map.set('link', "Link: ");
+      map.set('leave-message', "Leave a message");
+      map.set('format', "Links Format");
+      map.set('site-name', "Name: ");
+      map.set('site-link', "Link: ");
+      map.set('site-desc', "Desc: ");
+      map.set('stat', " related results, taking ");
+      map.set('stat-time', " ms");
+      map.set('site-img', "Image: ");
+    }
+
+    if (map.size > 0) {
+      let lanElems = document.querySelectorAll('.language');
+      lanElems.forEach(elem => {
+        let lan = elem.dataset.lan, text = map.get(lan);
+        if (elem.__proto__ === HTMLInputElement.prototype) {
+          elem.placeholder = text
+        } else {
+          if (elem.dataset.count) {
+            text = elem.dataset.count + text;
+          }
+          elem.textContent = text;
+        }
+      })
+    }
+  }
+  //拿来主义(真香)^_^，Clipboard 实现摘自掘金 https://juejin.im/post/5aefeb6e6fb9a07aa43c20af
+  window.Clipboard = (function (window, document, navigator) {
+    var textArea,
+      copy;
+
+    // 判断是不是ios端
+    function isOS() {
+      return navigator.userAgent.match(/ipad|iphone/i);
+    }
+    //创建文本元素
+    function createTextArea(text) {
+      textArea = document.createElement('textArea');
+      textArea.value = text;
+      textArea.style.width = 0;
+      textArea.style.height = 0;
+      textArea.clientHeight = 0;
+      textArea.clientWidth = 0;
+      document.body.appendChild(textArea);
+    }
+    //选择内容
+    function selectText() {
+      var range,
+        selection;
+
+      if (isOS()) {
+        range = document.createRange();
+        range.selectNodeContents(textArea);
+        selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+        textArea.setSelectionRange(0, 999999);
+      } else {
+        textArea.select();
+      }
+    }
+
+    //复制到剪贴板
+    function copyToClipboard() {
+      try {
+        document.execCommand("Copy")
+      } catch (err) {
+        alert("复制错误！请手动复制！")
+      }
+      document.body.removeChild(textArea);
+    }
+
+    copy = function (text) {
+      createTextArea(text);
+      selectText();
+      copyToClipboard();
+    };
+
+    return {
+      copy: copy
+    };
+  })(window, document, navigator);
+
+  function copyCode(e) {
+    if (e.srcElement.tagName === 'SPAN' && e.srcElement.classList.contains('copy-code')) {
+      let code = e.currentTarget.querySelector('code');
+      var text = code.innerText;
+      if (e.srcElement.textContent === '复制成功') {
+        return;
+      }
+      e.srcElement.textContent = '复制成功';
+      (function (elem) {
+        setTimeout(() => {
+          if (elem.textContent === '复制成功') {
+            elem.textContent = '复制代码'
+          }
+        }, 1000);
+      })(e.srcElement)
+      Clipboard.copy(text);
+    }
+  }
+
+  let pres = document.querySelectorAll('pre');
+  pres.forEach(pre => {
+    let code = pre.querySelector('code');
+    let copyElem = document.createElement('span');
+    copyElem.classList.add('copy-code');
+    copyElem.textContent = '复制代码';
+    pre.appendChild(copyElem);
+    pre.onclick = copyCode
+  })
+
+</script>
+<script src="https://cdn.jsdelivr.net/gh/violet404/violet404.github.io@latest/media/js/motion.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/gh/cferdinandi/smooth-scroll/dist/smooth-scroll.polyfills.min.js"></script>
+<script>
+  var scroll = new SmoothScroll('a[href*="#"]', {
+    speed: 200
+  });
+</script>
+
+
+<script src="/media/js/mouse/peace.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/gh/violet404/violet404.github.io@latest/media/js/cool.js"></script>
+
+
+
+  <div class="snow-container"></div>
+  <script src="https://cdn.jsdelivr.net/gh/violet404/violet404.github.io@latest/media/js/bg/snow.js"></script>
+
+</html>

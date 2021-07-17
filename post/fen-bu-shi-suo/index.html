@@ -9,7 +9,7 @@
 <meta name="description" content="业精于勤，荒于嬉">
 <meta name="theme-color" content="#000">
 <title>分布式锁 | Violet</title>
-<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/violet404/violet404.github.io@latest/favicon.ico?v=1626420951366">
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/violet404/violet404.github.io@latest/favicon.ico?v=1626499880803">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/violet404/violet404.github.io@latest/media/css/pisces.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/violet404/violet404.github.io@latest/media/fonts/font-awesome.css">
 <link
@@ -1403,15 +1403,18 @@ service2</p>
       
       <div class="item">
         <a class="result-title" style="opacity: 0;" href="http://violet404.github.io/post/5myC2JTLs/"" data-c="
-          &lt;h1 id=&#34;垃圾回收算法&#34;&gt;垃圾回收算法&lt;/h1&gt;
+          &lt;h1 id=&#34;对象的实例化内存布局与访问定位&#34;&gt;对象的实例化内存布局与访问定位&lt;/h1&gt;
+&lt;h1 id=&#34;直接内存&#34;&gt;直接内存&lt;/h1&gt;
+&lt;h1 id=&#34;执行引擎&#34;&gt;执行引擎&lt;/h1&gt;
+&lt;h1 id=&#34;stringtable&#34;&gt;StringTable&lt;/h1&gt;
+&lt;h1 id=&#34;垃圾回收算法&#34;&gt;垃圾回收算法&lt;/h1&gt;
 &lt;h1 id=&#34;垃圾回收器&#34;&gt;垃圾回收器&lt;/h1&gt;
 ">JVM 内存与垃圾回收（五）</a>
       </div>
       
       <div class="item">
         <a class="result-title" style="opacity: 0;" href="http://violet404.github.io/post/DI3xGNxed/"" data-c="
-          &lt;h1 id=&#34;方法区&#34;&gt;方法区&lt;/h1&gt;
-&lt;h2 id=&#34;栈-堆-方法区的交互关系&#34;&gt;栈、堆、方法区的交互关系&lt;/h2&gt;
+          &lt;h2 id=&#34;栈-堆-方法区的交互关系&#34;&gt;栈、堆、方法区的交互关系&lt;/h2&gt;
 &lt;p&gt;&lt;em&gt;&lt;strong&gt;从线程共享与否的角度看&lt;/strong&gt;&lt;/em&gt; ：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;ThreadLocal ：如何保证多个线程在并发环境下的安全性？典型应用就是数据库连接管理，以及线程会话管理，独立变量副本&lt;/li&gt;
@@ -1510,13 +1513,416 @@ service2</p>
 &lt;p&gt;&lt;em&gt;如果初始化的高水位线设置过低，上述高水位线调整情况会发生很多次&lt;/em&gt;。通过垃圾回收器的日志可以观察到Full GC多次调用。&lt;strong&gt;为了避免频繁地GC，建议将-XX:MetaspaceSize设置为一个相对较高的值。&lt;/strong&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
+&lt;h3 id=&#34;如何解决这些oom&#34;&gt;如何解决这些OOM&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;要解决OOM异常或heap space的异常，一般的手段是首先通过内存映像分析工具（如Ec1ipse Memory Analyzer）对dump出来的堆转储快照进行分析，重点是确认内存中的对象是否是必要的，也就是要先分清楚到底是出现了&lt;code&gt;内存泄漏（Memory Leak）&lt;/code&gt;还是&lt;code&gt;内存溢出（Memory Overflow）&lt;/code&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;内存泄漏就是 有大量的引用指向某些对象，但是这些对象以后不会使用了，但是因为它们还和GC ROOT有关联，所以导致以后这些对象也不会被回收，这就是&lt;strong&gt;内存泄漏&lt;/strong&gt;的问题&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;em&gt;如果是内存泄漏，可进一步通过工具查看泄漏对象到GC Roots的引用链&lt;/em&gt;。于是就能找到泄漏对象是通过怎样的路径与GCRoots相关联并导致垃圾收集器无法自动回收它们的。掌握了泄漏对象的类型信息，以及GCRoots引用链的信息，就可以比较准确地定位出泄漏代码的位置。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;如果不存在内存泄漏，换句话说就是内存中的对象确实都还必须存活着，那就应当检查虚拟机的堆参数（-Xmx与-Xms），与机器物理内存对比看是否还可以调大，从代码上检查是否存在某些对象生命周期过长、持有状态时间过长的情况，尝试减少程序运行期的内存消耗。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class MetaSpacesOomTest extends ClassLoader {
+
+    public static void main(String[] args) {
+        int j = 0;
+        try {
+            MetaSpacesOomTest test = new MetaSpacesOomTest();
+            for (int i = 0; i &amp;lt; 1000000; i++) {
+                //创建ClassWriter对象，用于生成类的二进制字节码
+                ClassWriter classWriter = new ClassWriter(0);
+                //指明版本号，修饰符，类名，包名，父类，接口
+                classWriter.visit(Opcodes.V1_6, Opcodes.ACC_PUBLIC, &amp;quot;Class&amp;quot; + i, null, &amp;quot;java/lang/Object&amp;quot;, null);
+                byte[] code = classWriter.toByteArray();
+                //类的加载
+                test.defineClass(&amp;quot;Class&amp;quot; + i, code, 0, code.length);
+                j++;
+            }
+        } finally {
+            System.out.println(j);
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;jdk7 环境下编译，配置VM参数&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;-XX:PermSize=10m -XX:MaxPermSize=10m
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;执行，查看输出结果&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;10098
+Exception in thread &amp;quot;main&amp;quot; java.lang.OutOfMemoryError: PermGen space
+	at java.lang.ClassLoader.defineClass(ClassLoader.java:800)
+	at java.lang.ClassLoader.defineClass(ClassLoader.java:643)
+	at metaspace.MetaSpacesOomTest.main(MetaSpacesOomTest.java:24)
+&lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id=&#34;内部结构&#34;&gt;内部结构&lt;/h2&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;5&#34;&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626440189632.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;h3 id=&#34;方法区method-area存储什么&#34;&gt;方法区（Method Area）存储什么？&lt;/h3&gt;
+&lt;p&gt;《深入理解Java虚拟机》书中对方法区存储内容描述如下：它用于存储已被虚拟机加载的&lt;font color=&#34;red&#34;&gt;&lt;strong&gt;类型信息、常量、静态变量、即时编译器编译后的代码缓存&lt;/strong&gt;&lt;/font&gt;等。&lt;/p&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;6&#34;&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626440287783.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;p&gt;&lt;em&gt;随着JDK的变更，虚拟机规范也由变化，上面大的存储内容可能会有变化&lt;/em&gt;&lt;/p&gt;
+&lt;h4 id=&#34;类型信息&#34;&gt;类型信息&lt;/h4&gt;
+&lt;p&gt;对每个加载的类型（&lt;em&gt;类class、接口interface、枚举enum、注解annotation&lt;/em&gt;），JVMM必须在方法区中存储以下类型信息：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;这个类型的完整有效名称（全名=包名.类名）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;这个类型直接父类的完整有效名（对于interface或是java.lang.object，都没有父类）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;这个类型的修饰符（public，abstract，final的某个子集）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;这个类型直接接口的一个有序列表&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;字节码文件在由类加载子系统加载进JVM时，会在方法区的类型信息中存储加载该类的ClassLoader信息，ClassLoader作为Java中的一个类，也会在自己的类型信息记录加载了哪些类，共后续GC使用&lt;/p&gt;
+&lt;h4 id=&#34;域信息&#34;&gt;域信息&lt;/h4&gt;
+&lt;p&gt;JVM必须在方法区中保存类型的所有&lt;strong&gt;域的相关信息&lt;/strong&gt;以及&lt;strong&gt;域的声明顺序&lt;/strong&gt;*。&lt;/p&gt;
+&lt;p&gt;域的相关信息包括：&lt;strong&gt;域名称、域类型、域修饰符（public，private，protected，static，final，volatile，transient的某个子集）&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;方法method信息&#34;&gt;方法（Method）信息&lt;/h3&gt;
+&lt;p&gt;JVM必须保存所有方法的以下信息，同域信息一样&lt;strong&gt;包括声明顺序&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;方法名称&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;方法的返回类型（或void）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;方法参数的数量和类型（按顺序）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;方法的修饰符（public，private，protected，static，final，synchronized，native，abstract的一个子集）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;方法的字节码（bytecodes）、操作数栈、局部变量表及大小（abstract和native方法除外）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;异常表（abstract和native方法除外）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;每个异常处理的开始位置、结束位置、代码处理在程序计数器中的偏移地址、被捕获的异常类的常量池索引&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;non-final的类变量&#34;&gt;non-final的类变量&lt;/h3&gt;
+&lt;p&gt;静态变量和类关联在一起，随着类的加载而加载，他们成为类数据在逻辑上的一部分&lt;/p&gt;
+&lt;p&gt;类变量被类的所有实例共享，即使没有类实例时，你也可以访问它&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class MethodAreaTest {
+    public static void main(String[] args) {
+        Order order = null;
+        order.hello();
+        System.out.println(order.count);
+    }
+}
+
+class Order {
+    public static int count = 1;
+    public static final int number = 2;
+
+
+    public static void hello() {
+        System.out.println(&amp;quot;hello!&amp;quot;);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;全局常量 全局常量就是使用 static final 进行修饰。被声明为final的类变量的处理方法则不同，每个全局常量在编译的时候就会被分配了。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;类变量在编译时会把赋值语句写入&lt;code&gt;&amp;lt;clinit&amp;gt;()&lt;/code&gt;,在初始化阶段才能正确赋值。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt; public static int count;
+    descriptor: I
+    flags: ACC_PUBLIC, ACC_STATIC
+
+  public static final int number;
+    descriptor: I
+    flags: ACC_PUBLIC, ACC_STATIC, ACC_FINAL
+    ConstantValue: int 2
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;运行时常量池-vs-常量池&#34;&gt;运行时常量池 VS 常量池&lt;/h3&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;7&#34;&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626490559226.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;方法区，内部包含了&lt;strong&gt;运行时常量池&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;字节码文件，内部包含了&lt;strong&gt;常量池&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;要弄清楚方法区，需要理解清楚ClassFile，因为加载类的信息都在方法区。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;要弄清楚方法区的运行时常量池，需要理解清楚ClassFile中的常量池。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;常量池&#34;&gt;常量池&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626491120129.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;br&gt;
+一个有效的字节码文件中除了包含类的版本信息、字段、方法以及接口等描述符信息外，还包含一项信息就是&lt;strong&gt;常量池表（Constant Pool Table），包括各种字面量和对类型、域和方法的符号引用&lt;/strong&gt;&lt;/p&gt;
+&lt;h4 id=&#34;为什么需要常量池&#34;&gt;为什么需要常量池&lt;/h4&gt;
+&lt;p&gt;一个java源文件中的类、接口，编译后产生一个字节码文件。而Java中的字节码需要数据支持，通常这种数据会很大以至于不能直接存到字节码里，换另一种方式，可以存到常量池，这个字节码包含了指向常量池的引用。r在动态链接的时候会用到运行时常量池，之前有介绍。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class SimpleClass {
+    public void sayHello() {
+        System.out.println(&amp;quot;hello&amp;quot;);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626491492773.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;br&gt;
+虽然上述代码只有128字节，但是里面却使用了String、System、PrintStream及Object等结构。这里的代码量其实很少了，如果代码多的话，引用的结构将会更多，这里就需要用到常量池了。&lt;/p&gt;
+&lt;h4 id=&#34;常量池中有什么&#34;&gt;常量池中有什么&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;数量值&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;字符串值&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;类引用&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;字段引用&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;方法引用&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;小结&#34;&gt;小结&lt;/h4&gt;
+&lt;p&gt;常量池、可以看做是一张表，虚拟机指令根据这张常量表找到要执行的类名、方法名、参数类型、字面量等类型. 常量池食材，字节码菜谱。&lt;/p&gt;
+&lt;h3 id=&#34;运行时常量池&#34;&gt;运行时常量池&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;运行时常量池（Runtime Constant Pool）是方法区的一部分。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;常量池表（Constant Pool Table）是Class文件的一部分，&lt;font color=&#34;red&#34;&gt;&lt;strong&gt;用于存放编译期生成的各种字面量与符号引用&lt;/strong&gt;&lt;/font&gt;， &lt;font color=&#34;blue&#34;&gt;&lt;em&gt;这部分内容将在类加载后存放到方法区的运行时常量池中&lt;/em&gt; &lt;/font&gt;。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;运行时常量池，在加载类和接口到虚拟机后，就会创建对应的运行时常量池。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;JVM为每个已加载的类型（类或接口）都维护一个常量池。池中的数据项像数组项一样，是通过索引访问的。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;运行时常量池中包含多种不同的常量，包括编译期就已经明确的数值字面量，也包括到运行期解析后才能够获得的方法或者字段引用。此时不再是常量池中的符号地址了，这里换为真实地址。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;运行时常量池，相对于Class文件常量池的另一重要特征是：&lt;font color=&#34;red&#34;&gt;具备动态性&lt;/font&gt;。例如，&lt;code&gt;String#intern()&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;运行时常量池类似于传统编程语言中的符号表（symboltable），但是它所包含的数据却比符号表要更加丰富一些。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;当创建类或接口的运行时常量池时，如果构造运行时常量池所需的内存空间超过了方法区所能提供的最大值，则JVM会抛OutOfMemoryError异常。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
 &lt;h2 id=&#34;示例&#34;&gt;示例&lt;/h2&gt;
-&lt;h1 id=&#34;对象的实例化内存布局与访问定位&#34;&gt;对象的实例化内存布局与访问定位&lt;/h1&gt;
-&lt;h1 id=&#34;直接内存&#34;&gt;直接内存&lt;/h1&gt;
-&lt;h1 id=&#34;执行引擎&#34;&gt;执行引擎&lt;/h1&gt;
-&lt;h1 id=&#34;stringtable&#34;&gt;StringTable&lt;/h1&gt;
-">JVM 内存与垃圾回收（四）</a>
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class MethodAreaDemo {
+    public static void main(String args[]) {
+        int x = 500;
+        int y = 100;
+        int a = x / y;
+        int b = 50;
+        System.out.println(a+b);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;font color=&#34;red&#34;&gt;&lt;em&gt;&lt;strong&gt;字节码执行过程展示：&lt;/strong&gt;&lt;/em&gt;&lt;/font&gt;&lt;br&gt;
+&lt;img src=&#34;http://violet404.github.io//post-images/1626493337779.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;br&gt;
+&lt;img src=&#34;http://violet404.github.io//post-images/1626493660278.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;br&gt;
+&lt;img src=&#34;http://violet404.github.io//post-images/1626493667932.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;br&gt;
+&lt;img src=&#34;http://violet404.github.io//post-images/1626493675648.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;br&gt;
+&lt;img src=&#34;http://violet404.github.io//post-images/1626493688060.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;br&gt;
+&lt;img src=&#34;http://violet404.github.io//post-images/1626493696210.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;br&gt;
+&lt;img src=&#34;http://violet404.github.io//post-images/1626493704585.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;br&gt;
+&lt;img src=&#34;http://violet404.github.io//post-images/1626493713860.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;br&gt;
+&lt;img src=&#34;http://violet404.github.io//post-images/1626493718951.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;br&gt;
+&lt;img src=&#34;http://violet404.github.io//post-images/1626493816533.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;br&gt;
+&lt;img src=&#34;http://violet404.github.io//post-images/1626493838159.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;br&gt;
+&lt;img src=&#34;http://violet404.github.io//post-images/1626494059735.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;br&gt;
+&lt;img src=&#34;http://violet404.github.io//post-images/1626494064181.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;br&gt;
+&lt;img src=&#34;http://violet404.github.io//post-images/1626494075461.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;br&gt;
+&lt;img src=&#34;http://violet404.github.io//post-images/1626494086627.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;方法区的演进细节&#34;&gt;方法区的演进细节&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;首先明确：只有Hotspot才有永久代。BEA JRockit、IBMJ9等来说，是不存在永久代的概念的。原则上如何实现方法区属于虚拟机实现细节，不受《Java虚拟机规范》管束，并不要求统一&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Hotspot中方法区的变化：&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;JDK1.6及以前&lt;/th&gt;
+&lt;th&gt;有永久代，静态变量存储在永久代上&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;JDK1.7&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;有永久代，但已经逐步 “去永久代”，字符串常量池，静态变量移除，保存在堆中&lt;/strong&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;JDK1.8&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;无永久代，类型信息，字段，方法，常量保存在本地内存的元空间，但字符串常量池、静态变量仍然在堆中。&lt;/strong&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;8&#34;&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626495066417.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;9&#34;&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626495089059.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;10&#34;&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626495116167.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;h3 id=&#34;为什么永久代要被元空间替代&#34;&gt;为什么永久代要被元空间替代？&lt;/h3&gt;
+&lt;p&gt;JRockit是和HotSpot融合后的结果，因为JRockit没有永久代，所以他们不需要配置永久代。&lt;/p&gt;
+&lt;p&gt;随着Java8的到来，HotSpot VM中再也见不到永久代了。但是这并不意味着类的元数据信息也消失了。这些数据被移到了一个与堆不相连的本地内存区域，这个区域叫做元空间（Metaspace）。&lt;/p&gt;
+&lt;p&gt;由于类的元数据分配在本地内存中，元空间的最大可分配空间就是系统可用内存空间，这项改动是很有必要的，原因有：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;为永久代设置空间大小是很难确定的。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;在某些场景下，如果动态加载类过多，容易产生Perm区的oom。比如某个实际Web工程中，因为功能点比较多，在运行过程中，要不断动态加载很多类，经常出现致命错误。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;Exception in thread‘dubbo client x.x connector&#39;java.lang.OutOfMemoryError:PermGen space
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;元空间和永久代之间最大的区别在于：元空间并不在虚拟机中，而是使用本地内存。 因此，默认情况下，元空间的大小仅受本地内存限制。&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;对永久代进行调优是很困难的。主要是为了降低Full GC&lt;br&gt;
+《Java虚拟机规范》对方法区的约束是非常宽松的，提到过可以不要求虚拟机在方法区中实现垃圾收集。事实上也确实有未实现或未能完整实现方法区类型卸载的收集器存在（如JDK11时期的ZGC收集器就不支持类卸载）。 一般来说这个区域的回收效果比较难令人满意，尤其是类型的卸载，条件相当苛刻。但是这部分区域的回收有时又确实是必要的。以前Sun公司的Bug列表中，曾出现过的若干个严重的Bug就是由于低版本的HotSpot虚拟机对此区域未完全回收而导致内存泄漏&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;方法区的垃圾收集主要回收两部分内容：&lt;strong&gt;常量池中废弃的常量和不在使用的类型&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;stringtable-为什么要调整&#34;&gt;StringTable 为什么要调整？&lt;/h3&gt;
+&lt;p&gt;Jdk7中将StringTable放到了堆空间中。因为永久代的回收效率很低，在Full GC的时候才会触发。而Full GC 是老年代的空间不足、永久代不足时才会触发。这就导致了StringTable回收效率不高。而我们开发中会有大量的字符串被创建，回收效率低，导致永久代内存不足。放到堆里，能及时回收内存.&lt;/p&gt;
+&lt;h3 id=&#34;静态变量存在哪&#34;&gt;静态变量存在哪?&lt;/h3&gt;
+&lt;h4 id=&#34;静态引用对应的对象事中都是存放在对空间中的&#34;&gt;静态引用对应的对象事中都是存放在对空间中的&lt;/h4&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class StaticFieldTest {
+
+    private static byte[] arr = new byte[1024 * 1024 * 100];
+
+    public static void main(String[] args) {
+
+        System.out.println(StaticFieldTest.arr);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;添加JVM参数&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;-Xms200M -Xmx200M -XX:PermSize=300M -XX:MaxPermSize=300M -XX:+PrintGCDetails
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;JDK7环境下编译执行&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;[B@3a0aaa10
+Heap
+ PSYoungGen      total 60416K, used 4191K [0x00000000fbd00000, 0x0000000100000000, 0x0000000100000000)
+  eden space 52224K, 8% used [0x00000000fbd00000,0x00000000fc117ee0,0x00000000ff000000)
+  from space 8192K, 0% used [0x00000000ff800000,0x00000000ff800000,0x0000000100000000)
+  to   space 8192K, 0% used [0x00000000ff000000,0x00000000ff000000,0x00000000ff800000)
+ ParOldGen       total 136704K, used 102400K [0x00000000f3780000, 0x00000000fbd00000, 0x00000000fbd00000)
+  object space 136704K, 74% used [0x00000000f3780000,0x00000000f9b80010,0x00000000fbd00000)
+ PSPermGen       total 307200K, used 3242K [0x00000000e0b80000, 0x00000000f3780000, 0x00000000f3780000)
+  object space 307200K, 1% used [0x00000000e0b80000,0x00000000e0eaab50,0x00000000f3780000)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;改变VM参数配置&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;-Xms200M -Xmx200M -XX:MetaspaceSize=300M -XX:MaxMetaspaceSize=300M -XX:+PrintGCDetails
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;切换JDK8环境，编译执行&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;[B@1b6d3586
+Heap
+ PSYoungGen      total 59904K, used 4137K [0x00000000fbd80000, 0x0000000100000000, 0x0000000100000000)
+  eden space 51712K, 8% used [0x00000000fbd80000,0x00000000fc18a618,0x00000000ff000000)
+  from space 8192K, 0% used [0x00000000ff800000,0x00000000ff800000,0x0000000100000000)
+  to   space 8192K, 0% used [0x00000000ff000000,0x00000000ff000000,0x00000000ff800000)
+ ParOldGen       total 136704K, used 102400K [0x00000000f3800000, 0x00000000fbd80000, 0x00000000fbd80000)
+  object space 136704K, 74% used [0x00000000f3800000,0x00000000f9c00010,0x00000000fbd80000)
+ Metaspace       used 3304K, capacity 4496K, committed 4864K, reserved 1056768K
+  class space    used 359K, capacity 388K, committed 512K, reserved 1048576K
+
+Process finished with exit code 0
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;静态引用本身存储位置&#34;&gt;静态引用本身存储位置&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;public class StaticObjTest {
+    static class Test {
+        static ObjectHolder staticObj = new ObjectHolder();
+        ObjectHolder instanceObj = new ObjectHolder();
+
+        void foo() {
+            ObjectHolder localObj = new ObjectHolder();
+            System.out.println(&amp;quot;done&amp;quot;);
+        }
+    }
+
+    private static class ObjectHolder {
+    }
+
+    public static void main(String[] args) {
+        Test test = new StaticObjTest.Test();
+        test.foo();
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;staticObj随着Test的类型信息存放在方法区，instance0bj 随着Test的对象实例存放在Java堆，localobject则是存放在foo（）方法栈帧的局部变量表中。&lt;br&gt;
+&lt;img src=&#34;http://violet404.github.io//post-images/1626498477790.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;测试发现：三个对象的数据在内存中的地址都落在Eden区范围内，所以结论：只要是对象实例必然会在Java堆中分配。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;接着，找到了一个引用该staticObj对象的地方，是在一个java.lang.Class的实例里，并且给出了这个实例的地址，通过Inspector查看该对象实例，可以清楚看到这确实是一个&lt;br&gt;
+java.lang.Class类型的对象实例，里面有一个名为staticObj的实例字段：&lt;br&gt;
+&lt;img src=&#34;http://violet404.github.io//post-images/1626498541173.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;从《Java 虛拟机规范》所定义的概念模型来看，所有 Class 相关的信息都应该存放在方法区之中，但方法区该如何实现，《Java 虚拟机规范》并未做出规定，这就成了一件允许不同虚拟机自己灵活把握的事情。JDK7 及其以后版本的 Hotspot 虚拟机选择把静态变量与类型在 Java 语言一端的映射 Class 对象存放在一起，存储于Java 堆之中，从我们的实验中也明确验证了这一点.（&lt;font color=&#34;red&#34;&gt;&lt;em&gt;&lt;strong&gt;这个实验，由于使用JDK8编译执行，使用JDK11版本的JHSDB工具打开会报错，等后续用相同版本测试&lt;/strong&gt;&lt;/em&gt;&lt;/font&gt;）&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;方法区的垃圾回收&#34;&gt;方法区的垃圾回收&lt;/h2&gt;
+&lt;p&gt;《Java 虚拟机规范》对方法区的约束是非常宽松的，提到过可以不要求虚拟机在方法区中实现垃圾收集。事实上也确实有未实现或未能完整实现方法区类型卸载的收集器存在（如 JDK11 时期的 ZGC 收集器就不支持类卸载）&lt;/p&gt;
+&lt;p&gt;一般来说&lt;font color=&#34;blue&#34;&gt;&lt;em&gt;这个区域的回收效果比较难令人满意，尤其是类型的卸载，条件相当苛刻&lt;/em&gt;&lt;/font&gt;。但是这部分区域的回收有时又确实是必要的。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;方法区的垃圾收集主要回收两部分内容：常量池中废奔的常量和不再使用的类型&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;方法区内常量池之中主要存放的两大类常量：&lt;strong&gt;字面量和符号引用&lt;/strong&gt;。字面量比较接近Java语言层次的常量概念，如文本字符串、被声明为final的常量值等。而符号引用则属于编译原理方面的概念，包括下面三类常量：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;类和接口的全限定名&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;字段的名称和描述符&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;方法的名称和描述符&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;HotSpot虚拟机对常量池的回收策略是很明确的，&lt;strong&gt;只要常量池中的常量没有被任何地方引用，就可以被回收。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;回收废弃常量与回收Java堆中的对象非常类似。（关于常量的回收比较简单，重点是类的回收）&lt;/p&gt;
+&lt;p&gt;判定一个常量是否“废弃”还是相对简单，而要判定一个类型是否属于“不再被使用的类”的条件就比较苛刻了。需要同时满足下面三个条件：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;该类所有的实例都已经被回收&lt;/strong&gt;，也就是Java堆中不存在该类及其任何派生子类的实例。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;加载该类的类加载器已经被回收&lt;/strong&gt;，这个条件除非是经过精心设计的可替换类加载器的场景，如OSGi、JSP的重加载等，否则通常是很难达成的。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;该类对应的java.lang.Class对象没有在任何地方被引用，无法在任何地方通过反射访问该类的方法&lt;/strong&gt;。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Java虚拟机被允许对&lt;em&gt;满足上述三个条件的无用类进行回收，这里说的仅仅是&lt;font color=&#34;red&#34;&gt;“被允许”&lt;/font&gt;，而并不是和对象一样，没有引用了就必然会回收。&lt;/em&gt; 关于是否要对类型进行回收，HotSpot虚拟机提供了&lt;code&gt;-Xnoclassgc&lt;/code&gt;参数进行控制，还可以使用&lt;code&gt;-verbose:class&lt;/code&gt; 以及 &lt;code&gt;-XX:+TraceClassLoading&lt;/code&gt;、&lt;code&gt;-XX:+TraceClassUnLoading&lt;/code&gt;查看类加载和卸载信息&lt;/p&gt;
+&lt;p&gt;在大量使用反射、动态代理、CGLib等字节码框架，动态生成JSP以及OSGi这类频繁自定义类加载器的场景中，&lt;em&gt;通常都需要Java虚拟机具备类型卸载的能力，以保证不会对方法区造成过大的内存压力。&lt;/em&gt;&lt;/p&gt;
+&lt;h2 id=&#34;总结&#34;&gt;总结&lt;/h2&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;11&#34;&gt;&lt;img src=&#34;http://violet404.github.io//post-images/1626499542216.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+">JVM 内存与垃圾回收（四）方法区</a>
       </div>
       
       <div class="item">
@@ -2272,7 +2678,7 @@ class Point {
 &lt;p&gt;年轻代是对象的诞生、成长、消亡的区域，一个对象在这里产生、应用，最后被垃圾回收器收集、结束生命。&lt;/p&gt;
 &lt;p&gt;老年代放置长生命周期的对象，通常都是从survivor区域筛选拷贝过来的Java对象。当然，也有特殊情况，我们知道普通的对象会被分配在TLAB上；如果对象较大，JVM会试图直接分配在Eden其他位置上；如果对象太大，完全无法在新生代找到足够长的连续空闲空间，JVM就会直接分配到老年代。当GC只发生在年轻代中，回收年轻代对象的行为被称为MinorGc。&lt;/p&gt;
 &lt;p&gt;当GC发生在老年代时则被称为MajorGc或者FullGC。一般的，MinorGc的发生频率要比MajorGC高很多，即老年代中垃圾回收发生的频率将大大低于年轻代。&lt;/p&gt;
-">JVM 内存与垃圾回收（三）</a>
+">JVM 内存与垃圾回收（三）堆</a>
       </div>
       
       <div class="item">
@@ -2643,7 +3049,7 @@ public class AnimalTest {
 &lt;p&gt;与虚拟机栈一样可以设置为固定大小或者动态扩展&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-">JVM 内存与垃圾回收（二）</a>
+">JVM 内存与垃圾回收（二）程序计数器&栈</a>
       </div>
       
       <div class="item">
@@ -3526,11 +3932,11 @@ public class CustomizationClassLoaderTest {
     }
 }
 &lt;/code&gt;&lt;/pre&gt;
-">JVM 内存与垃圾回收（一）</a>
+">JVM 内存与垃圾回收（一）类加载</a>
       </div>
       
       <div class="item">
-        <a class="result-title" style="opacity: 0;" href="http://violet404.github.io/post/you-biao-geng-xin-shu-ju/"" data-c="
+        <a class="result-title" style="opacity: 0;" href="http://violet404.github.io/post/_H2piR_In/"" data-c="
           &lt;pre&gt;&lt;code class=&#34;language-sql&#34;&gt;declare
     cursor cur_tb1 is select * from tb1 for update;
     v_rec tb1%rowtype;
@@ -3565,7 +3971,7 @@ begin
     close cur_tb1;
 end;
 &lt;/code&gt;&lt;/pre&gt;
-">游标更新数据</a>
+">Oracle 游标更新数据</a>
       </div>
       
       <div class="item">
@@ -4198,7 +4604,14 @@ redis 帮助命令 help @&amp;lt;类型名词&amp;gt;&lt;/p&gt;
       
       <div class="item">
         <a class="result-title" style="opacity: 0;" href="http://violet404.github.io/post/about/"" data-c="
-          &lt;blockquote&gt;&lt;/blockquote&gt;
+          &lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;chengzx_dev@foxmail.com&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;chengzx.dev@gmail.com&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
 ">关于</a>
       </div>
       
