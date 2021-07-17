@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://violet404.github.io/</id>
     <title>Violet</title>
-    <updated>2021-07-17T08:01:56.597Z</updated>
+    <updated>2021-07-17T10:27:33.925Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://violet404.github.io/"/>
     <link rel="self" href="http://violet404.github.io/atom.xml"/>
@@ -37,6 +37,26 @@
         <link href="http://violet404.github.io/post/PwsytJfe7/">
         </link>
         <updated>2021-07-17T05:32:50.000Z</updated>
+        <summary type="html"><![CDATA[<h1 id="概述">概述</h1>
+<ul>
+<li>
+<p>执行引擎是Java虚拟机核心的组成部分之一。</p>
+</li>
+<li>
+<p>“虚拟机”是一个相对于“物理机”的概念，这两种机器都有代码执行能力，其区别是物理机的执行引擎是直接建立在处理器、缓存、指令集和操作系统层面上的，而 <strong>虚拟机的执行引擎则是由软件自行实现的</strong> ，因此可以不受物理条件制约地定制指令集与执行引擎的结构体系，<strong>能够执行那些不被硬件直接支持的指令集格式</strong>。</p>
+</li>
+</ul>
+]]></summary>
+        <content type="html"><![CDATA[<h1 id="概述">概述</h1>
+<ul>
+<li>
+<p>执行引擎是Java虚拟机核心的组成部分之一。</p>
+</li>
+<li>
+<p>“虚拟机”是一个相对于“物理机”的概念，这两种机器都有代码执行能力，其区别是物理机的执行引擎是直接建立在处理器、缓存、指令集和操作系统层面上的，而 <strong>虚拟机的执行引擎则是由软件自行实现的</strong> ，因此可以不受物理条件制约地定制指令集与执行引擎的结构体系，<strong>能够执行那些不被硬件直接支持的指令集格式</strong>。</p>
+</li>
+</ul>
+]]></content>
     </entry>
     <entry>
         <title type="html"><![CDATA[JVM 内存与垃圾回收（四）方法区]]></title>
