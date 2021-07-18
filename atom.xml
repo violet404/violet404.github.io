@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://violet404.github.io/</id>
     <title>Violet</title>
-    <updated>2021-07-17T10:32:07.534Z</updated>
+    <updated>2021-07-18T06:42:18.634Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://violet404.github.io/"/>
     <link rel="self" href="http://violet404.github.io/atom.xml"/>
@@ -11,11 +11,51 @@
     <icon>http://violet404.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, Violet</rights>
     <entry>
-        <title type="html"><![CDATA[JVM 内存与垃圾回收（五）对象的实例化 & 直接内存]]></title>
-        <id>http://violet404.github.io/post/5myC2JTLs12/</id>
-        <link href="http://violet404.github.io/post/5myC2JTLs12/">
+        <title type="html"><![CDATA[手动从JDK安装文件提取免安装版本（压缩版）]]></title>
+        <id>http://violet404.github.io/post/6EIFP0qy7/</id>
+        <link href="http://violet404.github.io/post/6EIFP0qy7/">
         </link>
-        <updated>2021-07-17T14:01:00.000Z</updated>
+        <updated>2021-07-18T06:15:35.000Z</updated>
+        <summary type="html"><![CDATA[<ul>
+<li>
+<p>7Z解压缩软件，JDK安装文件</p>
+</li>
+<li>
+<p>提取步骤</p>
+</li>
+</ul>
+<ol>
+<li>
+<p>使用<code>7z</code>将JDK可执行文件解压到同名目录</p>
+</li>
+<li>
+<p>在cmd命令行窗口进入 <code>解压目录/.rsrc/1033</code></p>
+</li>
+</ol>
+<ul>
+<li><code>JDK 7u80</code> 版本解压后只有<code>tools.zip</code>,直接进入第5步</li>
+</ul>
+]]></summary>
+        <content type="html"><![CDATA[<ul>
+<li>
+<p>7Z解压缩软件，JDK安装文件</p>
+</li>
+<li>
+<p>提取步骤</p>
+</li>
+</ul>
+<ol>
+<li>
+<p>使用<code>7z</code>将JDK可执行文件解压到同名目录</p>
+</li>
+<li>
+<p>在cmd命令行窗口进入 <code>解压目录/.rsrc/1033</code></p>
+</li>
+</ol>
+<ul>
+<li><code>JDK 7u80</code> 版本解压后只有<code>tools.zip</code>,直接进入第5步</li>
+</ul>
+]]></content>
     </entry>
     <entry>
         <title type="html"><![CDATA[JVM 内存与垃圾回收（八）垃圾回收]]></title>
@@ -25,11 +65,59 @@
         <updated>2021-07-17T05:34:26.000Z</updated>
     </entry>
     <entry>
-        <title type="html"><![CDATA[JVM 内存与垃圾回收（七）字符串常量]]></title>
+        <title type="html"><![CDATA[JVM 内存与垃圾回收（七）字符串]]></title>
         <id>http://violet404.github.io/post/sfGQyVhCE/</id>
         <link href="http://violet404.github.io/post/sfGQyVhCE/">
         </link>
         <updated>2021-07-17T05:34:02.000Z</updated>
+        <summary type="html"><![CDATA[<h1 id="字符串的基本特性">字符串的基本特性</h1>
+<ul>
+<li>
+<p>实例化方式</p>
+<ul>
+<li>
+<p><code>String s = &quot;test&quot;</code>;</p>
+</li>
+<li>
+<p><code>String s = new String(&quot;test&quot;)</code>;</p>
+</li>
+</ul>
+</li>
+<li>
+<p>不可继承</p>
+</li>
+<li>
+<p>实现<code>Serializable</code>接口，可序列化、反序列化</p>
+</li>
+<li>
+<p>实现<code>Comparable</code>接口，可排序</p>
+</li>
+</ul>
+]]></summary>
+        <content type="html"><![CDATA[<h1 id="字符串的基本特性">字符串的基本特性</h1>
+<ul>
+<li>
+<p>实例化方式</p>
+<ul>
+<li>
+<p><code>String s = &quot;test&quot;</code>;</p>
+</li>
+<li>
+<p><code>String s = new String(&quot;test&quot;)</code>;</p>
+</li>
+</ul>
+</li>
+<li>
+<p>不可继承</p>
+</li>
+<li>
+<p>实现<code>Serializable</code>接口，可序列化、反序列化</p>
+</li>
+<li>
+<p>实现<code>Comparable</code>接口，可排序</p>
+</li>
+</ul>
+]]></content>
     </entry>
     <entry>
         <title type="html"><![CDATA[JVM 内存与垃圾回收（六）执行引擎]]></title>
@@ -57,6 +145,13 @@
 </li>
 </ul>
 ]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[JVM 内存与垃圾回收（五）对象的实例化 & 直接内存]]></title>
+        <id>http://violet404.github.io/post/5myC2JTLs12/</id>
+        <link href="http://violet404.github.io/post/5myC2JTLs12/">
+        </link>
+        <updated>2021-07-16T14:01:00.000Z</updated>
     </entry>
     <entry>
         <title type="html"><![CDATA[JVM 内存与垃圾回收（四）方法区]]></title>
@@ -138,12 +233,5 @@
         <link href="http://violet404.github.io/post/_H2piR_In/">
         </link>
         <updated>2021-04-28T09:56:14.000Z</updated>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[@JsonFormatter 时间返回不对]]></title>
-        <id>http://violet404.github.io/post/jsonformatter-shi-jian-fan-hui-bu-dui/</id>
-        <link href="http://violet404.github.io/post/jsonformatter-shi-jian-fan-hui-bu-dui/">
-        </link>
-        <updated>2021-04-28T06:28:35.000Z</updated>
     </entry>
 </feed>
